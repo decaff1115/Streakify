@@ -1,0 +1,484 @@
+/* General styles */
+
+body, html {
+  width: 100%;  /* Ensure full width */
+  height: 100%; /* Ensure full height */
+  margin: 0;
+  padding: 0;
+  font-family: 'Rubik', sans-serif;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.welcome-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+  
+  /* Navbar styles */
+.navbar {
+  position: fixed;
+  top: 0;
+  display: flex;
+  z-index: 1000;
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  height: 50px;
+  justify-content: space-between;
+  width: 100%;
+  margin: 0; /* Ensure wno margins are added */
+  transition: all 0.3s ease; /* Smooth transition for resizing */
+  align-items: center;
+}
+  
+.navbar-logo {
+  width: 200px;
+  height: auto;
+  padding-left: 20px; /* Add left padding */
+}
+  
+.nav-links {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+    padding-right: 20px;
+    align-items: center;
+}
+  
+  .nav-links li {
+    font-size: 2vh;
+    font-family: 'Rubik', sans-serif;
+    color: #3F414E; /* Choose your preferred color for "Streakify" */
+  }
+
+  .nav-links.open {
+    display: flex; /* Display the menu on mobile when open */
+  }
+
+
+  .signup-button {
+    padding: 7px 15px; /* Add some padding for the button */
+    font-size: 1.8vh; /* Match the size with navbar text */
+    font-family: 'Rubik', sans-serif;
+    color: white; /* Text color */
+    background-color: #3F414E; /* Background color */
+    border: none; /* Remove border */
+    border-radius: 20px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth hover effect */
+    display: inline-block;
+  }
+  
+  .signup-button:hover {
+    background-color: #2C2268; /* Change color on hover */
+  }
+
+  /* Hamburger Icon */
+.hamburger-icon {
+  display: none; /* Hidden by default */
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.hamburger-bar {
+  width: 25px;
+  height: 3px;
+  background-color: #333;
+}
+
+.welcome-background {
+  background: linear-gradient(to bottom, #f0dbff, #9c9ae6); /* Gradient background */
+  width: 100%; /* Full width */
+  height: 100vh; /* Full height of the viewport */
+  display: flex; /* Use flexbox to center content */
+  justify-content: center; /* Center content horizontally */
+  align-items: center; /* Center content vertically */
+}
+
+
+  /* Welcome Section */
+
+  .welcome-section {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center content vertically */
+    align-items: center; /* Center content horizontally */
+    height: 100vh;
+  }
+  
+  .welcome-section h1 {
+  font-size: 8vh;
+  margin: 0;
+  color:3F414E;
+  }
+  
+  .welcome-text {
+  color: #3F414E; /* Choose your preferred color for "Welcome" */
+  font-weight: 500;
+  font-family: 'Rubik', sans-serif;
+  }
+  
+  .welcome-section h2 {
+  font-family: 'Rubik', sans-serif;
+  font-size: 1.4em;
+  margin: -4px;
+  }
+  
+  .streakify-text {
+  color: #3F414E; /* Choose your preferred color for "Streakify" */
+  font-weight:1;
+  font-style: italic;
+  padding-bottom: 25px;
+  }
+  
+  .explore-text {
+  font-size: 0.8em;
+  color: #2C2268;
+  margin: 0; /* Remove margin between paragraphs */
+  line-height: 2; /* Reduce the line height to bring lines closer together */
+  }
+  
+  
+  .meditation-image {
+    display: block; /* Ensures image behaves like a block element */
+    margin: 0 auto; /* Centers horizontally */
+    max-width: 65%; /* Adjust the width to make the image bigger (adjust value as needed) */
+    height: auto; /* Maintains aspect ratio */
+    object-fit: contain; /* Ensures the image fits well within the container */
+    padding-top: 20px;
+    padding-bottom: 20px
+  }
+
+  
+  .get-started-button {
+    padding: 20px 40px; /* Top and bottom padding 20px, left and right padding 40px for longer width */
+    font-size: 0.7em;
+    letter-spacing: 0.1em;
+    background-color: #f9f9f9;
+    color: #3F414E; /* Adjust text color */
+    border: none;
+    cursor: pointer;
+    border-radius: 30px; /* Rounded edges */ /* Add 30px space above the button */
+    width: 50%; /* Make the button width auto-expand with padding */
+    display: inline-block; /* Ensure button is treated as an inline element */
+    text-align: center; /* Center the text */
+  }
+  
+  /* Quote Section */
+.quote-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centers content vertically */
+  align-items: center; /* Centers content horizontally */
+  height: 70vh; /* Takes up 50% of its container's height */
+  width: 100vw; /* Full width */
+  background: radial-gradient(circle,#c3b6ff,#ddcdf9); /* Circular gradient */
+  text-align: center; /* Center-align text */
+  padding: 0; /* Add some padding */
+  box-sizing: border-box; /* Ensures padding is included in the height calculation */
+  font-family: 'Rubik', sans-serif; /* Font family for the section */
+  position: relative;
+  z-index: 2;/* Ensure text stays above the overlays */
+  overflow: hidden;
+}
+
+/* Quote Text Styling */
+.quote {
+  font-size: 1.8em; /* Adjust font size for the quote */
+  color: rgb(193, 181, 241), 181, 241; /* White text for the quote */
+  line-height: 1.2; /* Reduces spacing between lines for a compact look */
+  margin: 0; /* Removes default paragraph margins for closer alignment */
+  font-style: italic; /* Makes the text italic */
+  font-weight: 500;
+} 
+
+/* Author Styling */
+.quote-author {
+  font-size: 1.4em;
+  font-style: italic;
+  color: white;
+  margin-top: 20px; /* Separate author from the quote */
+  font-weight: 500;
+}
+
+
+/* Main Overlays */
+.overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 15%; /* Combined height */
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+}
+
+.overlay.top {
+  top: 0;
+}
+
+.overlay.bottom {
+  bottom: 0;
+}
+
+/* Inner Sub-Overlays */
+.sub-overlay {
+  flex: 1; /* Each takes 50% */
+}
+
+.overlay.top .sub-overlay:nth-child(1){
+  background: rgb(174, 169, 236) /* Darker */
+}
+
+.overlay.bottom .sub-overlay:nth-child(2){
+  background: #acb4fd/* Darker */
+}
+
+.overlay.top .sub-overlay:nth-child(2),
+.overlay.bottom .sub-overlay:nth-child(1) {
+  background: rgb(193, 181, 241) /* Lighter */
+}
+
+/* Top Overlay */
+.quote-section::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 15%; /* Combined height for both parts */
+  background: none; /* No direct color; children will control it */
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Bottom Overlay */
+.quote-section::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 15%; /* Combined height for both parts */
+  background: none; /* No direct color; children will control it */
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Sub-overlay 1 for Top */
+.quote-section::before::before {
+  content: '';
+  flex: 1; /* Takes 50% of the height */
+  background: rgba(0, 0, 0, 0.3); /* First overlay - lighter */
+}
+
+/* Sub-overlay 2 for Top */
+.quote-section::before::after {
+  content: '';
+  flex: 1; /* Takes 50% of the height */
+  background: rgba(0, 0, 0, 0.3); /* Second overlay - darker */
+}
+
+/* Sub-overlay 1 for Bottom */
+.quote-section::after::before {
+  content: '';
+  flex: 1; /* Takes 50% of the height */
+  background: rgba(0, 0, 0, 3); /* First overlay - lighter */
+}
+
+/* Sub-overlay 2 for Bottom */
+.quote-section::after::after {
+  content: '';
+  flex: 1; /* Takes 50% of the height */
+  background: rgba(0, 0, 0, 0.6); /* Second overlay - darker */
+}
+
+/* Section Styling */
+.image-section {
+  background: linear-gradient(#869df9,#b1d0ff) ;
+  width: 100vw; /* Full viewport width */
+  padding: 0; /* No padding around the section */
+  margin: 0; /* No margin around the section */
+  display: flex;
+  justify-content: center; /* Center the images horizontally */
+  align-items: flex-start; /* Align images at the top */
+  flex-direction: column; /* Stack images and titles */
+}
+
+/* Container for Images and Text */
+.image-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start; /* Align the images to the left */
+  align-items: flex-start; /* Align the images at the top */
+  gap: 0; /* No gap between images */
+  width: 100%; /* Full width of the section */
+  overflow-x: auto;
+}
+
+/* Image Item */
+.image-item {
+  display: flex;
+  flex-direction: column; /* Stack image, title, and subtitle */
+  height: calc(100vh - 50px);
+  text-align: center; /* Center align text */
+  margin: 0;
+  padding: 0;
+  width: 25%; /* Each image takes up 25% of the section's width */
+  flex-shrink: 0; /* Prevent images from shrinking */
+}
+
+/* Image Styling */
+.image-item img {
+  display: block;
+  margin: 0;
+  padding: 0;
+  width: 100%; /* Ensure images fill their container */
+  height: 400px; /* Make the images taller */
+  object-fit: cover; /* Ensure images maintain aspect ratio and cover the area */
+}
+
+/* Title and Subtitle */
+.image-item h3 {
+  margin: 40px 0 25px; /* Small margin above and below the title */
+  font-size: 1em;
+  color: #2C2268; /* White text for contrast */
+  text-align: left;
+  padding-left: 40px;
+}
+
+.image-item p {
+  margin: 0;
+  font-size: 0.6em;
+  color: #1D1617; /* White text for contrast */
+  text-align: left;
+  padding-left: 40px;
+  padding-right: 20px;
+}
+
+
+
+
+
+App.css
+  #root {
+  max-width: 1280px;
+  margin: 0 auto;
+  text-align: center;
+  }
+  
+  .logo {
+  will-change: filter;
+  transition: filter 300ms;
+  }
+  .logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+  }
+  .logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+  }
+  
+  @keyframes logo-spin {
+  from {
+  transform: rotate(0deg);
+  }
+  to {
+  transform: rotate(360deg);
+  }
+}
+  
+  @media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+  animation: logo-spin infinite 20s linear;
+  }
+  }
+  
+  .card {
+  padding: 2em;
+  }
+  
+  .read-the-docs {
+  color: #888;
+  }
+  
+
+  .navbar-logo {
+  width: 150px;
+  }
+
+
+  /* Show hamburger on small screens */
+@media (max-width: 768px) {
+  .hamburger-icon {
+    display: flex;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background-color: rgba(255, 255, 255, 0.9);
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    display: none;
+  }
+
+  .nav-links.open {
+    display: flex; /* Display menu when it's open */
+  }
+
+  .nav-links li {
+    text-align: center;
+    font-size: 1em;
+  }
+
+  /* Adjust padding for navbar when in mobile view */
+  .navbar {
+    padding: 0 20px;
+  }
+
+  .quote {
+    font-size: 1.6em; /* Slightly smaller font for mobile */
+  }
+
+  .quote-author {
+    font-size: 1.3em; /* Adjust author size */
+  }
+  .image-item {
+    width: 100%; /* Stacked layout */
+    height: (100vh-50px); /* Full viewport height */
+    margin-bottom: 0;
+
+  }
+
+  .image-item img {
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+  }
+  /* Title and Subtitle */
+  .image-item h3 {
+    margin: 40px 0 25px; /* Small margin above and below the title */
+    font-size: 1em;
+    padding-left: 70px;
+  }
+
+  .image-item p {
+    margin: 0;
+    font-size: 0.8em;
+    padding-left: 70px;
+    padding-right: 20px;
+  }
+}

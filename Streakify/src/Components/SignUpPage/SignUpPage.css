@@ -1,0 +1,134 @@
+/* Ensure body takes up the entire viewport */
+body, html {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+/* General Container */
+.signup-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-image: url('../../assets/cloud.svg'); /* Adjust path based on file location */
+  background-repeat: no-repeat; /* Prevent repeating the background */
+  background-size: contain; /* Scale the SVG to fit within the width */
+  background-position: center; /* Align it to the top and center horizontally */
+}
+
+ /* Logo styling */
+.streakify-logo {
+  padding-bottom: 1rem;
+}
+
+
+  .signup-box {
+    background-color: #8f97fe;
+    padding-top: 4rem;
+    padding-bottom: 1rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    border-radius: 70px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    text-align: center;
+  }
+
+  .signup-box h2{
+    color: #3F414E;
+    font-size: 1.2em;
+  }
+  
+  /* Form Styling */
+
+  .signup-form{
+    padding-top: 2.5rem;
+    padding-bottom:6rem;
+    align-items: center;
+  }
+
+  .signup-form label {
+    display: block;
+    font-size: 0.9rem;
+    color: #A1A4B2;
+    margin-bottom: 0.5rem;
+    text-align: left;
+
+  }
+  
+  .signup-form input {
+    width: 70%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border: none;
+    background-color: white;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    color: black;
+  }
+  
+  .password-input {
+    display: flex;
+    align-items: center;
+  }
+  
+  .password-input input {
+    flex: 1;
+  }
+  
+  
+  /* Button Styling */
+  .getstarted-button {
+    background-color: #ddcdf9;
+    color: #3F414E;
+    border: none;
+    border-radius: 20px;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    width: 77.5%;
+    font-size: 0.8rem;
+    cursor: pointer;
+  }
+  
+  .getstarted-button:hover {
+    background-color: #2c216a;
+    color:#FFFFFF;
+  }
+  
+  /* Privacy Policy Link */
+  .privacy-policy {
+    font-size: 0.8rem;
+    text-decoration: none;
+    text-align: center;
+    padding-top: 1rem;
+  }
+
+  .privacy-policy p{
+      color: #FFFFFF;
+  }
+  
+  .privacy-policy a{
+      color: #3F414E;
+  }
+  .privacy-policy a:hover {
+    text-decoration: underline;
+  }
+  /* Signup Text */
+  .login-text {
+    font-size: 0.9rem;
+    color: #FFFFFF;
+  }
+  
+  .login-text a {
+    color: #3F414E;
+    text-decoration: none;
+  }
+  
+  .login-text a:hover {
+    text-decoration: underline;
+  }
+  
