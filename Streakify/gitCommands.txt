@@ -7,6 +7,18 @@ if (u dont have proj do this){
     -git clone <link of repo>
 }
 
+if(done cloning do...){
+    -npm install                //Running the command npm install in the terminal installs all the dependencies listed in package.json. 
+                                //This means that as long as those dependencies are already listed in the package.json file, npm install 
+                                //will automatically download and set them up on your machine.
+}
+
+                                //When to run npm install:
+                                        After cloning the repository.
+                                        After pulling changes that modify package.json (which happens when new dependencies are added).
+                                        After you see dependency-related errors that suggest you're missing a package.
+
+
 if(u want to update your local code base){
     -git pull
 }
