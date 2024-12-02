@@ -1,0 +1,52 @@
+//never code in stable, just merge
+//Before you make ANY CHANGES, be SURE to be on the right branch (WORKING), make sure to PULL any changes from WORKING branch
+
+//**in terminal**//
+
+if (u dont have proj do this){
+    -git clone <link of repo>
+}
+
+if(done cloning do...){
+    -npm install                //Running the command npm install in the terminal installs all the dependencies listed in package.json. 
+                                //This means that as long as those dependencies are already listed in the package.json file, npm install 
+                                //will automatically download and set them up on your machine.
+}
+
+                                //When to run npm install:
+                                        After cloning the repository.
+                                        After pulling changes that modify package.json (which happens when new dependencies are added).
+                                        After you see dependency-related errors that suggest you're missing a package.
+
+
+if(u want to update your local code base){
+    -git pull
+}
+
+if( you want to work on the code, make sure you are in working branch. To check branch do..){
+    -git branch
+}
+
+if(you want to change branch. Do....){
+    -git checkout <branchname>
+}
+
+if(you want to push changes. Do..){
+    -git status                                     //to check changes in code
+    
+    -git add <exact filename in git status> 
+    OR
+    -git add .                                      //to add ALL changes
+
+    -git commit -m "<your message>" 
+    -git push 
+
+}else if(git push doesnt work){
+
+    -git push --set-upstream <repo link> working
+
+}
+
+
+//if working is not cloned
+-git checkout -b working
