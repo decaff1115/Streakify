@@ -107,11 +107,11 @@ const Dashboard = () => {
                       New Habit
                     </Typography>
                     <div className=" flex h-full w-full">
-                      <div className="w-full h-full border-red-600 border p-[15px]">
+                      <div className="w-full h-full border-red-600 p-[15px]">
                         <div className="flex flex-col">
                           <h1 className="text-white">Name</h1>
 
-    <input className="flex w-full h-[37px] rounded-md"/>
+                      <input className="flex w-full h-[37px] rounded-md"/>
                         </div>
                         <div className="flex flex-col">
                           <div className="flex mt-[20px] justify-between w-full">
