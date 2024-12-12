@@ -1,0 +1,280 @@
+/* General Styles */
+body, html {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Rubik', sans-serif;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+/* Navbar */
+.navbar {
+    position: fixed;
+    top: 0;
+    display: flex;
+    z-index: 1000;
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    height: 50px;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0; /* Ensure no margins */
+    transition: all 0.3s ease; /* Smooth transition for resizing */
+    align-items: center;
+}
+
+/* Adjust the logo padding to match the Welcome page */
+.navbar-logo {
+    width: 200px;
+    height: auto;
+    padding-left: 0; /* Remove any padding */
+    margin-left: 0; /* Remove any margin */
+    margin: 0; /* Ensure no margin on other sides as well */
+}
+
+/* Sidebar Section */
+.sidebar-section {
+    position: fixed; /* Fix the sidebar to the screen */
+    top: 50px; /* Start the sidebar below the navbar */
+    width: 18%; /* 18% width */
+    background-color: #4D57C8;
+    height: calc(100vh - 50px); /* Full height minus navbar */
+    padding-top: 15px;
+    overflow-y: auto; /* Allow scrolling if content overflows */
+}
+
+.sidebar-section ul {
+    list-style-type: none; /* Removes bullet points */
+    padding: 0; /* Removes padding */
+    padding-top: 25px;
+    margin: 0; /* Optional: Removes margin */
+}
+
+.sidebar-section li {
+    padding: 12px;
+    padding-left: 35px;
+    cursor: pointer; /* Makes the list items look clickable */
+}
+
+/* Add white border below 'Weekly' */
+.sidebar-section li:nth-child(2) {
+    border-bottom: 1px solid white;
+}
+
+/* Sidebar Link Styles */
+.sidebar-link {
+    text-decoration: none; /* Ensures no underline (since we're not using <a> tags) */
+    color: white;
+    display: block;
+    font-size: 16px;
+    font-family: 'Rubik', sans-serif; /* Add this to change the font of links */
+}
+
+/* Style for the selected sidebar item */
+.sidebar-link.selected {
+    font-weight: bold; /* Makes the selected item bold */
+    background-color: #3b47a0; /* Optional: Change background to highlight selected item */
+}
+
+/* Sidebar Link Hover */
+.sidebar-link:hover {
+    background-color: #3b47a0;
+}
+
+/* Dashboard Sections */
+.dashboard-sections {
+    display: flex;
+    width: 100%;
+    height: calc(100vh - 50px); /* Full height minus navbar */
+    margin-top: 50px; /* Space for fixed navbar */
+}
+/* Habits Section */
+.habits-section {
+    position: fixed; /* Fix the habits section */
+    top: 50px; /* Start it below the navbar */
+    left: 18%; /* Position it to the right of the sidebar */
+    right: 75%;
+    width: calc(57%); /* Adjust width to leave room for divider line */
+    background-color: #B4BAFF;
+    height: calc(100vh - 50px); /* Full height minus navbar */
+    overflow-y: auto; /* Allow scrolling if content overflows */
+}
+
+
+/* Date Widget Styles */
+.date-widget {
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(to right, #756dfe, #5d44f7); /* Purple gradient */
+    border-radius: 17px; /* Rounded corners */
+    height: 45px;
+    padding: 7px 20px;
+    width: 150px; /* Adjust size */
+    color: white;
+    text-align: center; /* Ensure left-aligned text */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 40px;
+    justify-content: center; 
+    text-align: left;
+}
+
+.date-widget .month {
+    font-size: 11px;
+    font-weight: 500;
+    margin-bottom: -5px;
+}
+
+.date-widget .day {
+    font-size: 20px;
+    margin: 0; /* Remove extra margins */
+    font-weight: 500;
+}
+
+/* Add Button Styles */
+.add-habit-button {
+    position: absolute;
+    top: 50px; /* Align it at the top */
+    right: 50px; /* Align it to the right, next to the date widget */
+    width: 50px;
+    height: 50px;
+    background-color: #91a3fc; /* Circle color */
+    border-radius: 50%; /* Circular shape */
+    color: white;
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    cursor: pointer;
+}
+
+.add-habit-button:hover {
+    background-color: #6e7bf7; /* Darken color on hover */
+}
+
+/* Popup Styles */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+    text-align: center;
+}
+
+.popup input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.popup button {
+    padding: 10px 20px;
+    background-color: #91a3fc;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.popup button:hover {
+    background-color: #6e7bf7; /* Darken color on hover */
+}
+
+/* New container under the Date Widget */
+.todo-container {
+    background-color: #768ade;
+    border-radius: 15px; /* Rounded corners */
+    height: 60px; /* Same height as the date widget */
+    padding-left: 30px;
+    display: flex;
+    justify-content: left; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    color: white;
+    font-size: 12px;
+    font-weight: 500;
+    margin: 40px; /* Optional: add some spacing if needed */
+}
+
+
+/* Streak Section */
+.streak-section {
+    position: fixed; /* Fix the streak section */
+    top: 50px; /* Start it below the navbar */
+    left: 75%; /* Position it to the right of the habits section */
+    width: 25%; /* Keep the same width */
+    background-color: #B4BAFF;
+    height: calc(100vh - 50px); /* Full height minus navbar */
+    border-left: 1.5px solid white; /* White line dividing sections */
+    overflow-y: auto; /* Allow scrolling if content overflows */
+}
+
+/* Streak Text */
+.streak-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white; /* White background */
+    color: #4D57C8; /* Text color */
+    height: 45px; /* Same height as the date widget */
+    padding: 7px;
+    border-radius: 15px; /* Match rounded corners to date widget */
+    font-size: 12px; /* Adjust font size as needed */
+    font-weight: 500; /* Slightly bold text */
+    text-align: center;
+    margin-top: 0; /* Align with date widget */
+    margin: 20px;
+    margin-top: 40px;
+}
+
+
+/* Streak Box */
+
+.streak-box {
+    background-color: white; /* White background */
+    color: #4D57C8; /* Text color */
+    height: 100px; /* Same height as the date widget */
+    padding: 25px 30px;
+    border-radius: 20px; /* Match rounded corners to date widget */
+    font-weight: 500; /* Slightly bold text */
+    text-align: left;
+    margin: 20px;
+}
+
+
+
+.current-streak{
+    font-size: 25px;
+    color: #373737;
+    padding-bottom: 5px;
+}
+
+
+.current-text, .longest-text{
+    color: #6C6C6C;
+    font-size: 10px;
+}
+
+
+.longest-streak{
+    padding-top:15px;
+    font-size: 13px;
+    color: #373737;
+}
