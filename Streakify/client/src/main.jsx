@@ -1,11 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import App from './App';
-import './index.css';
+import App from './App'; // Make sure this path is correct
+import './index.css';  // Ensure this file exists and has styles
 
-const root = ReactDOM.createRoot(document.getElementById('root')); 
-//This ensures that React Router can handle the routes correctly across your app.
+const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
   <BrowserRouter>
