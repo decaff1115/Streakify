@@ -5,11 +5,19 @@ const Habit = require('./Habit');
 const HabitLog = sequelize.define('HabitLog', {
     completed_at: { 
         type: DataTypes.DATE, 
-        allowNull: false 
+        allowNull: false
     },
     value: { 
         type: DataTypes.INTEGER, 
-        allowNull: false 
+        allowNull: false
+    },
+    status: {
+        type: DataTypes.ENUM('COMPLETED', 'FAILED', 'SKIPPED'),
+        allowNull: false
+    },
+    progress: {
+        type: DataTypes.JSON,
+        allowNull: true
     }
 }, {
     timestamps: false,
