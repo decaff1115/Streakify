@@ -7,8 +7,11 @@ const habitRoutes = require('./routes/habitRoutes');
 const habitLogRoutes = require('./routes/habitLogRoutes');
 const streakRoutes = require('./routes/streakRoutes');
 
+const cors = require('cors');
+
 const app = express();
 
+app.use(cors());
 app.use(bodyParser.json());
 
 app.use('/api/users', userRoutes);
