@@ -15,7 +15,6 @@ module.exports = {
     login: async (req, res) => {
         const { username, password } = req.body; //extract username and password using express
         const hash_password = await bcrypt.hash(password, 10);
-        console.log(hash_password);
         try {
             // Step 1: Check if the user exists in the database
             const user = await User.findOne({ where: { username } });
@@ -25,7 +24,6 @@ module.exports = {
             }
     
             // Step 2: Check if the provided password matches the hashed password
-            console.log(user.password);
             const isPasswordValid = await bcrypt.compare(password, user.password_hash);
     
             if (!isPasswordValid) {
@@ -49,25 +47,19 @@ module.exports = {
         }
     },
     register: async (req, res) => {
-         const { username, password } = req.body;   // Extract username and password (express)
-        // Create user (sequelize)
+         const { username, email, password } = req.body;   // Extract username and password (express)
+         const hash_password = await bcrypt.hash(password, 10);
+         // Create user (sequelize)
 
         try{
         const newUser = await User.create({
             username,
-            password: hashedPassword  // Store the hashed password in the database
+            email,
+            password_hash: hash_password  // Store the hashed password in the database
         });
 
-        // Create JWT (JWT library)
-        // Set up JWT secret + expiration time
-        // Return JWT (express)
-        // Step 4: Generate a JWT token for the newly created user
-        const token = generateToken(newUser);
-
-        // Step 5: Respond with the token
         res.status(201).json({
             message: 'User registered successfully',
-            token
         });
         } catch (error) {
             console.error('Error registering user:', error);

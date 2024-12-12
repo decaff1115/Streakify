@@ -22,6 +22,7 @@ const authenticateToken = (req, res, next) => {
 
         // Proceed to the next middleware or route handler
         next();
+        //whatever comes after this middleware can access req.user
     } catch (error) {
         return res.status(400).json({ message: "Invalid token" });
     }
