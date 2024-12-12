@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './WelcomePage.css';
 import meditationImage from '../../assets/meditation.svg';
