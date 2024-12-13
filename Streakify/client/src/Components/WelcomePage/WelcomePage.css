@@ -88,11 +88,9 @@ body, html {
 }
 
 .hamburger-bar {
-  display: block;
-  width: 30px;
+  width: 25px;
   height: 3px;
   background-color: #3F414E;
-  transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 .welcome-background {
@@ -424,11 +422,12 @@ App.css
   }
   .menu-content {
     position: absolute;
-    height: 50px;
+    top: 40px;
     left: 0;
     right: 0;
     background: rgba(255, 255, 255, 0.9);
     text-align: center;
+    
     display: none;
     transition: opacity 0.3s ease;
   }
@@ -436,13 +435,13 @@ App.css
   /* Display menu when burger is true */
   .menu-content a {
     display: block;
-    padding-top:10px;
+    
     text-decoration: none;
     color: #333;
   }
   
   .menu-content a:hover {
-    background-color: pink;
+    background-color: #007bff;
     color: white;
   }
   
@@ -476,27 +475,22 @@ App.css
   }
 
   .menu-content {
-    display: flex; /* Show menu links for larger screens */
+    display: block; /* Show menu links for larger screens */
     position: static;
-    flex-direction: column;
     background: transparent;
-    text-align: center;
-    height: 30px;
+    text-align: left;
     padding: 0;
   }
   .menu-content a {
     display: inline-block;
-    color: white;
-    font-size:8px;
-    background-color: #4D57C8;
-    width: 100px;
-    text-align: center;
-    padding-bottom:5px;
+    color: pink;
   }
   .menu-content a:hover {
-    background-color: #B4BAFF;
-    color: #4D57C8;
+    background-color: #007bff;
+    color: white;
   }
+
+
   .nav-links {
     position: absolute;
     top: 60px;
