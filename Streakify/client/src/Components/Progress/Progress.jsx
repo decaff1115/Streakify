@@ -39,7 +39,7 @@ const Progress = () => {
   };
 
   return (
-    <div className="w-full min-h-screen flex flex-col bg-[#B4BAFF] overflow-x-hidden">
+    <div className="w-full h-screen flex flex-col bg-[#B4BAFF] overflow-x-hidden">
       {/* Header */}
       <div className="flex w-full h-[78px] justify-center items-center bg-white shadow-lg">
         <img src={logo} className="streakifyLogo" alt="logo" />

@@ -11,7 +11,6 @@ import React, { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 
 const token = localStorage.getItem('token');
-
 import { useNavigate } from "react-router-dom"
 
 const Dashboard = () => {
@@ -24,6 +23,10 @@ const Dashboard = () => {
   const deleteClose = () => setDeleteTask(false);
   const editOpen = () => setEditTask(true);
   const editClose = () => setEditTask(false);
+
+  const [username, setUsername] = useState('');
+
+  const [showAddHabit, setShowAddHabit] = useState(false);
 
   const [taskArray, setTaskArray] = useState([
     { task: "Task 1", time: "10:00 AM", isChecked: false },
@@ -127,15 +130,6 @@ const Dashboard = () => {
                   </div>
                 </Button>
               </div>
-
-            <div className="flex">
-              <Button style={{ justifyContent: "start" }} className="flex hover:bg-[#B4BAFF] h-[53px] items-center w-[278px] justify-start rounded-[8px] p-[15px]"> 
-                <div className="flex justify-between items-center">
-                  <IconCalendar size={40} color="#2C2268"/>
-                  <h1 className="text-[24px] font-bold ml-[25px] text-black"> WEEKLY</h1>
-                </div>
-              </Button>
-            </div>
 
               <div>
                 <Button onClick={() => navigate("/Progress")} style={{ justifyContent: "start" }} className="flex hover:bg-[#B4BAFF] h-[53px] items-center w-[278px] justify-start rounded-[8px] p-[15px]"> 
