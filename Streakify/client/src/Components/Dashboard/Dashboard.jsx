@@ -1,5 +1,5 @@
 import logo from "../../assets/logo.svg"
-import { IconUserCircle, IconCalendar, IconNumber24Small, IconCirclePlus } from "@tabler/icons-react"
+import { IconExclamationCircle, IconEdit,IconTrash, IconUserCircle, IconCalendar, IconNumber24Small, IconCirclePlus, IconExclamationCircleFilled } from "@tabler/icons-react"
 import fire  from "../../assets/fire.svg"
 import noTaskIcon from "../../assets/HabitSampleIcons.svg"
 import noStreaks from "../../assets/NoStreaks.svg"
@@ -7,19 +7,25 @@ import { Modal, Box, Typography, Select, Button } from "@mui/material"
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import React, { useState } from "react"
+import { useState } from "react"
 
 const Dashboard = () => {
   // const [currentStreak, setCurrentStreak] = useState(0)
  // const [longestStreak, setLongestStreak] = useState(0)
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [goal, setGoal] = React.useState('');
-  const [time, setTime] = React.useState('');
-  const [day, setDay] = React.useState('');
-  const [repeat, setRepeat] = React.useState('');
+  const [goal, setGoal] = useState('');
+  const [time, setTime] = useState('');
+  const [day, setDay] = useState('');
+  const [repeat, setRepeat] = useState('');
   const [task, setTasks] = useState(false);
+  const [deleteTask, setDeleteTask] = useState(false);
+  const [editTask, setEditTask] = useState(false);
+  const deleteOpen = () => setDeleteTask(true);
+  const deleteClose = () => setDeleteTask(false);
+  const editOpen = () => setEditTask(true);
+  const editClose = () => setEditTask(false);
 
   const handleGoal = (event) => {
     setGoal(event.target.value);
@@ -43,11 +49,25 @@ const Dashboard = () => {
       left: '50%',
       transform: 'translate(-50%, -50%)',
       width: 800,
-      height: 450,
+      height: 380,
       bgcolor: '#7F45FF',
       boxShadow: 24,
       p: 5,
     };
+
+    const style2 = {
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      width: 750,
+      height: 220,
+      bgcolor: '#4D57C8',
+      boxShadow: 24,
+      p: 5,
+    };
+    
+
     const taskArray = [{
       task: "Drink Water",
       time: "Awhile ago", 
@@ -157,196 +177,228 @@ const Dashboard = () => {
                       New Habit
                     </Typography>
                     <div className=" flex h-full w-full">
-                      <div className="w-full h-full border-red-600 p-[15px]">
+                      <div className="w-full h-full border-red-600 p-[5px]">
                         <div className="flex flex-col">
                           <h1 className="text-white">Name</h1>
 
-                      <input className="flex w-full h-[37px] rounded-md"/>
-                        </div>
-                          <div className="flex w-full border-red-600 h-max">
-                            <div className="flex w-full h-full border border-yellow-500 ">
-                              <div className=" flex flex-col border-blue-600 border w-[60%]">
-                                <div className="flex mt-[20px] justify-between">
-                                  <div className="flex">
-                                    <input className="flex w-[100px] bg-[#B4BAFF] text-white placeholder:text-white" placeholder="Goal"/>
+                        <input className="flex w-[98%] h-[37px] rounded-md border"/>
+                          </div>
+                            <div className="flex w-full border-red-600 h-max">
+                              <div className="flex w-full h-full border-yellow-500 ">
+                                <div className=" flex flex-col border-blue-600 w-[60%]">
+                                  <div className="flex mt-[20px] justify-between">
+                                    <div className="flex">
+                                      <input className="flex w-[100px] bg-[#B4BAFF] text-white placeholder:text-white" placeholder="Goal"/>
+                                    </div>
+                                    <Box sx={{
+                                      minWidth: 150, // Adjust the minimum width
+                                      maxWidth: 200, // Set a maximum width if needed
+                                      backgroundColor: "#A5A1FF", // Background color
+                                      borderRadius: "8px", // Rounded corners
+                                      '& .MuiOutlinedInput-notchedOutline': {},
+                                      '& .MuiInputBase-root': {
+                                              color: "white", // Text color
+                                              height: "40px",
+                                              display: "flex", // Ensure flexbox alignment works
+                                              justifyContent: "center", // Center align horizontally
+                                              alignItems: "center", // 
+                                      },
+                                      '& .MuiInputLabel-root': {
+                                        color: "white", // Label color
+                                      },
+                                      '& .MuiSvgIcon-root': {
+                                        color: "white", // Dropdown arrow color
+                                      },
+                                      '&:hover .MuiOutlinedInput-notchedOutline': {
+                                        borderColor: "white",
+                                      },
+                                      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                        borderColor: "white",
+                                      },
+                                      '&:focus': {
+                                        outline: "none",
+                                      },
+                                    }}>
+                                      <FormControl fullWidth>
+                                        <InputLabel id="demo-simple-select-label" sx={{ color: 'white' }}>Time</InputLabel>
+                                        <Select
+                                          labelId="demo-simple-select-label"
+                                          id="demo-simple-select"
+                                          value={time}
+                                          label="Time"
+                                          onChange={handleTime}
+                                        >
+                                          <MenuItem value={10}>Times</MenuItem>
+                                          <MenuItem value={30}>Minutes</MenuItem>
+                                        </Select>
+                                      </FormControl>
+                                    </Box>
+
+                                    <Box
+                                          sx={{
+                                            minWidth: 120,
+                                            backgroundColor: "#A5A1FF", // Background color
+                                            borderRadius: "8px", // Rounded corners
+                                            '& .MuiOutlinedInput-notchedOutline': {
+                                            },
+                                            '& .MuiInputBase-root': {
+                                              color: "white", // Text color
+                                              height: "40px",
+                                              display: "flex", // Ensure flexbox alignment works
+                                              justifyContent: "center", // Center align horizontally
+                                              alignItems: "center", // Center align vertically
+                                            },
+                                            '& .MuiInputLabel-root': {
+                                              color: "white", // Label color
+                                            },
+                                            '& .MuiSvgIcon-root': {
+                                              color: "white", // Dropdown arrow color
+                                            },
+                                            '&:hover .MuiOutlinedInput-notchedOutline': {
+                                              borderColor: "white",
+                                            },
+                                            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                              borderColor: "white",
+                                            },
+                                            '&:focus': {
+                                              outline: "none",
+                                            },
+                                          }}
+                                        >
+                                      <FormControl fullWidth>
+                                        <InputLabel id="demo-simple-select-label" sx={{color: '#B4BAFF'}}>Per Day</InputLabel>
+                                        <Select
+                                          labelId="demo-simple-select-label"
+                                          id="demo-simple-select"
+                                          value={day}
+                                          label="Per Day"
+                                          onChange={handleDay}
+                                        >
+                                          <MenuItem value={10}>Per Day</MenuItem>
+                                          <MenuItem value={30}>Per Week</MenuItem>
+                                        </Select>
+                                      </FormControl>
+                                    </Box>
                                   </div>
-                                  <Box sx={{
-                                    minWidth: 150, // Adjust the minimum width
-                                    maxWidth: 200, // Set a maximum width if needed
-                                    backgroundColor: "#A5A1FF", // Background color
-                                    borderRadius: "8px", // Rounded corners
-                                    '& .MuiOutlinedInput-notchedOutline': {},
-                                    '& .MuiInputBase-root': {
-                                      color: "white", // Text color
-                                      height: "40px", // Adjust height
-                                    },
-                                    '& .MuiInputLabel-root': {
-                                      color: "white", // Label color
-                                    },
-                                    '& .MuiSvgIcon-root': {
-                                      color: "white", // Dropdown arrow color
-                                    },
-                                    '&:hover .MuiOutlinedInput-notchedOutline': {
-                                      borderColor: "white",
-                                    },
-                                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                      borderColor: "white",
-                                    },
-                                    '&:focus': {
-                                      outline: "none",
-                                    },
-                                  }}>
-                                    <FormControl fullWidth>
-                                      <InputLabel id="demo-simple-select-label" sx={{ color: 'white' }}>Time</InputLabel>
-                                      <Select
-                                        labelId="demo-simple-select-label"
-                                        id="demo-simple-select"
-                                        value={time}
-                                        label="Time"
-                                        onChange={handleTime}
-                                      >
-                                        <MenuItem value={10}>Times</MenuItem>
-                                        <MenuItem value={30}>Minutes</MenuItem>
-                                      </Select>
-                                    </FormControl>
-                                  </Box>
+                                    <input className="flex w-full h-[37px] rounded-md mt-[15px]"/>
+                                  </div>
+                                <div className="flex flex-col justify-center w-[40%] items-center">
+                                  <div className="flex flex-col text-[11px] text-white">
+                                    <div>Repeat</div>
+                                    <Box sx={{
+                                      width: 250,
+                                        minWidth: 120,
+                                        backgroundColor: "white", // Background color
+                                        borderRadius: "8px", // Rounded corners
+                                        '& .MuiOutlinedInput-notchedOutline': {
+                                        },
+                                        '& .MuiInputBase-root': {
+                                          color: "white", // Text color
+                                          height: "40px"
+                                        },
+                                        '& .MuiInputLabel-root': {
+                                          color: "white", // Label color
+                                        },
+                                        '& .MuiSvgIcon-root': {
+                                          color: "white", // Dropdown arrow color
+                                        },
+                                        '&:hover .MuiOutlinedInput-notchedOutline': {
+                                          borderColor: "white",
+                                        },
+                                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                          borderColor: "white",
+                                        },
+                                      '&:focus': {
+                                          outline: "none",
+                                        },
+                                      }}>
+                                      <FormControl fullWidth>
+                                        <InputLabel id="demo-simple-select-label" sx={{color: '#B4BAFF'}}></InputLabel>
+                                        <Select
+                                          labelId="demo-simple-select-label"
+                                          id="demo-simple-select"
+                                          value={day}
+                                          onChange={handleRepeat}
+                                        >
+                                          <MenuItem value={10}>Monday</MenuItem>
+                                          <MenuItem value={30}>Tuesday</MenuItem>
+                                        </Select>
+                                      </FormControl>
+                                    </Box>
+                                  </div>
 
-                                  <Box sx={{
-                                      minWidth: 120,
-                                      backgroundColor: "#A5A1FF", // Background color
-                                      borderRadius: "8px", // Rounded corners
-                                      '& .MuiOutlinedInput-notchedOutline': {
-                                      },
-                                      '& .MuiInputBase-root': {
-                                        color: "white", // Text color
-                                        height: "40px"
-                                      },
-                                      '& .MuiInputLabel-root': {
-                                        color: "white", // Label color
-                                      },
-                                      '& .MuiSvgIcon-root': {
-                                        color: "white", // Dropdown arrow color
-                                      },
-                                      '&:hover .MuiOutlinedInput-notchedOutline': {
-                                        borderColor: "white",
-                                      },
-                                      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                        borderColor: "white",
-                                      },
-                                    '&:focus': {
-                                        outline: "none",
-                                      },
-                                    }}>
-                                    <FormControl fullWidth>
-                                      <InputLabel id="demo-simple-select-label" sx={{color: 'white'}}>Per Day</InputLabel>
-                                      <Select
-                                        labelId="demo-simple-select-label"
-                                        id="demo-simple-select"
-                                        value={day}
-                                        label="Per Day"
-                                        onChange={handleDay}
-                                      >
-                                        <MenuItem value={10}>Per Day</MenuItem>
-                                        <MenuItem value={30}>Per Week</MenuItem>
-                                      </Select>
-                                    </FormControl>
-                                  </Box>
-                                </div>
-                                  <input className="flex w-full h-[37px] rounded-md mt-[15px]"/>
-                                </div>
-                              <div className="flex flex-col justify-center border w-[40%] items-center">
-                                <div className="flex flex-col text-[11px]">
-                                  <div>Repeat</div>
-                                  <Box sx={{
-                                    width: 200,
-                                      minWidth: 120,
-                                      backgroundColor: "#A5A1FF", // Background color
-                                      borderRadius: "8px", // Rounded corners
-                                      '& .MuiOutlinedInput-notchedOutline': {
-                                      },
-                                      '& .MuiInputBase-root': {
-                                        color: "white", // Text color
-                                        height: "40px"
-                                      },
-                                      '& .MuiInputLabel-root': {
-                                        color: "white", // Label color
-                                      },
-                                      '& .MuiSvgIcon-root': {
-                                        color: "white", // Dropdown arrow color
-                                      },
-                                      '&:hover .MuiOutlinedInput-notchedOutline': {
-                                        borderColor: "white",
-                                      },
-                                      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                        borderColor: "white",
-                                      },
-                                    '&:focus': {
-                                        outline: "none",
-                                      },
-                                    }}>
-                                    <FormControl fullWidth>
-                                      <InputLabel id="demo-simple-select-label" sx={{color: 'white'}}></InputLabel>
-                                      <Select
-                                        labelId="demo-simple-select-label"
-                                        id="demo-simple-select"
-                                        value={day}
-                                        label="Per Day"
-                                        onChange={handleDay}
-                                      >
-                                        <MenuItem value={10}>Per Day</MenuItem>
-                                        <MenuItem value={30}>Per Week</MenuItem>
-                                      </Select>
-                                    </FormControl>
-                                  </Box>
-                                </div>
-
-                                <div className="flex flex-col text-[11px]">
-                                  <div>Start Date</div>
-                                  <Box sx={{
-                                      width: 165,
-                                      minWidth: 120,
-                                      backgroundColor: "#A5A1FF", // Background color
-                                      borderRadius: "8px", // Rounded corners
-                                      '& .MuiOutlinedInput-notchedOutline': {
-                                      },
-                                      '& .MuiInputBase-root': {
-                                        color: "white", // Text color
-                                        height: "40px"
-                                      },
-                                      '& .MuiInputLabel-root': {
-                                        color: "white", // Label color
-                                      },
-                                      '& .MuiSvgIcon-root': {
-                                        color: "white", // Dropdown arrow color
-                                      },
-                                      '&:hover .MuiOutlinedInput-notchedOutline': {
-                                        borderColor: "white",
-                                      },
-                                      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                        borderColor: "white",
-                                      },
-                                    '&:focus': {
-                                        outline: "none",
-                                      },
-                                    }}>
-                                    <FormControl fullWidth>
-                                      <InputLabel id="demo-simple-select-label" sx={{color: 'white'}}></InputLabel>
-                                      <Select
-                                        labelId="demo-simple-select-label"
-                                        id="demo-simple-select"
-                                        value={day}
-                                        label="Per Day"
-                                      >
-                                        <MenuItem value={10}>Per Day</MenuItem>
-                                        <MenuItem value={30}>Per Week</MenuItem>
-                                      </Select>
-                                    </FormControl>
-                                  </Box>
-                                </div>    
+                                  <div className="text-white flex flex-col text-[11px]">
+                                    <div>Start Date</div>
+                                    <Box sx={{
+                                        width: 250 ,
+                                        minWidth: 120,
+                                        backgroundColor: "white", // Background color
+                                        borderRadius: "8px", // Rounded corners
+                                        '& .MuiOutlinedInput-notchedOutline': {
+                                        },
+                                        '& .MuiInputBase-root': {
+                                          color: "white", // Text color
+                                          height: "40px"
+                                        },
+                                        '& .MuiInputLabel-root': {
+                                          color: "white", // Label color
+                                        },
+                                        '& .MuiSvgIcon-root': {
+                                          color: "white", // Dropdown arrow color
+                                        },
+                                        '&:hover .MuiOutlinedInput-notchedOutline': {
+                                          borderColor: "white",
+                                        },
+                                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                          borderColor: "white",
+                                        },
+                                      '&:focus': {
+                                          outline: "none",
+                                        },
+                                      }}>
+                                      <FormControl fullWidth>
+                                        <InputLabel id="demo-simple-select-label" sx={{color: "#B4BAFF"}}></InputLabel>
+                                        <Select
+                                          labelId="demo-simple-select-label"
+                                          id="demo-simple-select"
+                                        >
+                                          <MenuItem value={10}></MenuItem>
+                                          <MenuItem value={30}></MenuItem>
+                                        </Select>
+                                      </FormControl>
+                                    </Box>
+                                  </div>    
 
                               </div>
                               </div>
                             </div>
+                                      <div className="flex w-full h-full justify-end pr-[15px]">
+                                          <div className="flex h-max mt-[8%] w-[25%] justify-between">
+                                            <Button 
+                                              sx={{
+                                              height: "32px",
+                                              color: "white",
+                                              backgroundColor: "#A5A1FF",
+                                              '&:hover': {
+                                                backgroundColor: "#1F1A4A", // Change background on hover
+                                              },
+                                              borderRadius: "8px", // Rounded corners
+                                              padding: "8px 16px", // Adjust padding
+                                            }}
+                                            >Delete</Button>
+                                            <Button  sx={{
+                                              height: "32px",
+                                              color: "white",
+                                              backgroundColor: "#2C2268",
+                                              '&:hover': {
+                                                backgroundColor: "#1F1A4A", // Change background on hover
+                                              },
+                                              borderRadius: "8px", // Rounded corners
+                                              padding: "8px 16px", // Adjust padding
+                                            }}
+                                          >Save</Button>
+                                          </div>
+                                      </div>
                           </div>
                       </div>
                   </Box>
@@ -369,12 +421,70 @@ const Dashboard = () => {
               {taskArray.map((task, index) => (
                 <div
                   key={index}
-                  className="bg-white p-4 rounded-lg shadow-md w-[90%] mb-4 border border-gray-300"
+                  className="bg-white p-4 flex justify-between rounded-lg shadow-md w-[90%] mb-4 border-red-600"
                 >
-                  <h2 className="text-lg font-bold text-gray-800">{task.task}</h2>
-                  <p className="text-sm text-gray-600">{task.time}</p>
+                  <div className="flex flex-col justify-center">
+                    <h2 className="text-lg font-bold text-gray-800">{task.task}</h2>
+                    <p className="text-sm text-gray-600">{task.time}</p>
+                  </div>
+
+                  <div className="">
+                    <Button onClick={deleteOpen}>
+                      <IconTrash color="#7889DF"/>
+                    </Button>
+                    <Button onClick={editOpen}>
+                      <IconEdit color="#7889DF"/>
+                    </Button>                      
+                  </div>
+
                 </div>
               ))}
+                <Modal
+                  open={deleteTask}
+                  onClose={deleteClose}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >
+                  <Box sx={style2}>
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                      <h1 className="flex text-[white] items-center w-[29%] justify-between">
+                        <IconExclamationCircle color="red" size={30}/>
+                        CONFIRMATION
+                      </h1>
+                    </Typography>
+                    <Typography id="modal-modal-description" className="text-white w-full items-center justify-center flex text-[16px]" sx={{ mt: 2 }}>
+                      <h1 className="text-[20px]">Are you sure you want to delete Habit?</h1>
+                    </Typography>
+                    <div className="flex w-full border-red-500 justify-end mt-[48px]">
+                      <div className=" border-red-600 justify-end">
+                        <Button onClick={deleteClose} variant="contained" style={{ background: "#A5A1FF" }} className="flex justify-end w-max border border-red-600">
+                          <h1 className="text-white">CANCEL</h1>
+                        </Button>
+                      </div>
+                      <div className="flex border-red-600 justify-end">
+                        <Button variant="contained" style={{ background: "#2C2268", marginLeft: "20px" }} className="flex justify-end w-max border  border-red-600">
+                          <h1 className="text-white">OK</h1>
+                        </Button>
+                        </div>
+                    </div>
+                  </Box>
+                </Modal>
+
+                <Modal
+                  open={editTask}
+                  onClose={editClose}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >
+                  <Box sx={style2}>
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                      Text in a modal
+                    </Typography>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                      Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+                    </Typography>
+                  </Box>
+              </Modal>
             </div>
               </div>
 
