@@ -26,6 +26,17 @@ const Dashboard = () => {
   const deleteClose = () => setDeleteTask(false);
   const editOpen = () => setEditTask(true);
   const editClose = () => setEditTask(false);
+  const [isChecked, setIsChecked] = useState(false);
+
+  const [taskArray, setTaskArray] = useState([
+    { task: "Task 1", time: "10:00 AM", isChecked: false, originalIndex: 0 },
+    { task: "Task 2", time: "11:00 AM", isChecked: false, originalIndex: 1 },
+    { task: "Task 3", time: "12:00 PM", isChecked: false, originalIndex: 2 },
+  ]);
+
+  const handleChange = (event) => {
+    setIsChecked(event.target.checked);
+  };
 
   const handleGoal = (event) => {
     setGoal(event.target.value);
@@ -41,6 +52,23 @@ const Dashboard = () => {
 
   const handleRepeat = (event) => {
     setRepeat(event.target.value);
+  };
+
+  const handleCheckboxChange = (index) => {
+    const updatedTasks = [...taskArray];
+    updatedTasks[index].isChecked = !updatedTasks[index].isChecked;
+
+    // Sort tasks:
+    // 1. Move checked tasks to the bottom
+    // 2. For unchecked tasks, preserve their original order
+    updatedTasks.sort((a, b) => {
+      if (a.isChecked !== b.isChecked) {
+        return a.isChecked - b.isChecked; // Checked tasks go to the bottom
+      }
+      return a.originalIndex - b.originalIndex; // Preserve original order
+    });
+
+    setTaskArray(updatedTasks);
   };
   
     const style = {
@@ -67,47 +95,6 @@ const Dashboard = () => {
       p: 5,
     };
     
-
-    const taskArray = [{
-      task: "Drink Water",
-      time: "Awhile ago", 
-    },
-    {
-      task: "Drink Water",
-      time: "Awhile ago",
-      
-    },
-    {
-      task: "Drink Water",
-      time: "Awhile ago",
-      
-    },
-    {
-      task: "Drink Water",
-      time: "Awhile ago",
-      
-    },
-    {
-      task: "Drink Water",
-      time: "Awhile ago",
-      
-    },{
-      task: "Drink Water",
-      time: "Awhile ago",
-      
-    },
-    {
-      task: "Drink Water",
-      time: "Awhile ago",
-      
-    },
-        {
-      task: "Drink Water",
-      time: "Awhile ago",
-      
-    }
-  ]
-
   return (
       <div className="w-full h-screen flex flex-col bg-[#B4BAFF] overflow-y-hidden overflow-x-hidden">
       <div className="flex w-full h-[78px] justify-center items-center bg-white shadow-[0px_0px_9px_0px_rgba(0,0,0,1)]">
@@ -152,7 +139,6 @@ const Dashboard = () => {
                   </div>
               </Button>
               </div>
-
             </div>
           </div>
           
@@ -161,7 +147,7 @@ const Dashboard = () => {
               <div className="flex items-center justify-between border-red-600  w-[180px] h-full">
                 <button className="bg-[#7F45FF] rounded-[14px] w-max items-center justify-center flex text-white h-[60%] p-[10px]">
                   <div className="flex w-[100px] items-center justify-center">  
-                      <IconCalendar color="white" size={32} className="mr-[10px]"/> 
+                    <IconCalendar color="white" size={32} className="mr-[10px]"/> 
                       Today
                   </div> 
                   </button>
@@ -372,7 +358,7 @@ const Dashboard = () => {
                               </div>
                               </div>
                             </div>
-                                      <div className="flex w-full h-full justify-end pr-[15px]">
+                                <div className="flex w-full h-full justify-end pr-[15px]">
                                           <div className="flex h-max mt-[8%] w-[25%] justify-between">
                                             <Button 
                                               sx={{
@@ -398,7 +384,7 @@ const Dashboard = () => {
                                             }}
                                           >Save</Button>
                                           </div>
-                                      </div>
+                                </div>
                           </div>
                       </div>
                   </Box>
@@ -421,22 +407,22 @@ const Dashboard = () => {
               {taskArray.map((task, index) => (
                 <div
                   key={index}
-                  className="bg-white p-4 flex justify-between rounded-lg shadow-md w-[90%] mb-4 border-red-600"
+                  className="bg-white p-4 flex rounded-lg shadow-md w-[90%] mb-4 border-red-600"
                 >
-                  <div className="flex flex-col justify-center">
+                <input type="checkbox" checked={task.isChecked} onChange={()=> handleCheckboxChange(index)}/>
+                  <div className="flex flex-col w-[60%] justify-center ml-[20px]">
                     <h2 className="text-lg font-bold text-gray-800">{task.task}</h2>
                     <p className="text-sm text-gray-600">{task.time}</p>
                   </div>
 
-                  <div className="">
-                    <Button onClick={deleteOpen}>
+                  <div className="flex w-full h-full items-center justify-end border-red-600">
+                    <Button onClick={() => alert("Delete clicked")}>
                       <IconTrash color="#7889DF"/>
                     </Button>
-                    <Button onClick={editOpen}>
+                    <Button onClick={() => alert("Edit clicked")}>
                       <IconEdit color="#7889DF"/>
                     </Button>                      
                   </div>
-
                 </div>
               ))}
                 <Modal
@@ -462,7 +448,7 @@ const Dashboard = () => {
                         </Button>
                       </div>
                       <div className="flex border-red-600 justify-end">
-                        <Button variant="contained" style={{ background: "#2C2268", marginLeft: "20px" }} className="flex justify-end w-max border  border-red-600">
+                        <Button onClick={deleteClose} variant="contained" style={{ background: "#2C2268", marginLeft: "20px" }} className="flex justify-end w-max border  border-red-600">
                           <h1 className="text-white">OK</h1>
                         </Button>
                         </div>
@@ -486,8 +472,7 @@ const Dashboard = () => {
                   </Box>
               </Modal>
             </div>
-              </div>
-
+          </div>
               <div className="2xl:w-[40%] lg:w-[60%] p-[30px] flex items-center border-l flex-col">
                 <div className="font-semibold rounded-[10px] items-center flex w-[100%] text-[15px] justify-center h-[71px] p-[20px] text-center bg-[#FFFFFF] text-[#4D57C8]"> Complete habit to build your longest streak of 
                   perfect day.  
