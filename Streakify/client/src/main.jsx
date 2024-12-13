@@ -14,9 +14,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <BrowserRouter>
         <Routes>
           <Route path="/Dashboard" element={<Dashboard />} />
-          <Route path="/" element={<LogInPage />} />
+          <Route path="/" element={<WelcomePage/>} />
           <Route path="/SignUpPage" element={<SignUpPage />} />
-          <Route path="/WelcomePage" element={<WelcomePage />} />
+          <Route path="/LogInPage" element={<LogInPage />} />
         </Routes>
       </BrowserRouter>
     </MantineProvider>

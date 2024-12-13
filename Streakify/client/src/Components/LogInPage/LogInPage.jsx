@@ -34,7 +34,7 @@ const LogInPage = () => {
         console.log("Login successful:", data);
 
         // Optionally, redirect to the dashboard or home page
-        window.location.href = "/dashboard"; // Adjust the redirect path as needed
+        window.location.href = "/Dashboard"; // Adjust the redirect path as needed
       } else {
         // Handle error if login failed
         setError(data.message || "Login failed, please try again.");
@@ -58,7 +58,7 @@ const LogInPage = () => {
           <input
             type="text"
             id="username"
-            placeholder="Email address"
+            placeholder="Username"
             value={username}
             onChange={(e)=>setUsername(e.target.value)}
             required
@@ -80,7 +80,7 @@ const LogInPage = () => {
         </form>
 
         <p className="signup-text">
-          Don’t have an account? <a href="/signup">SIGN UP</a>
+          Don’t have an account? <a href="/SignUpPage">SIGN UP</a>
         </p>
       </div>
     </div>
