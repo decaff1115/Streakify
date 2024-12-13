@@ -11,8 +11,7 @@ import React, { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 
 const token = localStorage.getItem('token');
-import { Modal, Box, Typography, Button } from "@mui/material"
-import { useState } from "react"
+
 import { useNavigate } from "react-router-dom"
 
 const Dashboard = () => {
