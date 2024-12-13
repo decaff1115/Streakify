@@ -66,9 +66,9 @@ const Progress = () => {
                 <div className="font-semibold rounded-[10px] items-center flex w-full text-[15px] justify-center h-[71px] p-[20px] text-center bg-[#FFFFFF] text-[#4D57C8]">
                   First Name Last Name
                 </div>
-                <button onClick={handleOpenProfile} className="flex bg-[#B4BAFF] h-[53px] mb-6 items-center w-full md:w-[278px] justify-start rounded-[8px] p-[15px]">
+                <button onClick={handleOpenProfile} className="flex border ml-[60%] mt-[200px] bg-[#B4BAFF] h-[53px] mb-6 items-center w-full md:w-[278px] justify-start rounded-[8px] p-[15px]">
                   <div className="flex justify-between items-center w-full">
-                    <h1 className="text-[20px] font-bold ml-3">Delete account</h1>
+                    <h1 className="text-[20px] font-bold flex items-center justify-center w-full">Delete account</h1>
                   </div>
                 </button>
               </Box>
