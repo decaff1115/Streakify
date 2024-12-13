@@ -13,7 +13,7 @@ function WelcomePage() {
 
   const [burger, setBurger] = useState(false);
   const handleBurgerClick = () => {
-    setBurger(!burger);
+    setBurger(prevState => !prevState);
   };
 
   return (
@@ -25,16 +25,34 @@ function WelcomePage() {
         {/* Hamburger Icon for mobile */}
 
         <button className="hamburger-icon" onClick={handleBurgerClick} aria-label="Toggle menu">
-          <span className={`hamburger-bar ${burger ? 'open' : ''}`}> something there </span> {/* sampleeee*/}
-          <span className={`hamburger-bar ${burger ? 'open' : ''}`}>something there</span>
-          <span className={`hamburger-bar ${burger ? 'open' : ''}`}>something there</span>
+          <span className={`hamburger-bar ${burger ? 'open' : ''}`}></span>
+          <span className={`hamburger-bar ${burger ? 'open' : ''}`}></span>
+          <span className={`hamburger-bar ${burger ? 'open' : ''}`}></span>
+          <span className={`hamburger-bar ${burger ? 'open' : ''}`}></span>
         </button>
+
+        {burger && (
+        <div className="menu-content">
+          <span className="hamburger-bar">
+            <a href="#section1">Home</a>
+          </span>
+          <span className="hamburger-bar">
+            <a href="#section2"> Services</a>
+          </span>
+          <span className="hamburger-bar">
+            <Link to="/LogInPage"> Login</Link>
+          </span>
+          <span className="hamburger-bar">
+            <Link to="/SignUpPage"> Sign Up</Link>
+          </span>
+        </div>
+      )}
 
 
         {/* Navbar Links */}
         <ul className={`nav-links`}>
           <li>Home</li>
-          <li>Services</li>
+          <li><a href="#section2"> Services</a></li>
           <li><Link to="/LogInPage">Log in</Link></li>
           <li>
             <Link to="/SignUpPage">
@@ -46,7 +64,7 @@ function WelcomePage() {
       </nav>
 
       {/* Welcome Section */}
-      <div className="welcome-background">
+      <div id="section1" className="welcome-background">
         <div className="welcome-section">
           <h1 className="welcome-text">Welcome</h1>
           <h2 className="streakify-text">to Streakify</h2>
@@ -78,7 +96,7 @@ function WelcomePage() {
           <p className="quote-author">- Anonymous</p>
         </div>
       </div><section className="image-section">
-          <div className="image-container">
+          <div id="section2" className="image-container">
             <div className="image-item">
               <img src={image1} alt="Image 1" />
               <h3>Track Your Goal</h3>
