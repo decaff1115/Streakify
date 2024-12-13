@@ -7,7 +7,10 @@ import { Modal, Box, Typography, Select, Button } from "@mui/material"
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
+
+const token = localStorage.getItem('token');
 
 const Dashboard = () => {
   // const [currentStreak, setCurrentStreak] = useState(0)
@@ -28,6 +31,39 @@ const Dashboard = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    // Decode the JWT token to get the user ID
+    const token = localStorage.getItem('authToken'); // assuming the token is stored in localStorage
+    if (token) {
+      const decodedToken = jwtDecode(token);  // Decode the token to get user data
+      //console.log('Fetched data:', decodedToken);
+      const userId = decodedToken.userId;  // Assuming the ID is stored in 'id' field
+      // Fetch user data using the user ID
+      fetchUserData(userId);
+    }
+  }, []);
+
+  const fetchUserData = async (userId) => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/users/${userId}`, { 
+        method: 'GET',
+        headers: {
+        'Authorization': `Bearer ${token}`,
+      }
+    });
+    console.log('Fetched datarem:', userId);
+      const data = await response.json();
+      localStorage.setItem("name", data);
+      //console.log('Fetched datawow:', data.username);
+      setUsername(data.username);
+      console.log('Fetched datauow:', username);
+    } catch (err) {
+      console.error(error);
+      setError("Error fetching user data");
+    }
+  };
+
+  
 
   const handleGoal = (event) => {
     setGoal(event.target.value);
@@ -111,7 +147,7 @@ const Dashboard = () => {
             <button onClick={handleOpenProfile} className="flex bg-[#B4BAFF] h-[53px] mb-[30px] items-center w-[278px] justify-start rounded-[8px] p-[15px]"> 
               <div className="flex justify-between items-center">
                 <IconUserCircle size={35} color="#2C2268"/>
-                <h1 className="text-[24px] font-bold ml-[25px]"> My Profile </h1>
+                <h1 className="text-[24px] font-bold ml-[25px]"> {username}'s Profile </h1>
               </div>
             </button>
             <Modal
