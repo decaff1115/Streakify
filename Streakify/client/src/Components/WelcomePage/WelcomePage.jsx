@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './WelcomePage.css';
 import meditationImage from '../../assets/meditation.svg';
@@ -35,9 +35,9 @@ function WelcomePage() {
         <ul className={`nav-links`}>
           <li>Home</li>
           <li>Services</li>
-          <li><Link to="/login">Log in</Link></li>
+          <li><Link to="/LogInPage">Log in</Link></li>
           <li>
-            <Link to="/signup">
+            <Link to="/SignUpPage">
               <button className="signup-button">Sign up</button>
             </Link>
           </li>
@@ -53,7 +53,10 @@ function WelcomePage() {
           <p className="explore-text">Explore the app, find some peace of mind</p>
           <p className="explore-text">to achieve good habits.</p>
           <img src={meditationImage} alt="Meditation" className="meditation-image" />
-          <button className="get-started-button">GET STARTED</button>
+          <a href="/SignUpPage">
+            <button className="get-started-button">GET STARTED</button>
+            </a>
+
         </div>
       </div>
 

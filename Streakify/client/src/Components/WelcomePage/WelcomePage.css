@@ -157,6 +157,12 @@ body, html {
     padding-bottom: 20px
   }
 
+  .get-started-link {
+    display: inline-block;   /* Ensure that the link is treated as an inline-block */
+    text-decoration: none;   /* Remove underline from the link */
+    width: auto;             /* Ensure the width is auto so it doesn't stretch */
+  }
+  
   
   .get-started-button {
     padding: 20px 40px; /* Top and bottom padding 20px, left and right padding 40px for longer width */
