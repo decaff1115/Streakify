@@ -6,13 +6,7 @@ import { Modal, Box, Typography, Button } from "@mui/material";
 import React, { useState } from "react";
 
 const Progress = () => {
-  const [open, setOpen] = React.useState(false);
   const [openProfile, setOpenProfile] = React.useState(false);
-  const [goal, setGoal] = React.useState('');
-  const [time, setTime] = React.useState('');
-  const [day, setDay] = React.useState('');
-  const [repeat, setRepeat] = React.useState('');
-  const [task, setTasks] = useState(false);
   const [completedPercentage, setCompletedPercentage] = useState(0);
   const [selectedHabit, setSelectedHabit] = useState(null);
 
