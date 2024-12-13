@@ -452,8 +452,20 @@ const Dashboard = () => {
                 </div>
               </div>
           </div>
-      </div>
-  )
+     
+
+      {/* Add Habit Popup */}
+      {showAddHabit && (
+        <div className="popup-overlay">
+          <div className="popup">
+            <h2>Add a New Habit</h2>
+            <input type="text" placeholder="Enter your habit" />
+            <button onClick={handleClosePopup}>Close</button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
 
-export default Dashboard
+export default Dashboard;
