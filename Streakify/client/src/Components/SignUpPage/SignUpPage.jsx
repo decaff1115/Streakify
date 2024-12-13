@@ -37,7 +37,7 @@ function SignUpPage() {
         console.log("Sign up successful:", data);
 
         // Optionally, redirect to the dashboard or home page
-        window.location.href = "/dashboard"; // Adjust the redirect path as needed
+        window.location.href = "/Dashboard"; // Adjust the redirect path as needed
       } else {
         // Handle error if login failed
         setError(data.message || "Sign up failed, please try again.");
@@ -95,7 +95,7 @@ function SignUpPage() {
         </form>
 
         <p className="login-text">
-          Already have an account? <a href="/login">SIGN IN</a>
+          Already have an account? <a href="/LogInPage">SIGN IN</a>
         </p>
       </div>
     </div>
