@@ -8,6 +8,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 const Dashboard = () => {
   // const [currentStreak, setCurrentStreak] = useState(0)
@@ -29,9 +30,9 @@ const Dashboard = () => {
   const [isChecked, setIsChecked] = useState(false);
 
   const [taskArray, setTaskArray] = useState([
-    { task: "Task 1", time: "10:00 AM", isChecked: false, originalIndex: 0 },
-    { task: "Task 2", time: "11:00 AM", isChecked: false, originalIndex: 1 },
-    { task: "Task 3", time: "12:00 PM", isChecked: false, originalIndex: 2 },
+    { task: "Task 1", time: "10:00 AM", isChecked: false },
+    { task: "Task 2", time: "11:00 AM", isChecked: false },
+    { task: "Task 3", time: "12:00 PM", isChecked: false },
   ]);
 
   const handleChange = (event) => {
@@ -58,15 +59,8 @@ const Dashboard = () => {
     const updatedTasks = [...taskArray];
     updatedTasks[index].isChecked = !updatedTasks[index].isChecked;
 
-    // Sort tasks:
-    // 1. Move checked tasks to the bottom
-    // 2. For unchecked tasks, preserve their original order
-    updatedTasks.sort((a, b) => {
-      if (a.isChecked !== b.isChecked) {
-        return a.isChecked - b.isChecked; // Checked tasks go to the bottom
-      }
-      return a.originalIndex - b.originalIndex; // Preserve original order
-    });
+    // Sort tasks so checked ones move to the bottom
+    updatedTasks.sort((a, b) => a.isChecked - b.isChecked);
 
     setTaskArray(updatedTasks);
   };
@@ -94,6 +88,8 @@ const Dashboard = () => {
       boxShadow: 24,
       p: 5,
     };
+
+    const navigate = useNavigate();
     
   return (
       <div className="w-full h-screen flex flex-col bg-[#B4BAFF] overflow-y-hidden overflow-x-hidden">
@@ -132,7 +128,7 @@ const Dashboard = () => {
             </div>
 
               <div>
-                <Button style={{ justifyContent: "start" }} className="flex hover:bg-[#B4BAFF] h-[53px] items-center w-[278px] justify-start rounded-[8px] p-[15px]"> 
+                <Button onClick={() => navigate("/Progress")} style={{ justifyContent: "start" }} className="flex hover:bg-[#B4BAFF] h-[53px] items-center w-[278px] justify-start rounded-[8px] p-[15px]"> 
                   <div className="flex justify-between items-center">
                     <img src={fire} className="w-[40px]"/>
                     <h1 className="text-[24px] font-bold ml-[25px] text-black"> PROGRESS </h1>
@@ -409,6 +405,7 @@ const Dashboard = () => {
                   key={index}
                   className="bg-white p-4 flex rounded-lg shadow-md w-[90%] mb-4 border-red-600"
                 >
+
                 <input type="checkbox" checked={task.isChecked} onChange={()=> handleCheckboxChange(index)}/>
                   <div className="flex flex-col w-[60%] justify-center ml-[20px]">
                     <h2 className="text-lg font-bold text-gray-800">{task.task}</h2>
@@ -416,22 +413,23 @@ const Dashboard = () => {
                   </div>
 
                   <div className="flex w-full h-full items-center justify-end border-red-600">
-                    <Button onClick={() => alert("Delete clicked")}>
+                    <Button onClick={deleteOpen}>
                       <IconTrash color="#7889DF"/>
                     </Button>
-                    <Button onClick={() => alert("Edit clicked")}>
+                    <Button onClick={editOpen}>
                       <IconEdit color="#7889DF"/>
                     </Button>                      
                   </div>
                 </div>
               ))}
+
                 <Modal
                   open={deleteTask}
                   onClose={deleteClose}
                   aria-labelledby="modal-modal-title"
                   aria-describedby="modal-modal-description"
                 >
-                  <Box sx={style2}>
+                <Box sx={style2}>
                     <Typography id="modal-modal-title" variant="h6" component="h2">
                       <h1 className="flex text-[white] items-center w-[29%] justify-between">
                         <IconExclamationCircle color="red" size={30}/>
@@ -473,6 +471,7 @@ const Dashboard = () => {
               </Modal>
             </div>
           </div>
+
               <div className="2xl:w-[40%] lg:w-[60%] p-[30px] flex items-center border-l flex-col">
                 <div className="font-semibold rounded-[10px] items-center flex w-[100%] text-[15px] justify-center h-[71px] p-[20px] text-center bg-[#FFFFFF] text-[#4D57C8]"> Complete habit to build your longest streak of 
                   perfect day.  
