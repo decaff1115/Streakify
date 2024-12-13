@@ -33,18 +33,15 @@ function WelcomePage() {
 
         {burger && (
         <div className="menu-content">
-          <span className="hamburger-bar">
+          
             <a href="#section1">Home</a>
-          </span>
-          <span className="hamburger-bar">
+          
             <a href="#section2"> Services</a>
-          </span>
-          <span className="hamburger-bar">
+          
             <Link to="/LogInPage"> Login</Link>
-          </span>
-          <span className="hamburger-bar">
-            <Link to="/SignUpPage"> Sign Up</Link>
-          </span>
+          
+            <Link to="/SignUpPage"> SignUp</Link>
+         
         </div>
       )}
 
