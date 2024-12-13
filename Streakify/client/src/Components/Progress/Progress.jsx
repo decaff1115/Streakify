@@ -45,7 +45,7 @@ const Progress = () => {
   };
 
   return (
-    <div className="w-full min-h-screen flex flex-col bg-[#B4BAFF] overflow-x-hidden">
+    <div className="w-full h-screen flex flex-col bg-[#B4BAFF] overflow-x-hidden">
       {/* Header */}
       <div className="flex w-full h-[78px] justify-center items-center bg-white shadow-lg">
         <img src={logo} className="streakifyLogo" alt="logo" />
@@ -137,41 +137,43 @@ const Progress = () => {
               </div>
             ))}
           </div>
-
-          {/* Streak Info */}
-          <div className="w-full flex items-center justify-center mt-6 rounded-[10px] bg-[#FFFFFF] border-red-600 h-[120px] relative">
-            <div className="flex items-center justify-center w-full">
-              <img src={fire} className="w-[40px] h-[40px] mr-3" alt="fire icon" />
-              <div className="flex flex-col items-start justify-center">
-                <h1 className="text-[#373737]">Your Current Streak</h1>
-                <h1 className="text-[24px]">0 Days</h1>
-              </div>
-            </div>
-          </div>
         </div>
 
         {/* Progress Column */}
-        <div className="w-full md:w-[20%] flex flex-col items-center justify-center mt-6 p-4">
-          <div className="w-full flex items-center justify-center rounded-[10px] bg-[#FFFFFF] border-red-600 h-[320px] relative">
-            {selectedHabit ? (
-              <div className="flex flex-col items-center justify-center w-full h-full px-[20px]">
-                {/* Progress Bar */}
-                <div className="w-full bg-gray-200 h-[20px] rounded-[8px] mb-4">
-                  <div className="bg-blue-500 h-full rounded-[8px] transition-all duration-300" style={{ width: `${completedPercentage}%` }}></div>
-                </div>
+        <div className="w-full md:w-[60%] flex flex-col items-center justify-center mt-6 p-4">
+            {/* Streak Info */}
+            <div className="w-full flex items-center justify-center mt-6 rounded-[10px] bg-[#FFFFFF] border-red-600 h-[120px] relative">
+    <div className="flex items-center justify-center w-full">
+        <img src={fire} className="w-[40px] h-[40px] mr-3" alt="fire icon" />
+        <div className="flex flex-col items-start justify-center">
+            <h1 className="text-[#373737]">Your Current Streak</h1>
+            <h1 className="text-[24px]">0 Days</h1>
+        </div>
+    </div>
+</div>
 
-                {/* Percentage */}
-                <div className="text-center text-lg font-semibold text-[#373737]">
-                  {completedPercentage}% Completed
-                </div>
-              </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center mt-6">
-                <h2 className="text-xl font-bold text-gray-800">Select a Habit to Track Progress</h2>
-                <img src={noTaskIcon} className="w-full md:w-[600px]" alt="No task selected" />
-              </div>
-            )}
-          </div>
+{/* Add vertical space between the sections */}
+<div className="w-full flex items-center justify-center mt-12 rounded-[10px] bg-[#FFFFFF] border-red-600 h-[320px] relative">
+    {selectedHabit ? (
+        <div className="flex flex-col items-center justify-center w-full h-full px-[20px]">
+            {/* Progress Bar */}
+            <div className="w-full bg-gray-200 h-[20px] rounded-[8px] mb-4">
+                <div className="bg-blue-500 h-full rounded-[8px] transition-all duration-300" style={{ width: `${completedPercentage}%` }}></div>
+            </div>
+
+            {/* Percentage */}
+            <div className="text-center text-lg font-semibold text-[#373737]">
+                {completedPercentage}% Completed
+            </div>
+        </div>
+    ) : (
+        <div className="flex flex-col items-center justify-center mt-6">
+            <h2 className="text-xl font-bold text-gray-800">Select a Habit to Track Progress</h2>
+            <img src={noTaskIcon} className="w-full md:w-[600px]" alt="No task selected" />
+        </div>
+    )}
+</div>
+
         </div>
       </div>
     </div>
