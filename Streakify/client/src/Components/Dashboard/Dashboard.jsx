@@ -181,7 +181,7 @@ const Dashboard = () => {
     
       try {
         // Send DELETE request to the server
-        const response = await fetch(`http://localhost:3000/api/habits/${habitId}`, {
+        const response = await fetch(`http://localhost:3000/api/habits/${taskId}`, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",

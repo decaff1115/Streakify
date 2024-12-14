@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 const { Habit, User } = require('../models')
-=======
-const { Habit, User } = require('../models');
->>>>>>> 7b38bd3b09d178e8bab3efe66ed97c9e2e94a0aa
 
 // Get all habits for a user
 exports.getAllHabits = async (req, res) => {
@@ -33,29 +29,22 @@ exports.getHabitById = async (req, res) => {
 
 // Create a new habit
 exports.createHabit = async (req, res) => {
-<<<<<<< HEAD
     const { name, goal, user_id } = req.body;
     try {
         // Verify the user exists
         //THIS WORKS NA
-=======
     const { name, goal, created_at, user_id } = req.body; // Ensure `goal` and `created_at` match the frontend
     try {
         // Verify the user exists
->>>>>>> 7b38bd3b09d178e8bab3efe66ed97c9e2e94a0aa
         const user = await User.findByPk(user_id);
         if (!user) {
             return res.status(400).json({ message: 'User not found' });
         }
-<<<<<<< HEAD
-=======
 
->>>>>>> 7b38bd3b09d178e8bab3efe66ed97c9e2e94a0aa
         // Create the new habit
         const habit = await Habit.create({
             name,
             goal,
-<<<<<<< HEAD
             user_id,
         });
 
@@ -68,13 +57,6 @@ exports.createHabit = async (req, res) => {
         });
         
         
-=======
-            created_at: created_at || new Date(), // Default to the current date if not provided
-            user_id,
-        });
-
-        res.status(201).json(habit);
->>>>>>> 7b38bd3b09d178e8bab3efe66ed97c9e2e94a0aa
     } catch (error) {
         if (error.name === 'SequelizeValidationError') {
             return res.status(400).json({
@@ -83,12 +65,8 @@ exports.createHabit = async (req, res) => {
             });
         }
         console.error('Error creating habit:', error.stack);
-<<<<<<< HEAD
         res.status(500).json({ message: 'Error creating habit', error: error.message,  // More detailed error message
         stack: error.stack, });
-=======
-        res.status(500).json({ message: 'Error creating habit', error: error.stack });
->>>>>>> 7b38bd3b09d178e8bab3efe66ed97c9e2e94a0aa
     }
 };
 
