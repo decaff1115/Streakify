@@ -202,13 +202,6 @@ const Dashboard = () => {
     };
 
     const handleDelete = async (taskId) => {
-      //get the habit id of the habit
-      /*
-      if (!habitId) {
-        alert("Habit ID is required to delete a habit.");
-        return;
-      }*/
-    
       try {
         // Send DELETE request to the server
         const response = await fetch(`http://localhost:3000/api/habits/${taskId}`, {
@@ -218,7 +211,7 @@ const Dashboard = () => {
           },
         });
     
-        const data = await response.json();
+        //const data = await response.json();
     
         if (response.ok) {
           // If deletion is successful, update the taskArray to remove the deleted habit
@@ -235,6 +228,8 @@ const Dashboard = () => {
         alert("Error deleting habit.");
       }
     };
+
+
     
     
   return (
@@ -384,7 +379,7 @@ const Dashboard = () => {
                   </div>
 
                   <div className="flex w-full h-full items-center justify-end border-red-600">
-                    <Button onClick={deleteOpen}>
+                    <Button onClick={() => deleteOpen(task.id)}>
                       <IconTrash color="#7889DF"/>
                     </Button>
                     <Button onClick={editOpen}>
