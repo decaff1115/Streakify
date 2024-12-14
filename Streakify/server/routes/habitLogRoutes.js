@@ -1,12 +1,10 @@
-const express = require('express');
-const router = express.Router();
-const habitLogController = require('../controllers/habitLogController'); // Import the habitLogController
-const { authMiddleware } = require('../middleware/authMiddleware'); // Import the authentication middleware
+// const express = require('express');
+// const router = express.Router();
+// const habitLogController = require('../controllers/habitLogController'); // Make sure this import is correct
 
-// Define the routes for habit logs with authentication
-router.get('/', authMiddleware, habitLogController.getAllHabitLogs); // Get all habit logs (protected)
-router.post('/', authMiddleware, habitLogController.createHabitLog); // Create a new habit log (protected)
+// // Ensure these methods exist in the habitLogController
+// router.get('/', habitLogController.getAllHabitLogs); // Ensure habitLogController.getAllHabitLogs exists
+// router.post('/', habitLogController.createHabitLog); // Ensure habitLogController.createHabitLog exists
+// router.get('/habits-by-date', habitLogController.getHabitsByDate); // Ensure habitLogController.getHabitsByDate exists
 
-module.exports = router;
-
-
+// module.exports = router;

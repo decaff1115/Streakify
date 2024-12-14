@@ -8,6 +8,8 @@ const userController = require('../controllers/userController');
 
 router.post('/login', userController.login);
 router.post('/register', userController.register);
+router.get('/:id', userController.getUserById);
+router.get('/', userController.getAllUsers);
 
 //redirect signup to login para all that conbtroller for register does is insert user to database
 //authtoken is only needed for login 
