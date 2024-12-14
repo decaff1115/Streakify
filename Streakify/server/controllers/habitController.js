@@ -1,4 +1,4 @@
-const { Habit, User } = require('../models');
+const { Habit, User } = require('../models')
 
 // Get all habits for a user
 exports.getAllHabits = async (req, res) => {
@@ -29,9 +29,10 @@ exports.getHabitById = async (req, res) => {
 
 // Create a new habit
 exports.createHabit = async (req, res) => {
-    const { name, goal, created_at, user_id } = req.body; // Ensure `goal` and `created_at` match the frontend
+    const { name, goal, user_id } = req.body;
     try {
         // Verify the user exists
+        //THIS WORKS NA
         const user = await User.findByPk(user_id);
         if (!user) {
             return res.status(400).json({ message: 'User not found' });
@@ -41,11 +42,18 @@ exports.createHabit = async (req, res) => {
         const habit = await Habit.create({
             name,
             goal,
-            created_at: created_at || new Date(), // Default to the current date if not provided
             user_id,
         });
 
-        res.status(201).json(habit);
+        res.status(201).json({
+            message: 'Habit created successfully',
+            habitName: habit.name, // Return the name of the newly created habit
+            goal: habit.goal,       // Optionally return the goal or other details
+            userId: habit.user_id, // Return the user ID associated with this habit
+            id: habit.id
+        });
+        
+        
     } catch (error) {
         if (error.name === 'SequelizeValidationError') {
             return res.status(400).json({
@@ -54,7 +62,8 @@ exports.createHabit = async (req, res) => {
             });
         }
         console.error('Error creating habit:', error.stack);
-        res.status(500).json({ message: 'Error creating habit', error: error.stack });
+        res.status(500).json({ message: 'Error creating habit', error: error.message,  // More detailed error message
+        stack: error.stack, });
     }
 };
 
