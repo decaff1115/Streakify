@@ -37,7 +37,7 @@ function SignUpPage() {
         console.log("Sign up successful:", data);
 
         // Optionally, redirect to the dashboard or home page
-        window.location.href = "/Dashboard"; // Adjust the redirect path as needed
+        window.location.href = "/LogInPage"; // Adjust the redirect path as needed
       } else {
         // Handle error if login failed
         setError(data.message || "Sign up failed, please try again.");
