@@ -1,17 +1,21 @@
 const express = require('express');
+const habitController = require('../controllers/habitController');
 const router = express.Router();
-const habitController = require('../controllers/habitController'); // Import the habitController
-const { validateHabitData } = require('../middleware/validationMiddleware');
 
-// Define the routes for habits
-router.get('/', habitController.getAllHabits); // Get all habits
-router.get('/:id', habitController.getHabitById); // Get habit by ID
-router.post('/', habitController.createHabit); // Create a new habit
-router.put('/:id', habitController.updateHabit); // Update habit by ID
-router.delete('/:id', habitController.deleteHabit); // Delete habit by ID
 
-router.post('/', validateHabitData, habitController.createHabit);
-router.put('/:id', validateHabitData, habitController.updateHabit);
+// Route: Get all habits for a user
+router.get('/', habitController.getAllHabits);
 
+// Route: Get a specific habit by ID
+router.get('/:id', habitController.getHabitById);
+
+// Route: Create a new habit
+router.post('/', habitController.createHabit);
+
+// Route: Update an existing habit
+router.put('/:id', habitController.updateHabit);
+
+// Route: Delete a habit
+router.delete('/:id', habitController.deleteHabit);
 
 module.exports = router;

@@ -19,7 +19,14 @@ const Dashboard = () => {
   const handleClose = () => setOpen(false);
   const [deleteTask, setDeleteTask] = useState(false);
   const [editTask, setEditTask] = useState(false);
-  const deleteOpen = () => setDeleteTask(true);
+  //const deleteOpen = () => setDeleteTask(true);
+  const deleteOpen = (taskId) => {
+    // Here taskId will contain the id of the habit (task)
+    console.log("Preparing to delete habit with id:", taskId);
+  
+    // Call the handleDelete function and pass the taskId
+    handleDelete(taskId);
+  };
   const deleteClose = () => setDeleteTask(false);
   const editOpen = () => setEditTask(true);
   const editClose = () => setEditTask(false);
@@ -33,17 +40,23 @@ const Dashboard = () => {
   const handleCloseProfile = () => setOpenProfile(false);
 
   const [taskArray, setTaskArray] = useState([
-    { task: "Task 1", time: "10:00 AM", isChecked: false },
-    { task: "Task 2", time: "11:00 AM", isChecked: false },
-    { task: "Task 3", time: "12:00 PM", isChecked: false },
+    //{ id: 1, task: "Task 1", time: "10:00 AM", isChecked: false },
+    //{ id: 2, task: "Task 2", time: "11:00 AM", isChecked: false },
+    //{ id: 3, task: "Task 3", time: "12:00 PM", isChecked: false },
   ]);
+
+  
+
+  const [habitName, setHabitName] = useState("");
+  const [goal, setGoal] = useState("");
+
+  
 
   useEffect(() => {
     // Decode the JWT token to get the user ID
     const token = localStorage.getItem('authToken'); // assuming the token is stored in localStorage
     if (token) {
       const decodedToken = jwtDecode(token);  // Decode the token to get user data
-      //console.log('Fetched data:', decodedToken);
       const userId = decodedToken.userId;  // Assuming the ID is stored in 'id' field
       // Fetch user data using the user ID
       fetchUserData(userId);
@@ -61,7 +74,8 @@ const Dashboard = () => {
     console.log('Fetched datarem:', userId);
       const data = await response.json();
       localStorage.setItem("name", data);
-      //console.log('Fetched datawow:', data.username);
+      localStorage.setItem("id", userId);
+      
       setUsername(data.username);
       console.log('Fetched datauow:', username);
     } catch (err) {
@@ -69,8 +83,6 @@ const Dashboard = () => {
       setError("Error fetching user data");
     }
   };
-
-  
 
   const handleCheckboxChange = (index) => {
     const updatedTasks = [...taskArray];
@@ -107,6 +119,93 @@ const Dashboard = () => {
     };
 
     const navigate = useNavigate();
+
+    const handleSave = async () => {
+      // Check if the form is complete
+      if (!habitName || !goal) {
+        alert("Please fill in all fields.");
+      
+      }
+  
+      const userid = localStorage.getItem('id');
+      // Prepare the data to be sent
+      const habitData = {
+        name: habitName,
+        goal: goal,
+        user_id: userid, // You would dynamically pass the user_id from your app's state or auth context
+      };
+  
+      try {
+        const response = await fetch("http://localhost:3000/api/habits", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(habitData),
+        });
+
+        const newHabit = await response.json();
+        if (response.ok) {
+          // Parse the JSON body of the response only if the response is OK
+          //const newHabit = await response.json();
+          //console.log('Test', newHabit.message); // Assuming the message is returned as part of the response
+
+          // Save the success message or any relevant data to localStorage
+
+          // Update taskArray with the new habit details
+          setTaskArray((prevTasks) => [
+              ...prevTasks,
+              {
+                  id: newHabit.id,
+                  task: newHabit.habitName,  // Adjust the property name if necessary
+                  isChecked: false,
+              },
+          ]);
+
+          // Optionally close the modal here if you have a closeModal function
+          alert("Habit created successfully!");
+      } } 
+      catch (error) {
+        console.error("Error creating habit:", error);
+        alert("Error creating habit.");
+      }
+    };
+
+    const handleDelete = async (taskId) => {
+      //get the habit id of the habit
+      /*
+      if (!habitId) {
+        alert("Habit ID is required to delete a habit.");
+        return;
+      }*/
+    
+      try {
+        // Send DELETE request to the server
+        const response = await fetch(`http://localhost:3000/api/habits/${habitId}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+    
+        const data = await response.json();
+    
+        if (response.ok) {
+          // If deletion is successful, update the taskArray to remove the deleted habit
+          setTaskArray((prevTasks) =>
+            prevTasks.filter((task) => task.id !== taskId)
+          );
+          alert("Habit deleted successfully!");
+        } else {
+          // Handle any error returned from the server
+          alert(`Failed to delete habit: ${data.message}`);
+        }
+      } catch (error) {
+        console.error("Error deleting habit:", error);
+        alert("Error deleting habit.");
+      }
+    };
+    
     
   return (
       <div className="w-full h-screen flex flex-col bg-[#B4BAFF] overflow-y-hidden overflow-x-hidden">
@@ -174,6 +273,8 @@ const Dashboard = () => {
                       Today
                   </div> 
                   </button>
+
+                  {/*===============================ADD HABIT BUTTON===============================*/ }
                   <button onClick={handleOpen}><IconCirclePlus size={32}/></button>
                     <Modal
                       open={open}
@@ -181,50 +282,48 @@ const Dashboard = () => {
                       aria-labelledby="modal-modal-title"
                       aria-describedby="modal-modal-description"
                     >
-                  <Box sx={style}>
-                    <Typography id="modal-modal-title" variant="h6" component="h2" className="text-white font-bold">
-                      New Habit
-                    </Typography>
-                    <div className=" flex flex-col h-full w-full">
-                      <div className="w-full h-full border-red-600 p-[5px]">
-                        <div className="flex flex-col ml-[20px]">
-                          <h1 className="text-white">Name</h1>
-                          <input className="flex h-[37px] rounded-md border"/>
-                          <h1 className="text-white mt-[20px]">Goal</h1>
-                          <input className="flex h-[37px] rounded-md border"/>
-                          <h1 className="text-white mt-[20px]">Start Date</h1>
-                          <input className="flex h-[37px] rounded-md border" placeholder={new Date().toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric",
-                      })}/>
-                        </div>
-                      </div>
-                                          <div className="flex h-max mt-[0%] border-red-600 justify-end">
-                                            <Button onClick={editClose}
-                                              sx={{
-                                              height: "32px",
-                                              color: "white",
-                                              backgroundColor: "#A5A1FF",
-                                              '&:hover': {
-                                                backgroundColor: "#1F1A4A", // Change background on hover
-                                              },
-                                              borderRadius: "8px", // Rounded corners
-                                              padding: "8px 16px", // Adjust padding
-                                            }}
-                                            >Delete</Button>
-                                            <Button onClick={editClose}  sx={{
-                                              height: "32px",
-                                              color: "white",
-                                              backgroundColor: "#2C2268",
-                                              '&:hover': {
-                                                backgroundColor: "#1F1A4A", // Change background on hover
-                                              },
-                                              borderRadius: "8px", // Rounded corners
-                                              padding: "8px 16px", // Adjust padding
-                                              marginLeft: "25px",
-                                              marginRight: "40px",
-                                              marginBottom: "20px"
-                                            }}
-                                          >Save</Button>
-                                          </div>
+                      <Box sx={style}>
+                        <Typography id="modal-modal-title" variant="h6" component="h2" className="text-white font-bold">
+                          New Habit
+                        </Typography>
+                        <div className=" flex flex-col h-full w-full">
+                          <div className="w-full h-full border-red-600 p-[5px]">
+                            <div className="flex flex-col ml-[20px]">
+                              <h1 className="text-white">Name</h1>
+                              <input
+                                className="flex h-[37px] rounded-md border"
+                                value={habitName}
+                                onChange={(e) => setHabitName(e.target.value)} // Update state when user types
+                              />
+                              <h1 className="text-white mt-[20px]">Goal</h1>
+                              <input
+                                className="flex h-[37px] rounded-md border"
+                                value={goal}
+                                onChange={(e) => setGoal(e.target.value)} // Update state when user types
+                              />
+                              
+                              
+                            </div>
+                          </div>
+
+                          <div className="flex h-max mt-[0%] border-red-600 justify-end">
+                            <Button
+                              onClick={handleSave} // Trigger the save action when clicked
+                              sx={{
+                              height: "32px",
+                              color: "white",
+                              backgroundColor: "#2C2268",
+                               "&:hover": {
+                                backgroundColor: "#1F1A4A",
+                               },
+                              borderRadius: "8px",
+                              padding: "8px 16px",
+                              marginLeft: "25px",
+                              marginRight: "40px",
+                              marginBottom: "20px",
+                             }}
+                             >Save</Button>
+                          </div>
                     </div>
                   </Box>
                 </Modal>
@@ -245,14 +344,13 @@ const Dashboard = () => {
               )}
               {taskArray.map((task, index) => (
                 <div
-                  key={index}
+                  key={task.id}
                   className="bg-white p-4 flex rounded-lg shadow-md w-[90%] mb-4 border-red-600"
                 >
 
                 <input type="checkbox" checked={task.isChecked} onChange={()=> handleCheckboxChange(index)}/>
                   <div className="flex flex-col w-[60%] justify-center ml-[20px]">
                     <h2 className="text-lg font-bold text-gray-800">{task.task}</h2>
-                    <p className="text-sm text-gray-600">{task.time}</p>
                   </div>
 
                   <div className="flex w-full h-full items-center justify-end border-red-600">
@@ -266,6 +364,8 @@ const Dashboard = () => {
                 </div>
               ))}
 
+
+                {/*===============================DELETE HABIT BUTTON===============================*/ }
                 <Modal
                   open={deleteTask}
                   onClose={deleteClose}
@@ -289,7 +389,7 @@ const Dashboard = () => {
                         </Button>
                       </div>
                       <div className="flex border-red-600 justify-end">
-                        <Button onClick={deleteClose} variant="contained" style={{ background: "#2C2268", marginLeft: "20px" }} className="flex justify-end w-max border  border-red-600">
+                        <Button onClick={() => deleteOpen(task.id)} variant="contained" style={{ background: "#2C2268", marginLeft: "20px" }} className="flex justify-end w-max border  border-red-600">
                           <h1 className="text-white">OK</h1>
                         </Button>
                         </div>
@@ -297,6 +397,7 @@ const Dashboard = () => {
                   </Box>
                 </Modal>
 
+                {/*===============================EDIT HABIT BUTTON===============================*/ }
                 <Modal
                       open={editTask}
                       onClose={editClose}
@@ -323,7 +424,7 @@ const Dashboard = () => {
                                     </div>
                                     <Box sx={style}>
                     <Typography id="modal-modal-title" variant="h6" component="h2" className="text-white font-bold">
-                      New Habit
+                      Edit Habit
                     </Typography>
                     <div className=" flex flex-col h-full w-full">
                       <div className="w-full h-full border-red-600 p-[5px]">
@@ -338,18 +439,7 @@ const Dashboard = () => {
                         </div>
                       </div>
                                           <div className="flex h-max mt-[0%] border-red-600 justify-end">
-                                            <Button onClick={editClose}
-                                              sx={{
-                                              height: "32px",
-                                              color: "white",
-                                              backgroundColor: "#A5A1FF",
-                                              '&:hover': {
-                                                backgroundColor: "#1F1A4A", // Change background on hover
-                                              },
-                                              borderRadius: "8px", // Rounded corners
-                                              padding: "8px 16px", // Adjust padding
-                                            }}
-                                            >Delete</Button>
+                                            
                                             <Button onClick={editClose}  sx={{
                                               height: "32px",
                                               color: "white",

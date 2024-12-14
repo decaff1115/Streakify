@@ -1,6 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../configs/database');
 const User = require('./User');
+//const sequelize = require('../sequelize');
 
 const Habit = sequelize.define(
     'Habit',
@@ -13,12 +14,6 @@ const Habit = sequelize.define(
             // Target number of times the habit needs to be done
             type: DataTypes.INTEGER,
             allowNull: false,
-        },
-        created_at: {
-            // Default to the day the habit is created
-            type: DataTypes.DATEONLY,
-            allowNull: false,
-            defaultValue: DataTypes.NOW,
         },
         user_id: {
             // Links the habit to a user
