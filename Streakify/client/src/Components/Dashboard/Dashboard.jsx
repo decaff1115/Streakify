@@ -30,6 +30,7 @@ const Dashboard = () => {
   const deleteClose = () => setDeleteTask(false);
   const editOpen = () => setEditTask(true);
   const editClose = () => setEditTask(false);
+  const [userId, setUserId] = useState(null);
 
   const [username, setUsername] = useState('');
 
@@ -38,6 +39,10 @@ const Dashboard = () => {
   const [openProfile, setOpenProfile] = React.useState(false);
   const handleOpenProfile = () => setOpenProfile(true);
   const handleCloseProfile = () => setOpenProfile(false);
+
+  const [openDelWarning, setDelWarning] = React.useState(false);
+  const handleOpenDelWarning = () => setDelWarning(true);
+  const handleCloseDelWarning = () => setDelWarning(false);
 
   const [taskArray, setTaskArray] = useState([
     //{ id: 1, task: "Task 1", time: "10:00 AM", isChecked: false },
@@ -53,12 +58,11 @@ const Dashboard = () => {
   
 
   useEffect(() => {
-    // Decode the JWT token to get the user ID
-    const token = localStorage.getItem('authToken'); // assuming the token is stored in localStorage
+    const token = localStorage.getItem('authToken');
     if (token) {
-      const decodedToken = jwtDecode(token);  // Decode the token to get user data
-      const userId = decodedToken.userId;  // Assuming the ID is stored in 'id' field
-      // Fetch user data using the user ID
+      const decodedToken = jwtDecode(token);
+      const userId = decodedToken.userId;
+      setUserId(userId);
       fetchUserData(userId);
     }
   }, []);
@@ -92,6 +96,32 @@ const Dashboard = () => {
     updatedTasks.sort((a, b) => a.isChecked - b.isChecked);
 
     setTaskArray(updatedTasks);
+  };
+
+  const handleDeleteUser = async (userId) => {
+    console.log("Deleting user with ID:", userId);  // Log the userId to make sure it's correct
+
+    const token = localStorage.getItem('authToken'); // Get token from localStorage 
+
+    try {
+      const response = await fetch(`http://localhost:3000/api/users/deleteUser/${userId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete user');
+      }
+
+      const data = await response.json();
+      console.log('User deleted successfully:', data);
+      navigate('/');  // Redirect to WelcomePage (or any route you want)
+    } catch (error) {
+      console.error('Deletion failed:', error);
+    }
   };
   
     const style = {
@@ -232,9 +262,9 @@ const Dashboard = () => {
                   My Profile
                 </Typography>
                 <div className="font-semibold rounded-[10px] items-center flex w-full text-[15px] justify-center h-[71px] p-[20px] text-center bg-[#FFFFFF] text-[#4D57C8]">
-                  First Name Last Name
+                {username}
                 </div>
-                <button onClick={handleOpenProfile} className="flex border ml-[60%] mt-[200px] bg-[#B4BAFF] h-[53px] mb-6 items-center w-full md:w-[278px] justify-start rounded-[8px] p-[15px]">
+                <button onClick={handleOpenDelWarning} className="flex border ml-[60%] mt-[200px] bg-[#B4BAFF] h-[53px] mb-6 items-center w-full md:w-[278px] justify-start rounded-[8px] p-[15px]">
                   <div className="flex justify-between items-center w-full">
                     <h1 className="text-[20px] font-bold flex items-center justify-center w-full">Delete account</h1>
                   </div>
@@ -367,8 +397,8 @@ const Dashboard = () => {
 
                 {/*===============================DELETE HABIT BUTTON===============================*/ }
                 <Modal
-                  open={deleteTask}
-                  onClose={deleteClose}
+                  open={openDelWarning}
+                  onClose={handleCloseDelWarning}
                   aria-labelledby="modal-modal-title"
                   aria-describedby="modal-modal-description"
                 >
@@ -384,12 +414,12 @@ const Dashboard = () => {
                     </Typography>
                     <div className="flex w-full border-red-500 justify-end mt-[48px]">
                       <div className=" border-red-600 justify-end">
-                        <Button onClick={deleteClose} variant="contained" style={{ background: "#A5A1FF" }} className="flex justify-end w-max border border-red-600">
+                        <Button onClick={handleCloseDelWarning} variant="contained" style={{ background: "#A5A1FF" }} className="flex justify-end w-max border border-red-600">
                           <h1 className="text-white">CANCEL</h1>
                         </Button>
                       </div>
                       <div className="flex border-red-600 justify-end">
-                        <Button onClick={() => deleteOpen(task.id)} variant="contained" style={{ background: "#2C2268", marginLeft: "20px" }} className="flex justify-end w-max border  border-red-600">
+                        <Button onClick={() => handleDeleteUser(userId)} variant="contained" style={{ background: "#2C2268", marginLeft: "20px" }} className="flex justify-end w-max border  border-red-600">
                           <h1 className="text-white">OK</h1>
                         </Button>
                         </div>
