@@ -28,6 +28,10 @@ const Dashboard = () => {
 
   const [showAddHabit, setShowAddHabit] = useState(false);
 
+  const [openProfile, setOpenProfile] = React.useState(false);
+  const handleOpenProfile = () => setOpenProfile(true);
+  const handleCloseProfile = () => setOpenProfile(false);
+
   const [taskArray, setTaskArray] = useState([
     { task: "Task 1", time: "10:00 AM", isChecked: false },
     { task: "Task 2", time: "11:00 AM", isChecked: false },
@@ -115,12 +119,31 @@ const Dashboard = () => {
           <div className="flex w-[30%] justify-center bg-[#4D57C8] p-[20px] border-red-600">
             <div className="border-blue-600 h-max flex flex-col">
             {/*Button div */}
-            <button className="flex bg-[#B4BAFF] h-[53px] mb-[30px] items-center w-[278px] justify-start rounded-[8px] p-[15px]"> 
+            <button onClick={handleOpenProfile} className="flex bg-[#B4BAFF] h-[53px] mb-[30px] items-center w-[278px] justify-start rounded-[8px] p-[15px]"> 
               <div className="flex justify-between items-center">
                 <IconUserCircle size={35} color="#2C2268"/>
                 <h1 className="text-[24px] font-bold ml-[25px]"> {username}'s Profile </h1>
               </div>
             </button>
+
+            {/* Profile Modal */}
+            <Modal open={openProfile} onClose={handleCloseProfile} aria-labelledby="modal-profile-title">
+              <Box sx={style}>
+                <Typography id="modal-profile-title" variant="h6" component="h2" className="text-white font-bold">
+                  My Profile
+                </Typography>
+                <div className="font-semibold rounded-[10px] items-center flex w-full text-[15px] justify-center h-[71px] p-[20px] text-center bg-[#FFFFFF] text-[#4D57C8]">
+                  First Name Last Name
+                </div>
+                <button onClick={handleOpenProfile} className="flex border ml-[60%] mt-[200px] bg-[#B4BAFF] h-[53px] mb-6 items-center w-full md:w-[278px] justify-start rounded-[8px] p-[15px]">
+                  <div className="flex justify-between items-center w-full">
+                    <h1 className="text-[20px] font-bold flex items-center justify-center w-full">Delete account</h1>
+                  </div>
+                </button>
+              </Box>
+            </Modal>
+
+            
             {/*Button div */}
               <div>
                 <Button style={{ justifyContent: "start" }} className="flex hover:bg-[#B4BAFF] h-[53px] items-center w-[278px] rounded-[8px] p-[15px]"> 
