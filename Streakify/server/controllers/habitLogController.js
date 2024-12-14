@@ -1,78 +1,121 @@
-const { HabitLog, Streak, Habit } = require('../models');
+// const { Streak, HabitLog, Habit, User } = require('../models');
+// const { Op } = require('sequelize');
 
-// Get all habit logs (with related habit and streak data)
-const getAllHabitLogs = async (req, res) => {
-    try {
-        const habitLogs = await HabitLog.findAll({
-            include: [
-                { model: Habit, as: 'habit' },  // Include related habit data
-                { model: Streak, as: 'streak' }  // Optionally include streaks if needed
-            ]
-        });
-        res.json(habitLogs);  // Return the habit logs with included associations as JSON
-    } catch (error) {
-        res.status(500).json({ message: 'Error retrieving habit logs', error });
-    }
-};
+// // Create a new habit log entry and manage streak
+// const createHabitLog = async (req, res) => {
+//     const { habit_id, completed_at, status, duration, user_id, value } = req.body;
 
-// Create a new habit log entry
-const createHabitLog = async (req, res) => {
-    const { habit_id, completed_at, value } = req.body;  // Value could be 1 for completed, 0 for not completed
+//     try {
+//         // Validate the status
+//         if (!['completed', 'skipped', 'failed'].includes(status)) {
+//             return res.status(400).json({ message: 'Invalid status. It must be one of "completed", "skipped", or "failed".' });
+//         }
 
-    try {
-        // Normalize the completed_at date to midnight (start of the day)
-        const currentDate = new Date(completed_at);
-        currentDate.setHours(0, 0, 0, 0);  // Set to midnight
+//         // Check if user exists
+//         const user = await User.findByPk(user_id);
+//         if (!user) {
+//             return res.status(400).json({ message: 'User not found.' });
+//         }
 
-        // Create a new habit log entry
-        const habitLog = await HabitLog.create({ habit_id, completed_at: currentDate, value });
+//         // Check if habit exists
+//         const habit = await Habit.findByPk(habit_id);
+//         if (!habit) {
+//             return res.status(400).json({ message: 'Habit not found.' });
+//         }
 
-        // Get the last streak for this habit
-        const lastStreak = await Streak.findOne({
-            where: { habit_id },
-            order: [['end_date', 'DESC']],  // Get the most recent streak
-        });
+//         // Check if a habit log already exists for this habit and date
+//         const existingLog = await HabitLog.findOne({
+//             where: {
+//                 habit_id,
+//                 completed_at: completed_at  // Check for existing log with the same habit and date
+//             }
+//         });
 
-        let streak = null;
+//         if (existingLog) {
+//             return res.status(400).json({
+//                 message: `A habit log already exists for this habit on ${completed_at}.`
+//             });
+//         }
 
-        if (lastStreak) {
-            // Normalize the last completion date (set to midnight)
-            const lastCompletionDate = new Date(lastStreak.end_date);
-            lastCompletionDate.setHours(0, 0, 0, 0);  // Set to midnight
+//         // Default value for the log if not provided
+//         const habitValue = value !== undefined ? value : (status === 'completed' ? habit.target_value : 0);
 
-            // If the habit was completed consecutively (next day)
-            if ((currentDate - lastCompletionDate) === 86400000) {  // 1 day in milliseconds
-                streak = await lastStreak.update({
-                    end_date: currentDate,
-                    length: lastStreak.length + 1,  // Increase streak length
-                });
-            } else {
-                // If there was a break in the streak
-                streak = await Streak.create({
-                    habit_id,
-                    start_date: currentDate,  // Set to current date (midnight)
-                    end_date: currentDate,    // Set to current date (midnight)
-                    length: 1,  // New streak starting
-                });
-            }
-        } else {
-            // If no streak exists, create a new streak
-            streak = await Streak.create({
-                habit_id,
-                start_date: currentDate,  // Set to current date (midnight)
-                end_date: currentDate,    // Set to current date (midnight)
-                length: 1,  // First day of streak
-            });
-        }
+//         // Create the habit log
+//         const habitLog = await HabitLog.create({
+//             habit_id,
+//             user_id,
+//             completed_at,
+//             status,
+//             value: habitValue,
+//             duration: status === 'completed' ? duration : 0
+//         });
 
-        // Return the created habit log and streak
-        res.status(201).json({ habitLog, streak });
-    } catch (error) {
-        res.status(500).json({ message: 'Error creating habit log or streak', error });
-    }
-};
+//         res.status(201).json({ habitLog });
+//     } catch (error) {
+//         console.error('Error creating habit log or streak:', error);
+//         res.status(500).json({ message: 'Error creating habit log or streak', error: error.message });
+//     }
+// };
 
-module.exports = {
-    getAllHabitLogs,
-    createHabitLog
-};
+// // Get habits by date (including habit logs if they exist for the selected date)
+// const getHabitsByDate = async (req, res) => {
+//     try {
+//         const { date } = req.query;  // Get the date from the query string
+
+//         // Check if date is provided
+//         if (!date) {
+//             return res.status(400).json({ message: 'Date is required' });
+//         }
+
+//         // Normalize the date (set time to midnight to avoid timezone issues)
+//         const selectedDate = new Date(date);
+//         selectedDate.setHours(0, 0, 0, 0);  // Ensure it's normalized to midnight
+
+//         // Get the day of the week (0 - Sunday, 6 - Saturday)
+//         const selectedDayOfWeek = selectedDate.getDay(); 
+
+//         // Query Habits where the selected day is in the `daily_days` array
+//         const habits = await Habit.findAll({
+//             where: {
+//                 daily_days: {
+//                     [Op.contains]: [selectedDayOfWeek],  // Check if the selected day exists in the daily_days array
+//                 },
+//             },
+//             include: [
+//                 { model: User },  // Include User model to get user details
+//                 {
+//                     model: HabitLog, // Include HabitLogs to check if there is any log for this habit on the selected date
+//                     where: { completed_at: selectedDate },
+//                     required: false,  // LEFT JOIN: retrieve habits with or without logs
+//                 },
+//             ],
+//         });
+
+//         // Return the habits with their logs (if any) and associated user details
+//         res.json(habits);
+//     } catch (error) {
+//         console.error('Error retrieving habits:', error);
+//         res.status(500).json({ message: 'Error retrieving habits', error });
+//     }
+// };
+
+// const getAllHabitLogs = async (req, res) => {
+//     try {
+//         const habitLogs = await HabitLog.findAll({
+//             include: [
+//                 { model: Habit }, // Include the associated Habit model
+//                 { model: User },  // Include the associated User model
+//             ]
+//         });
+//         res.json(habitLogs);  // Return the habit logs with included associations as JSON
+//     } catch (error) {
+//         console.error('Error retrieving habit logs:', error);
+//         res.status(500).json({ message: 'Error retrieving habit logs', error });
+//     }
+// };
+
+// module.exports = {
+//     getAllHabitLogs,
+//     createHabitLog,
+//     getHabitsByDate
+// };

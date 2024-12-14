@@ -1,69 +1,71 @@
-const { Streak, HabitLog } = require('../models'); // Import HabitLog
-const { Op } = require('sequelize');
+// const Habit = require('../models/Habit'); // Assuming you have a Habit model
 
-// Function to get the streak data for a month
-exports.getStreakDataForMonth = async (req, res) => {
-    const { habit_id, month, year } = req.query; // Accept month and year in query params
+// // Create a new Habit for a user
+// exports.createHabit = async (req, res) => {
+//     try {
+//         const { user_id, name, description, goal } = req.body; // Habit fields coming from the request body
+//         const habit = await Habit.create({ user_id, name, description, goal });
+//         return res.status(201).json(habit); // Respond with the newly created habit
+//     } catch (error) {
+//         console.error(error);
+//         return res.status(500).json({ message: 'Error creating Habit', error: error.message });
+//     }
+// };
 
-    try {
-        // Fetch streaks for the given habit in the specified month and year
-        const streaks = await Streak.findAll({
-            where: {
-                habit_id: habit_id,
-                start_date: {
-                    [Op.gte]: new Date(year, month - 1, 1), // First day of the month
-                },
-                end_date: {
-                    [Op.lte]: new Date(year, month, 0), // Last day of the month
-                }
-            },
-            include: [
-                {
-                    model: HabitLog,
-                    where: {
-                        date: {
-                            [Op.gte]: new Date(year, month - 1, 1),
-                            [Op.lte]: new Date(year, month, 0),
-                        }
-                    },
-                    required: true, // Ensures that the streak is only returned if it has habit logs in that month
-                }
-            ]
-        });
+// // Get Habit information for a specific user and habit
+// exports.getHabit = async (req, res) => {
+//     try {
+//         const { habitId } = req.params; // habitId is passed in the URL parameters
+//         const habit = await Habit.findByPk(habitId);
 
-        // Compute the streak data
-        const streakData = streaks.map(streak => {
-            let completedDays = 0;
-            let failedDays = 0;
-            let skippedDays = 0;
-            let totalMinutes = 0;
+//         if (!habit) {
+//             return res.status(404).json({ message: 'Habit not found' });
+//         }
 
-            streak.HabitLogs.forEach(log => {
-                // Check habit completion status
-                if (log.status === 'completed') {
-                    completedDays += 1;
-                    totalMinutes += log.duration || 0; // Add duration for completed habit
-                } else if (log.status === 'failed') {
-                    failedDays += 1;
-                } else if (log.status === 'skipped') {
-                    skippedDays += 1;
-                }
-            });
+//         return res.status(200).json(habit); // Return the habit information as a response
+//     } catch (error) {
+//         console.error(error);
+//         return res.status(500).json({ message: 'Error retrieving Habit', error: error.message });
+//     }
+// };
 
-            return {
-                streak_id: streak.id,
-                start_date: streak.start_date,
-                end_date: streak.end_date,
-                current_streak_length: streak.length,
-                completed_days: completedDays,
-                failed_days: failedDays,
-                skipped_days: skippedDays,
-                total_minutes: totalMinutes,
-            };
-        });
+// // Update Habit information (e.g., name, description, goal)
+// exports.updateHabit = async (req, res) => {
+//     try {
+//         const { habitId } = req.params; // habitId is passed in the URL parameters
+//         const { name, description, goal } = req.body; // Fields to update, coming from request body
 
-        res.status(200).json(streakData);
-    } catch (error) {
-        res.status(500).json({ message: 'Error fetching streak data', error });
-    }
-};
+//         const habit = await Habit.findByPk(habitId);
+//         if (!habit) {
+//             return res.status(404).json({ message: 'Habit not found' });
+//         }
+
+//         // Only update the fields that are provided in the request body
+//         habit.name = name || habit.name;
+//         habit.description = description || habit.description;
+//         habit.goal = goal || habit.goal;
+
+//         await habit.save(); // Save the updated habit
+//         return res.status(200).json(habit); // Return the updated habit
+//     } catch (error) {
+//         console.error(error);
+//         return res.status(500).json({ message: 'Error updating Habit', error: error.message });
+//     }
+// };
+
+// // Delete a Habit (e.g., when a user deletes the habit or it is no longer relevant)
+// exports.deleteHabit = async (req, res) => {
+//     try {
+//         const { habitId } = req.params; // habitId is passed in the URL parameters
+//         const habit = await Habit.findByPk(habitId);
+//         if (!habit) {
+//             return res.status(404).json({ message: 'Habit not found' });
+//         }
+
+//         await habit.destroy(); // Delete the habit
+//         return res.status(204).json({ message: 'Habit deleted' });
+//     } catch (error) {
+//         console.error(error);
+//         return res.status(500).json({ message: 'Error deleting Habit', error: error.message });
+//     }
+// };
