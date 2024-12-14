@@ -4,8 +4,9 @@ const { sequelize } = require('./models');
 
 const userRoutes = require('./routes/userRoutes');
 const habitRoutes = require('./routes/habitRoutes');
-const habitLogRoutes = require('./routes/habitLogRoutes');
-const streakRoutes = require('./routes/streakRoutes');
+// const habitLogRoutes = require('./routes/habitLogRoutes');
+// const streakRoutes = require('./routes/streakRoutes');
+
 
 const cors = require('cors');
 
@@ -17,12 +18,10 @@ app.use(express.json());
 
 app.use('/api/users', userRoutes);
 app.use('/api/habits', habitRoutes);
-app.use('/api/habitLogs', habitLogRoutes);
-app.use('/api/streaks', streakRoutes);
+// app.use('/api/habitLogs', habitLogRoutes);
+// app.use('/api/streaks', streakRoutes);
 
-
-sequelize.sync()
-    .then(() => {
+sequelize.sync({ alter: true }).then(() => {
         const PORT = process.env.PORT || 3000;
         console.log('Database synced successfully!'); 
         app.listen(PORT, () => {

@@ -9,66 +9,32 @@ const Habit = sequelize.define(
             type: DataTypes.STRING,
             allowNull: false,
         },
-        // description: {
-        //     type: DataTypes.STRING,
-        //     allowNull: true,
-        // },
-        target_frequency: {
-            // DAILY or WEEKLY selection
-            type: DataTypes.ENUM('DAILY', 'WEEKLY'),
-            allowNull: false,
-        },
-        daily_days: {
-            // For DAILY frequency, track which days the habit is for
-            type: DataTypes.JSON, // Store an array of days
-            allowNull: true,
-            validate: {
-                isValidDays(value) {
-                    const validDays = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
-                    if (value && !Array.isArray(value)) {
-                        throw new Error('daily_days must be an array');
-                    }
-                    if (value && !value.every(day => validDays.includes(day))) {
-                        throw new Error(`Invalid day(s) in daily_days. Valid days are: ${validDays.join(', ')}`);
-                    }
-                },
-            },
-        },
-        target_value: {
-            // Times/Minutes
+        goal: {
+            // Target number of times the habit needs to be done
             type: DataTypes.INTEGER,
             allowNull: false,
         },
-        target_unit: {
-            // Per Day or Per Week
-            type: DataTypes.ENUM('Per Day', 'Per Week'),
-            allowNull: true,
-        },
-        time_of_day: {
-            // Morning, Afternoon, Evening, AnyTime
-            type: DataTypes.ENUM('Morning', 'Afternoon', 'Evening', 'AnyTime'),
-            allowNull: true,
-        },
-        start_date: {
-            // Calendar selection from frontend
+        created_at: {
+            // Default to the day the habit is created
             type: DataTypes.DATEONLY,
             allowNull: false,
+            defaultValue: DataTypes.NOW,
         },
-        completion_rate: {
-            // Calculated dynamically or updated externally
-            type: DataTypes.FLOAT,
-            allowNull: true,
-            get() {
-                return this.getDataValue('completion_rate') || 0;
+        user_id: {
+            // Links the habit to a user
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'Users', // Ensure 'Users' matches the table name of your User model
+                key: 'id',
             },
+            onDelete: 'CASCADE', // Deletes habits when the user is deleted
         },
-        measurement_type: {
-            // Times or Minutes
-            type: DataTypes.ENUM('TIMES', 'MINUTES'),
-            allowNull: true,
-        }
     },
-    { timestamps: true }
+    { 
+        timestamps: false, // Disable automatic Sequelize timestamps since `created_at` is custom
+        tableName: 'Habits', // Explicitly specify the table name if necessary
+    }
 );
 
 // Associations

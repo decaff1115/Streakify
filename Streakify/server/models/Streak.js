@@ -1,33 +1,37 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../configs/database');
-const Habit = require('./Habit'); 
-const HabitLog = require('./HabitLog'); // Import HabitLog
+const Habit = require('./Habit');
+const User = require('./User'); // Import the User model
 
 const Streak = sequelize.define('Streak', {
-    start_date: { 
-        type: DataTypes.DATE, 
-        allowNull: false
-    },
-    end_date: { 
-        type: DataTypes.DATE, 
-        allowNull: false
-    },
-    length: { 
-        type: DataTypes.INTEGER, 
+    current_streak: {
+        // Tracks the current streak count (consecutive completions)
+        type: DataTypes.INTEGER,
         allowNull: false,
-        get() {
-            const startDate = this.getDataValue('start_date');
-            const endDate = this.getDataValue('end_date');
-            return Math.floor((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24)) + 1;
-        }
-    }
-}, { timestamps: false });
+        defaultValue: 0,
+    },
+    longest_streak: {
+        // Tracks the longest streak achieved for this habit
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+    },
+    last_completed_date: {
+        // Tracks the date of the most recent completion
+        type: DataTypes.DATEONLY,
+        allowNull: true,
+    },
+    user_id: {
+        // Foreign key to associate the streak with a user
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+}, { timestamps: true }); // Include timestamps for createdAt/updatedAt
 
 // Relationships
-Streak.belongsTo(Habit, { foreignKey: 'habit_id' });
-Habit.hasMany(Streak, { foreignKey: 'habit_id' });
-
-Streak.hasMany(HabitLog, { foreignKey: 'streak_id' }); // Streak has many HabitLogs
-HabitLog.belongsTo(Streak, { foreignKey: 'streak_id' }); // HabitLog belongs to Streak
+Streak.belongsTo(Habit, { foreignKey: 'habit_id', onDelete: 'CASCADE' });
+Streak.belongsTo(User, { foreignKey: 'user_id', onDelete: 'CASCADE' }); // Associate Streak with User
+Habit.hasOne(Streak, { foreignKey: 'habit_id' });
+User.hasMany(Streak, { foreignKey: 'user_id' }); // A user can have many streaks
 
 module.exports = Streak;
