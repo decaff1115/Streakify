@@ -33,9 +33,6 @@ exports.createHabit = async (req, res) => {
     try {
         // Verify the user exists
         //THIS WORKS NA
-    const { name, goal, created_at, user_id } = req.body; // Ensure `goal` and `created_at` match the frontend
-    try {
-        // Verify the user exists
         const user = await User.findByPk(user_id);
         if (!user) {
             return res.status(400).json({ message: 'User not found' });
