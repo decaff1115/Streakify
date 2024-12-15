@@ -345,7 +345,7 @@ const Dashboard = () => {
             
                 {/*Left SideBar Tabs*/}
                   <div>
-                    <Button style={{width: "240px", height: "50px", justifyContent: "start", background:"#B4BAFF", borderRadius: "10px", padding: "none" }} className={`flex hover:bg-[#B4BAFF] h-[53px] items-center w-[278px] rounded-[8px]`}> 
+                    <Button onClick={handleRenderProgress} style={{width: "240px", height: "50px", justifyContent: "start", background:"#B4BAFF", borderRadius: "10px", padding: "none" }} className={`flex hover:bg-[#B4BAFF] h-[53px] items-center w-[278px] rounded-[8px]`}> 
                       <div className="flex w-full items-center hover:text-[#2C2268] text-white font-extrabold transition-colors duration-[1]">
                         <img src={fileIcon} className="ml-[5px]"></img>
                         <h1 className="text-[20px] ml-[25px]"> HABITS </h1>
