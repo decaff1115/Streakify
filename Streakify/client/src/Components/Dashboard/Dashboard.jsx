@@ -6,7 +6,6 @@ import { Modal, Box, Typography, Button } from "@mui/material"
 import React, { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import fileIcon from '../../assets/Vector.svg'
-import TaskSpecific from "./TaskSpecific"
 import fire2 from "../../assets/fire2.svg"
 
 const token = localStorage.getItem('token');
@@ -564,7 +563,7 @@ const Dashboard = () => {
           )}
             {renderProgress && !isActive && (
               <div className="w-full h-[calc(100vh-120px)] flex flex-col border-red-600 overflow-y-auto items-center p-[20px] scrollbar-hide">
-                <TaskSpecific />
+                
               </div>
             )}
             </div>
