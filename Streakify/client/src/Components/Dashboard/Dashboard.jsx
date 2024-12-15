@@ -1,6 +1,5 @@
 import logo from "../../assets/logo.svg"
 import { IconExclamationCircle, IconUserCircle, IconCirclePlus, IconTrash, IconEdit } from "@tabler/icons-react"
-import fire  from "../../assets/fire.svg"
 import noTaskIcon from "../../assets/HabitSampleIcons.svg"
 import noStreaks from "../../assets/NoStreaks.svg"
 import { Modal, Box, Typography, Button } from "@mui/material"
@@ -8,7 +7,6 @@ import React, { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import fileIcon from '../../assets/Vector.svg'
 import TaskSpecific from "./TaskSpecific"
-import Habit from "./Habit"
 import fire2 from "../../assets/fire2.svg"
 
 const token = localStorage.getItem('token');
@@ -21,9 +19,9 @@ const Dashboard = () => {
   const [goal, setGoal] = useState("");
   const [renderProgress, SetRenderProgress] = useState(false);
 
-  // const handleRenderProgress = () => { 
-  //   SetRenderProgress(!renderProgress)
-  // }
+  const handleRenderProgress = () => { 
+    SetRenderProgress(!renderProgress)
+  }
 
   //==========ADD HABIT============//
   const [open, setOpen] = useState(false);
@@ -48,18 +46,12 @@ const Dashboard = () => {
   const [editingHabitId, setEditingHabitId] = useState(null);
   const [editingName, setEditingName] = useState('');
   const [editingGoal, setEditingGoal] = useState('');
-  const [isActive, setIsActive] = useState(true);
-  const [progress, SetProgress] = useState(false);
+  const [isActive, setIsActive] = useState(false);
 
   const handleClick = () => {
     setIsActive(!isActive); // Toggle the active state
-    SetProgress(false)
   };
 
-  const handleProgress = () => {
-    SetProgress(!progress)
-    setIsActive(false)
-  }
 
   const editOpen = (id, name, goal) => {
     setEditingHabitId(id);
@@ -358,13 +350,6 @@ const Dashboard = () => {
                     </Button>
                   </div>
                   <div>
-
-                    <Button onClick={handleProgress} style={{ width:"240px", justifyContent: "start", background: progress ? "#B4BAFF" : "", borderRadius: "10px", marginTop:"15px" }} className={`flex hover:bg-[#B4BAFF] h-[53px] items-center w-[278px] rounded-[8px] p-[15px]`}>
-                      <div className="flex w-full items-center hover:text-[#2C2268] text-white font-extrabold transition-colors duration-[1]">
-                        <img src={fire} className="ml-[5px] w-[35px]"/>
-                        <h1 className="text-[20px] font-extrabold ml-[25px]"> PROGRESS </h1>
-                      </div>
-                    </Button>
                   </div>
             </div>
           </div>
@@ -520,18 +505,24 @@ const Dashboard = () => {
                         <h2 className="text-lg font-bold text-gray-800">{index.goal}</h2>
                     </div>
                     
-                  <div className="flex w-full h-full items-center justify-end border-red-600">
-                    <Button onClick={() => deleteOpen(index.id)}>
-                      <IconTrash color="#7889DF" />
+                    <div className="flex w-full h-full items-center justify-end border-red-600">
+                      <Button onClick={() => deleteOpen(index.id)}>
+                        <IconTrash color="#7889DF" />
+                      </Button>
+                      <Button onClick={() => editOpen(index.id, index.name, index.goal)}>
+                        <IconEdit color="#7889DF" />
                     </Button>
-                    <Button onClick={() => editOpen(index.id, index.name, index.goal)}>
-                      <IconEdit color="#7889DF" />
-                    </Button>
-                    <Button onClick={() => editOpen(index.id, index.name, index.goal)}>
-                      <img className="w-[20px]" src={fire2} />
-                    </Button>
-                  </div>
-              </div>
+                    
+                      <Button 
+                        onClick={() => {
+                          editOpen(index.id, index.name, index.goal);
+                          handleRenderProgress();
+                      }}
+>
+                        <img className="w-[20px]" src={fire2} />
+                      </Button>
+                    </div>
+                </div>
               ))}
 
                 {/*===============================DELETE USER BUTTON===============================*/ }

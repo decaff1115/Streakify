@@ -1,8 +1,8 @@
 
-function TaskSpecific(TaskName, TaskGoal) {
+function HabitSpecific() {
   return (
     <div>TEST</div>
   )
 }
 
-export default TaskSpecific
+export default HabitSpecific
