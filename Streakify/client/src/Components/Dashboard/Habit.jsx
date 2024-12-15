@@ -4,7 +4,7 @@ import fire2 from "../../assets/fire.svg"
 import { useState } from 'react';
 import PropTypes from 'prop-types'
 
-function Task( Habit, index ) {
+function Habit( Habit, index ) {
     const [editingHabitId, setEditingHabitId] = useState(null);
     const [editingName, setEditingName] = useState('');
     const [editingGoal, setEditingGoal] = useState('');
@@ -224,4 +224,4 @@ const handleUpdate = async () => {
   )
 }
 
-export default Task
+export default Habit
