@@ -1,71 +1,111 @@
-// const Habit = require('../models/Habit'); // Assuming you have a Habit model
+const { Streak } = require('../models'); // Adjust the path as needed
 
-// // Create a new Habit for a user
-// exports.createHabit = async (req, res) => {
-//     try {
-//         const { user_id, name, description, goal } = req.body; // Habit fields coming from the request body
-//         const habit = await Habit.create({ user_id, name, description, goal });
-//         return res.status(201).json(habit); // Respond with the newly created habit
-//     } catch (error) {
-//         console.error(error);
-//         return res.status(500).json({ message: 'Error creating Habit', error: error.message });
-//     }
-// };
 
-// // Get Habit information for a specific user and habit
-// exports.getHabit = async (req, res) => {
-//     try {
-//         const { habitId } = req.params; // habitId is passed in the URL parameters
-//         const habit = await Habit.findByPk(habitId);
+const updateStreak = async (habitLog) => {
+    const checkedDays = getCheckedDaysFromLog(habitLog);
+    const streak = calculateConsecutiveDaysStreak(checkedDays);  // Calculate streak
+    const progressCount = addProgressCount(checkedDays);         // Track progress even if streak is broken
 
-//         if (!habit) {
-//             return res.status(404).json({ message: 'Habit not found' });
+    // Find existing streak
+    const existingStreak = await Streak.findOne({
+        where: {
+            user_id: habitLog.user_id,
+            habit_id: habitLog.habit_id,
+        },
+    });
+
+    if (existingStreak) {
+        // Reset streak to 0 if the current streak is broken
+        const newStreakCount = streak === 0 ? 0 : streak;
+
+        await existingStreak.update({
+            streak_count: newStreakCount,
+            progress_count: progressCount,
+        });
+    } else {
+        // Create a new streak if none exists
+        await Streak.create({
+            user_id: habitLog.user_id,
+            habit_id: habitLog.habit_id,
+            streak_count: streak,
+            progress_count: progressCount,
+        });
+    }
+};
+
+const getCheckedDaysFromLog = (habitLog) => {
+    return [
+        habitLog.monday ? 'monday' : null,
+        habitLog.tuesday ? 'tuesday' : null,
+        habitLog.wednesday ? 'wednesday' : null,
+        habitLog.thursday ? 'thursday' : null,
+        habitLog.friday ? 'friday' : null,
+        habitLog.saturday ? 'saturday' : null,
+        habitLog.sunday ? 'sunday' : null,
+    ].filter(day => day !== null);
+};
+
+// const calculateConsecutiveDaysStreak = (checkedDays) => {
+//     const weekDays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+//     let streak = 0;
+//     let consecutive = true;
+
+//     // Loop through the week days, count consecutive days where habit was completed
+//     for (let i = 0; i < weekDays.length; i++) {
+//         if (checkedDays.includes(weekDays[i]) && consecutive) {
+//             streak++;
+//         } else {
+//             consecutive = false; // Break the streak when a day is not checked
 //         }
-
-//         return res.status(200).json(habit); // Return the habit information as a response
-//     } catch (error) {
-//         console.error(error);
-//         return res.status(500).json({ message: 'Error retrieving Habit', error: error.message });
 //     }
+
+//     return streak;
 // };
 
-// // Update Habit information (e.g., name, description, goal)
-// exports.updateHabit = async (req, res) => {
-//     try {
-//         const { habitId } = req.params; // habitId is passed in the URL parameters
-//         const { name, description, goal } = req.body; // Fields to update, coming from request body
+const calculateConsecutiveDaysStreak = (checkedDays) => {
+    const weekDays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
-//         const habit = await Habit.findByPk(habitId);
-//         if (!habit) {
-//             return res.status(404).json({ message: 'Habit not found' });
-//         }
+    // Create an array of indices for the checked days
+    const checkedIndices = checkedDays.map(day => weekDays.indexOf(day));
 
-//         // Only update the fields that are provided in the request body
-//         habit.name = name || habit.name;
-//         habit.description = description || habit.description;
-//         habit.goal = goal || habit.goal;
+    if (checkedIndices.length === 0) {
+        return 0; // No checked days, streak is zero
+    }
 
-//         await habit.save(); // Save the updated habit
-//         return res.status(200).json(habit); // Return the updated habit
-//     } catch (error) {
-//         console.error(error);
-//         return res.status(500).json({ message: 'Error updating Habit', error: error.message });
-//     }
-// };
+    // Sort indices to ensure correct order
+    checkedIndices.sort((a, b) => a - b);
 
-// // Delete a Habit (e.g., when a user deletes the habit or it is no longer relevant)
-// exports.deleteHabit = async (req, res) => {
-//     try {
-//         const { habitId } = req.params; // habitId is passed in the URL parameters
-//         const habit = await Habit.findByPk(habitId);
-//         if (!habit) {
-//             return res.status(404).json({ message: 'Habit not found' });
-//         }
+    let streak = 1; // Start with a streak of 1 for the first checked day
 
-//         await habit.destroy(); // Delete the habit
-//         return res.status(204).json({ message: 'Habit deleted' });
-//     } catch (error) {
-//         console.error(error);
-//         return res.status(500).json({ message: 'Error deleting Habit', error: error.message });
-//     }
-// };
+    for (let i = 1; i < checkedIndices.length; i++) {
+        // Check if the current day is consecutive to the previous day
+        if (checkedIndices[i] === checkedIndices[i - 1] + 1) {
+            streak++;
+        } else {
+            break; // Stop counting if the streak is broken
+        }
+    }
+
+    return streak;
+};
+
+const addProgressCount = (checkedDays) => {
+    const weekDays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+    let progressCount = 0;
+
+    // Count the days that are checked, regardless of streak
+    for (let i = 0; i < weekDays.length; i++) {
+        if (checkedDays.includes(weekDays[i])) {
+            progressCount++;
+        }
+    }
+
+    return progressCount;
+};
+
+module.exports = {
+    updateStreak,
+    getCheckedDaysFromLog,
+    calculateConsecutiveDaysStreak,
+    addProgressCount
+};
