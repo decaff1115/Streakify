@@ -363,8 +363,10 @@ const Dashboard = () => {
             <div className="h-[10%] border-b flex w-full items-center justify-end pr-[20px] pl-[20px]"> 
             <div className="flex items-center justify-end border-red-600  w-[180px] h-full">
               
-                  {/*===============================ADD HABIT BUTTON===============================*/ }
+              {/*===============================ADD HABIT BUTTON===============================*/}
+               {isActive && !renderProgress && (
                   <button onClick={handleOpen}><IconCirclePlus size={32}/></button>
+                )}
                     <Modal
                       open={open}
                       onClose={handleClose}
