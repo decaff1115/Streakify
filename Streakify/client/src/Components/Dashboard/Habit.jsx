@@ -186,19 +186,19 @@ function Habit ({ index }) {
       </Modal>
 
       <div key={Habit.id} className="bg-white p-4 flex rounded-lg shadow-md w-[90%] mb-4 border-red-600">
-        <input type="checkbox" checked={Habit.isChecked} onChange={() => handleCheckboxChange(index)} />
+        <input type="checkbox" checked={index.isChecked} onChange={() => handleCheckboxChange(index)} />
         <div className="flex flex-col w-[60%] justify-center ml-[20px]">
-          <h2 className="text-lg font-bold text-gray-800">{Habit.name}</h2>
-          <h2 className="text-lg font-bold text-gray-800">{Habit.goal}</h2>
+          <h2 className="text-lg font-bold text-gray-800">{index.name}</h2>
+          <h2 className="text-lg font-bold text-gray-800">{index.goal}</h2>
         </div>
         <div className="flex w-full h-full items-center justify-end border-red-600">
-          <Button onClick={() => deleteOpen(Habit.id)}>
+          <Button onClick={() => deleteOpen(index.id)}>
             <IconTrash color="#7889DF" />
           </Button>
-          <Button onClick={() => editOpen(Habit.id, Habit.name, Habit.goal)}>
+          <Button onClick={() => editOpen(index.id, index.name, index.goal)}>
             <IconEdit color="#7889DF" />
           </Button>
-          <Button onClick={() => editOpen(Habit.id, Habit.name, Habit.goal)}>
+          <Button onClick={() => editOpen(index.id, index.name, index.goal)}>
             <img className="w-[20px]" src={fire2} />
           </Button>
         </div>
