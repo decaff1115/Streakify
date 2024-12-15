@@ -1,12 +1,20 @@
-const { Streak, HabitLog, Habit, User } = require('../models');
-const { Op } = require('sequelize');
+const { HabitLog } = require('../models');
+const { updateStreak } = require('./streakController'); 
 
 
 const updateCheckedDays = async (req, res) => {
     const { habit_id, user_id, day, is_checked } = req.body;
 
+    // Validate input
+    if (!habit_id || !user_id || !day || typeof is_checked === 'undefined') {
+        return res.status(400).json({ message: 'Missing required parameters' });
+    }
+
     try {
-        // Find the corresponding HabitLog entry
+        console.log('Habit ID:', habit_id);
+        console.log('User ID:', user_id);
+
+        // Find the HabitLog entry
         const habitLog = await HabitLog.findOne({
             where: { habit_id, user_id },
         });
@@ -15,8 +23,8 @@ const updateCheckedDays = async (req, res) => {
             return res.status(404).json({ message: 'HabitLog not found' });
         }
 
-        // Update the boolean value for the specified day
-        switch(day.toLowerCase()) {
+        // Update the specified day
+        switch (day.toLowerCase()) {
             case 'monday':
                 habitLog.monday = is_checked;
                 break;
@@ -42,7 +50,9 @@ const updateCheckedDays = async (req, res) => {
                 return res.status(400).json({ message: 'Invalid day provided' });
         }
 
+        // Save and update streak
         await habitLog.save();
+        await updateStreak(habitLog);
 
         res.status(200).json({ message: 'Checked days updated successfully' });
     } catch (error) {
