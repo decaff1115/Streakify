@@ -9,6 +9,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import React, { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
+import fileIcon from '../../assets/Vector.svg'
 
 const token = localStorage.getItem('token');
 import { useNavigate } from "react-router-dom"
@@ -41,6 +42,23 @@ const Dashboard = () => {
   const [editingHabitId, setEditingHabitId] = useState(null);
   const [editingName, setEditingName] = useState('');
   const [editingGoal, setEditingGoal] = useState('');
+  const [isActive, setIsActive] = useState(false);
+  const [progress, SetProgress] = useState(false);
+  const [progressIcon, setProgressIcon] = useState(false);
+
+  const handleProgressIcon = () => {
+    setProgressIcon(true)
+  }
+
+  const handleClick = () => {
+    setIsActive(!isActive); // Toggle the active state
+    SetProgress(false)
+  };
+
+  const handleProgress = () => {
+    SetProgress(!progress)
+    setIsActive(false)
+  }
 
   const editOpen = (id, name, goal) => {
     setEditingHabitId(id);
@@ -302,7 +320,7 @@ const Dashboard = () => {
                       My Profile
                     </Typography>
                     <div className="font-semibold rounded-[10px] items-center flex w-full text-[15px] justify-center h-[71px] p-[20px] text-center bg-[#FFFFFF] text-[#4D57C8]">
-                    {username}
+                      {username}
                     </div>
                     <button onClick={handleOpenDelWarning} className="flex border ml-[60%] mt-[200px] bg-[#B4BAFF] h-[53px] mb-6 items-center w-full md:w-[278px] justify-start rounded-[8px] p-[15px]">
                       <div className="flex justify-between items-center w-full">
@@ -314,18 +332,19 @@ const Dashboard = () => {
             
                 {/*Left SideBar Tabs*/}
                   <div>
-                    <Button style={{ justifyContent: "start" }} className="flex hover:bg-[#B4BAFF] h-[53px] items-center w-[278px] rounded-[8px] p-[15px]"> 
-                      <div className="flex justify-between items-center">
-                        <IconNumber24Small size={40} color="#2C2268"/>
-                        <h1 className="text-[24px] font-bold ml-[25px] text-black"> DAILY</h1>
+                    <Button onClick={handleClick} style={{ justifyContent: "start", background: isActive ? "#B4BAFF" : "", borderRadius: "10px", padding: "none" }} className={`flex hover:bg-[#B4BAFF] h-[53px] items-center w-[278px] rounded-[8px]`}> 
+                      <div className="flex w-full items-center hover:text-[#2C2268] text-white font-extrabold transition-colors duration-[1]">
+                        <img src={fileIcon} className="ml-[5px]"></img>
+                        <h1 className="text-[24px] ml-[25px]"> HABITS </h1>
                       </div>
                     </Button>
                   </div>
                   <div>
-                    <Button onClick={() => navigate("/Progress")} style={{ justifyContent: "start" }} className="flex hover:bg-[#B4BAFF] h-[53px] items-center w-[278px] justify-start rounded-[8px] p-[15px]"> 
-                      <div className="flex justify-between items-center">
-                        <img src={fire} className="w-[40px]"/>
-                        <h1 className="text-[24px] font-bold ml-[25px] text-black"> PROGRESS </h1>
+
+                    <Button onClick={handleProgress} style={{ justifyContent: "start", background: progress ? "#B4BAFF" : "", borderRadius: "10px", marginTop:"15px" }} className={`flex hover:bg-[#B4BAFF] h-[53px] items-center w-[278px] rounded-[8px] p-[15px]`}>
+                      <div className="flex w-full items-center hover:text-[#2C2268] text-white font-extrabold transition-colors duration-[1]">
+                        <img src={fire} className="ml-[5px] w-[35px]"/>
+                        <h1 className="text-[24px] font-extrabold ml-[25px]"> PROGRESS </h1>
                       </div>
                     </Button>
                   </div>
@@ -334,14 +353,7 @@ const Dashboard = () => {
           
           <div className="w-full h-full flex flex-col">
             <div className="h-[10%] border-b flex w-full items-center justify-end pr-[20px] pl-[20px]"> 
-              <div className="flex items-center justify-between border-red-600  w-[180px] h-full">
-                <button className="bg-[#7F45FF] rounded-[14px] w-max items-center justify-center flex text-white h-[60%] p-[10px]">
-                    <div className="flex w-[100px] items-center justify-center">  
-                      <IconCalendar color="white" size={32} className="mr-[10px]"/> 
-                        Today
-                    </div> 
-                </button>
-
+              <div className="flex items-center justify-end border-red-600  w-[180px] h-full">
                   {/*===============================ADD HABIT BUTTON===============================*/ }
                   <button onClick={handleOpen}><IconCirclePlus size={32}/></button>
                     <Modal
@@ -502,7 +514,10 @@ const Dashboard = () => {
                     </Button> 
                     <Button onClick={() => editOpen(task.id, task.name, task.goal)}>
                       <IconEdit color="#7889DF" />
-                    </Button>                  
+                    </Button>
+                    <Button onClick={() => editOpen(task.id, task.name, task.goal)}>
+                      <img src={fire} />
+                    </Button>                       
                   </div>
                 </div>
               ))}
@@ -551,13 +566,13 @@ const Dashboard = () => {
 
                 <div className="w-full flex items-center justify-between mt-[24px] rounded-[10px] bg-[#FFFFFF] border-red-600 h-[182px] relative">
                   <div className="flex-col flex text-[#373737] w-full h-full items-start justify-center z-20">
-                    <div className="flex-col flex border-red-600 w-max h-max ml-[10px]">
-                      <h1 className="text-[24px]">{/*currentStreak*/0} Day </h1>
-                      <h1> Your Current Streak </h1>
+                    <div className="flex-col flex border-red-600 w-max h-max ml-[20px] mb-[15px]">
+                      <h1 className="text-[24px] font-extrabold">{/*currentStreak*/0} Day </h1>
+                      <h1 className="text-[11px]"> Your Current Streak </h1>
                     </div>
-                    <div className="flex-col flex w-max h-max ml-[10px]">
-                      <h1 className="text-[24px]">{/*longestStreak*/0} Day </h1>
-                      <h1> Your Longest Streak</h1>
+                    <div className="flex-col flex w-max h-max ml-[20px]">
+                      <h1 className="text-[24px] font-extrabold">{/*longestStreak*/0} Day </h1>
+                      <h1 className="text-[11px]"> Your Longest Streak</h1>
                     </div>
                   </div>
                     <img
