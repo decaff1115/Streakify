@@ -346,9 +346,18 @@ const Dashboard = () => {
                     left: 0,
                   }}
                 >
-                  <button className="w-full text-left p-[10px] text-[#2C2268]">Profile</button>
-                  <button className="w-full text-left p-[10px] text-[#2C2268]">Sign Out</button>
-                </div>
+                  <button
+                     onClick={handleOpenProfile}
+                    className="w-full text-left p-[10px] text-[#2C2268] hover:bg-[#A89DE1] transition-all duration-200"
+                  >
+                    Profile
+                  </button>
+                  <button
+                    className="w-full text-left p-[10px] text-[#2C2268] hover:bg-[#A89DE1] transition-all duration-200"
+                  >
+                    Log Out
+                  </button> 
+                  </div>
               )}
             </div>
             {/* Profile Modal */}
