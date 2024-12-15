@@ -10,6 +10,7 @@ import FormControl from '@mui/material/FormControl';
 import React, { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import fileIcon from '../../assets/Vector.svg'
+import fire2 from '../../assets/fire2.svg'
 
 const token = localStorage.getItem('token');
 import { useNavigate } from "react-router-dom"
@@ -516,7 +517,7 @@ const Dashboard = () => {
                       <IconEdit color="#7889DF" />
                     </Button>
                     <Button onClick={() => editOpen(task.id, task.name, task.goal)}>
-                      <img src={fire} />
+                      <img className="w-[20px]" src={fire2} />
                     </Button>                       
                   </div>
                 </div>
