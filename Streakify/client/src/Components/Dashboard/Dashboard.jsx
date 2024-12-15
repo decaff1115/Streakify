@@ -1,12 +1,9 @@
 import logo from "../../assets/logo.svg"
-import { IconExclamationCircle, IconEdit,IconTrash, IconUserCircle, IconCalendar, IconNumber24Small, IconCirclePlus } from "@tabler/icons-react"
+import { IconExclamationCircle, IconEdit,IconTrash, IconUserCircle, IconCirclePlus } from "@tabler/icons-react"
 import fire  from "../../assets/fire.svg"
 import noTaskIcon from "../../assets/HabitSampleIcons.svg"
 import noStreaks from "../../assets/NoStreaks.svg"
-import { Modal, Box, Typography, Select, Button } from "@mui/material"
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
+import { Modal, Box, Typography, Button } from "@mui/material"
 import React, { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import fileIcon from '../../assets/Vector.svg'
@@ -28,6 +25,10 @@ const Dashboard = () => {
   const handleClose = () => setOpen(false);
   const [showAddHabit, setShowAddHabit] = useState(false);
 
+  const handleClosePopup = () => {
+    setShowAddHabit(!showAddHabit)
+  }
+
   //==========DELETE HABIT==========//
   const deleteOpen = (taskId) => {
     handleDelete(taskId);
@@ -45,11 +46,6 @@ const Dashboard = () => {
   const [editingGoal, setEditingGoal] = useState('');
   const [isActive, setIsActive] = useState(false);
   const [progress, SetProgress] = useState(false);
-  const [progressIcon, setProgressIcon] = useState(false);
-
-  const handleProgressIcon = () => {
-    setProgressIcon(true)
-  }
 
   const handleClick = () => {
     setIsActive(!isActive); // Toggle the active state
@@ -117,8 +113,7 @@ const Dashboard = () => {
       setUsername(data.username);
       console.log('Fetched datauow:', username);
     } catch (err) {
-      console.error(error);
-      setError("Error fetching user data");
+      console.error(err);
     }
   };
 
@@ -193,7 +188,7 @@ const Dashboard = () => {
         alert("Habit deleted successfully!");
       } else {
         // Handle any error returned from the server
-        alert(`Failed to delete habit: ${data.message}`);
+        alert(`Failed to delete habit: ${taskId}`);
       }
     } catch (error) {
       console.error("Error deleting habit:", error);
@@ -303,14 +298,14 @@ const Dashboard = () => {
 
         <div className="flex border-red-600 h-full w-full justify-between">
           {/* Sidebar div */}
-          <div className="flex w-[30%] justify-center bg-[#4D57C8] p-[20px] border-red-600">
-            <div className="border-blue-600 h-max flex flex-col">
+          <div className="flex w-[20%] justify-center bg-[#4D57C8] p-[20px] border-red-600">
+            <div className="border-blue-600 h-max flex flex-col items-center">
 
                 {/*User Profile Div*/}
-                <button onClick={handleOpenProfile} className="flex bg-[#B4BAFF] h-[53px] mb-[30px] items-center w-[278px] justify-start rounded-[8px] p-[15px]"> 
+                <button onClick={handleOpenProfile} className="flex bg-[#B4BAFF] h-[50px] mb-[30px] items-center w-[240px] justify-start rounded-[8px] p-[15px]"> 
                   <div className="flex justify-between items-center">
                     <IconUserCircle size={35} color="#2C2268"/>
-                    <h1 className="text-[24px] font-bold ml-[25px]"> {username}'s Profile </h1>
+                    <h1 className="text-[20px] font-bold ml-[22px] text-[#2C2268]"> {username} </h1>
                   </div>
                 </button>
 
@@ -333,19 +328,19 @@ const Dashboard = () => {
             
                 {/*Left SideBar Tabs*/}
                   <div>
-                    <Button onClick={handleClick} style={{ justifyContent: "start", background: isActive ? "#B4BAFF" : "", borderRadius: "10px", padding: "none" }} className={`flex hover:bg-[#B4BAFF] h-[53px] items-center w-[278px] rounded-[8px]`}> 
+                    <Button onClick={handleClick} style={{width: "240px", height: "50px", justifyContent: "start", background: isActive ? "#B4BAFF" : "", borderRadius: "10px", padding: "none" }} className={`flex hover:bg-[#B4BAFF] h-[53px] items-center w-[278px] rounded-[8px]`}> 
                       <div className="flex w-full items-center hover:text-[#2C2268] text-white font-extrabold transition-colors duration-[1]">
                         <img src={fileIcon} className="ml-[5px]"></img>
-                        <h1 className="text-[24px] ml-[25px]"> HABITS </h1>
+                        <h1 className="text-[20px] ml-[25px]"> HABITS </h1>
                       </div>
                     </Button>
                   </div>
                   <div>
 
-                    <Button onClick={handleProgress} style={{ justifyContent: "start", background: progress ? "#B4BAFF" : "", borderRadius: "10px", marginTop:"15px" }} className={`flex hover:bg-[#B4BAFF] h-[53px] items-center w-[278px] rounded-[8px] p-[15px]`}>
+                    <Button onClick={handleProgress} style={{ width:"240px", justifyContent: "start", background: progress ? "#B4BAFF" : "", borderRadius: "10px", marginTop:"15px" }} className={`flex hover:bg-[#B4BAFF] h-[53px] items-center w-[278px] rounded-[8px] p-[15px]`}>
                       <div className="flex w-full items-center hover:text-[#2C2268] text-white font-extrabold transition-colors duration-[1]">
                         <img src={fire} className="ml-[5px] w-[35px]"/>
-                        <h1 className="text-[24px] font-extrabold ml-[25px]"> PROGRESS </h1>
+                        <h1 className="text-[20px] font-extrabold ml-[25px]"> PROGRESS </h1>
                       </div>
                     </Button>
                   </div>
