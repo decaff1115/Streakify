@@ -1,5 +1,5 @@
 import logo from "../../assets/logo.svg"
-import { IconExclamationCircle, IconUserCircle, IconCirclePlus } from "@tabler/icons-react"
+import { IconExclamationCircle, IconUserCircle, IconCirclePlus, IconTrash, IconEdit } from "@tabler/icons-react"
 import fire  from "../../assets/fire.svg"
 import noTaskIcon from "../../assets/HabitSampleIcons.svg"
 import noStreaks from "../../assets/NoStreaks.svg"
@@ -9,6 +9,7 @@ import { jwtDecode } from "jwt-decode";
 import fileIcon from '../../assets/Vector.svg'
 import TaskSpecific from "./TaskSpecific"
 import Habit from "./Habit"
+import fire2 from "../../assets/fire2.svg"
 
 const token = localStorage.getItem('token');
 import { useNavigate } from "react-router-dom"
@@ -36,20 +37,17 @@ const Dashboard = () => {
   }
 
   //==========DELETE HABIT==========//
-  // const deleteOpen = (taskId) => {
-  //   handleDelete(taskId);
-  // };
-    //const [deleteTask, setDeleteTask] = useState(false);
-    //const deleteClose = () => setDeleteTask(false);
+  const deleteOpen = (habitId) => {
+    handleDelete(habitId);
+  };
 
   //==========EDIT HABIT=============//
-  // const [editTask, setEditTask] = useState(false);
-  // //const editOpen = (taskId) => setEditTask(true);
-  // const editClose = () => setEditTask(false);
+  const [editHabit, setEditHabit] = useState(false);
+  const editClose = () => setEditHabit(false);
 
-  // const [editingHabitId, setEditingHabitId] = useState(null);
-  // const [editingName, setEditingName] = useState('');
-  // const [editingGoal, setEditingGoal] = useState('');
+  const [editingHabitId, setEditingHabitId] = useState(null);
+  const [editingName, setEditingName] = useState('');
+  const [editingGoal, setEditingGoal] = useState('');
   const [isActive, setIsActive] = useState(true);
   const [progress, SetProgress] = useState(false);
 
@@ -63,12 +61,12 @@ const Dashboard = () => {
     setIsActive(false)
   }
 
-  // const editOpen = (id, name, goal) => {
-  //   setEditingHabitId(id);
-  //   setEditingName(name);
-  //   setEditingGoal(goal);
-  //   setEditTask(true); // Show the modal
-  // };
+  const editOpen = (id, name, goal) => {
+    setEditingHabitId(id);
+    setEditingName(name);
+    setEditingGoal(goal);
+    setEditHabit(true); // Show the modal
+  };
 
   //==========PROFILE=============//
   const [openProfile, setOpenProfile] = React.useState(false);
@@ -82,12 +80,8 @@ const Dashboard = () => {
 
 
 
-  //==========TASK ARRAY=============//
-  const [habitArray, setHabitArray] = useState([
-    //{ id: 1, task: "Task 1", time: "10:00 AM", isChecked: false },
-    //{ id: 2, task: "Task 2", time: "11:00 AM", isChecked: false },
-    //{ id: 3, task: "Task 3", time: "12:00 PM", isChecked: false },
-  ]);
+  //==========HABIT ARRAY=============//
+  const [habitArray, setHabitArray] = useState([]);
 
 
   //============================================================FUNCTIONS===========================================================//
@@ -180,9 +174,9 @@ const Dashboard = () => {
       });
       const newHabit = await response.json();
       if (response.ok) {
-        // Update taskArray with the new habit details
-        setHabitArray((prevTasks) => [
-            ...prevTasks,
+        // Update habitArray with the new habit details
+        setHabitArray((prevHabits) => [
+            ...prevHabits,
             {
                 id: newHabit.id,
                 name: newHabit.habitName,  // Adjust the property name if necessary
@@ -199,71 +193,71 @@ const Dashboard = () => {
   };
 
   //****************************DELETE HABIT****************************//
-  // const handleDelete = async (taskId) => {
-  //   try {
-  //     // Send DELETE request to the server
-  //     const response = await fetch(`http://localhost:3000/api/habits/${taskId}`, {
-  //       method: "DELETE",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
-  //     if (response.ok) {
-  //       // If deletion is successful, update the taskArray to remove the deleted habit
-  //       setTaskArray((prevTasks) =>
-  //         prevTasks.filter((task) => task.id !== taskId)
-  //       );
-  //       alert("Habit deleted successfully!");
-  //     } else {
-  //       // Handle any error returned from the server
-  //       alert(`Failed to delete habit: ${taskId}`);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error deleting habit:", error);
-  //     alert("Error deleting habit.");
-  //   }
-  // };
+  const handleDelete = async (habitId) => {
+    try {
+      // Send DELETE request to the server
+      const response = await fetch(`http://localhost:3000/api/habits/${habitId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        // If deletion is successful, update the taskArray to remove the deleted habit
+        setHabitArray((prevHabits) =>
+          prevHabits.filter((habit) => habit.id !== habitId)
+        );
+        alert("Habit deleted successfully!");
+      } else {
+        // Handle any error returned from the server
+        alert(`Failed to delete habit: ${habitId}`);
+      }
+    } catch (error) {
+      console.error("Error deleting habit:", error);
+      alert("Error deleting habit.");
+    }
+  };
 
   //****************************EDIT HABIT****************************//
-  // const handleUpdate = async () => {
-  //   const updatedHabit = {
-  //     id: editingHabitId,
-  //     name: editingName,
-  //     goal: editingGoal,
-  //   };
+  const handleUpdate = async () => {
+    const updatedHabit = {
+      id: editingHabitId,
+      name: editingName,
+      goal: editingGoal,
+    };
 
-  //   try {
-  //     const response = await fetch(`http://localhost:3000/api/habits/${editingHabitId}`, {
-  //       method: 'PUT',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(updatedHabit),
-  //     });
+    try {
+      const response = await fetch(`http://localhost:3000/api/habits/${editingHabitId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedHabit),
+      });
 
-  //     if (response.ok) {
-  //       const updatedData = await response.json();
-  //       // Update the taskArray with the updated habit details
-  //       setTaskArray((prevTasks) =>
-  //         prevTasks.map((task) =>
-  //           task.id === updatedData.id
-  //             ? { 
-  //               ...task, 
-  //               name: updatedData.name, 
-  //               goal: updatedData.goal }
-  //             : task
-  //         )
-  //       );
-  //       alert('Habit updated successfully!');
-  //       editClose(); // Close the modal
-  //     } else {
-  //       alert('Failed to update habit.');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error updating habit:', error);
-  //     alert('Error updating habit.');
-  //   }
-  // };
+      if (response.ok) {
+        const updatedData = await response.json();
+        // Update the habitArray with the updated habit details
+        setHabitArray((prevHabits) =>
+          prevHabits.map((habit) =>
+            habit.id === updatedData.id
+              ? { 
+                ...habit, 
+                name: updatedData.name, 
+                goal: updatedData.goal }
+              : habit
+          )
+        );
+        alert('Habit updated successfully!');
+        editClose(); // Close the modal
+      } else {
+        alert('Failed to update habit.');
+      }
+    } catch (error) {
+      console.error('Error updating habit:', error);
+      alert('Error updating habit.');
+    }
+  };
   
   //****************************DELETE USER****************************//
   const handleDeleteUser = async (userId) => {
@@ -434,7 +428,75 @@ const Dashboard = () => {
 
 
             {/*===============================EDIT HABIT BUTTON===============================*/ }
-
+                  <Modal open={editHabit} onClose={editClose}>
+                    <Box sx={{ style }}>
+                      <div className="flex h-full w-full">
+                        <div className="w-full h-full border-red-600 p-[5px]">
+                          <div className="flex w-full border-red-600 h-max">
+                            <div className="flex w-full h-full border-yellow-500">
+                              <div className="flex flex-col border-blue-600 w-[60%]">
+                                <div className="flex mt-[20px] justify-between">
+                                  <Box sx={style}>
+                                    <Typography id="modal-modal-title" variant="h6" component="h2" className="text-white font-bold">
+                                      Edit Habit
+                                    </Typography>
+                                    <div className="flex flex-col h-full w-full">
+                                      <div className="w-full h-full border-red-600 p-[5px]">
+                                        <div className="flex flex-col ml-[20px]">
+                                          <h1 className="text-white">Name</h1>
+                                          <input
+                                            className="flex h-[37px] rounded-md border"
+                                            value={editingName}
+                                            onChange={(e) => setEditingName(e.target.value)}
+                                          />
+                                          <h1 className="text-white mt-[20px]">Goal</h1>
+                                          <input
+                                            className="flex h-[37px] rounded-md border"
+                                            value={editingGoal}
+                                            onChange={(e) => setEditingGoal(e.target.value)}
+                                          />
+                                          <h1 className="text-white mt-[20px]">Start Date</h1>
+                                          <input
+                                            className="flex h-[37px] rounded-md border"
+                                            placeholder={new Date().toLocaleDateString('en-US', {
+                                              weekday: 'long',
+                                              year: 'numeric',
+                                              month: 'long',
+                                              day: 'numeric',
+                                            })}
+                                          />
+                                        </div>
+                                      </div>
+                                      <div className="flex h-max mt-[0%] border-red-600 justify-end">
+                                        <Button
+                                          onClick={handleUpdate}
+                                          sx={{
+                                            height: '32px',
+                                            color: 'white',
+                                            backgroundColor: '#2C2268',
+                                            '&:hover': {
+                                              backgroundColor: '#1F1A4A',
+                                            },
+                                            borderRadius: '8px',
+                                            padding: '8px 16px',
+                                            marginLeft: '25px',
+                                            marginRight: '40px',
+                                            marginBottom: '20px',
+                                          }}
+                                        >
+                                          Save
+                                        </Button>
+                                      </div>
+                                    </div>
+                                  </Box>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </Box>
+                  </Modal>               
             
           {/*===============================MAIN CONTENT DIV===============================*/}
           
@@ -452,7 +514,21 @@ const Dashboard = () => {
               )}
 
               {habitArray.map((index) => (
-                <Habit key={index} index = {index} />
+                <div key={index}>
+                <Habit key={index} index={index} />
+                 <div className="flex w-full h-full items-center justify-end border-red-600">
+                  <Button onClick={() => deleteOpen(index.id)}>
+                    <IconTrash color="#7889DF" />
+                  </Button>
+                  <Button onClick={() => editOpen(index.id, index.name, index.goal)}>
+                    <IconEdit color="#7889DF" />
+                  </Button>
+                  <Button onClick={() => editOpen(index.id, index.name, index.goal)}>
+                    <img className="w-[20px]" src={fire2} />
+                  </Button>
+                </div>
+                
+              </div>
               ))}
 
                 {/*===============================DELETE USER BUTTON===============================*/ }
