@@ -451,8 +451,8 @@ const Dashboard = () => {
                 </div>
               )}
 
-              {habitArray.map((task, index) => (
-                <Habit key={task.id} task={task} index = {index} />
+              {habitArray.map((index) => (
+                <Habit key={index} index = {index} />
               ))}
 
                 {/*===============================DELETE USER BUTTON===============================*/ }
