@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom"
 
 const Dashboard = () => {
   const [userId, setUserId] = useState(null);
-  const [username, setUsername] = useState('');
+  const [username, setUsername] = useState('Default user');
   const [habitName, setHabitName] = useState("");
   const [goal, setGoal] = useState("");
 
