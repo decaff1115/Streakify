@@ -15,7 +15,7 @@ import TaskSpecific from "./TaskSpecific"
 
 const Dashboard = () => {
   const [userId, setUserId] = useState(null);
-  const [username, setUsername] = useState('Default user');
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState("sky@gmail.com")
   const [habitName, setHabitName] = useState("");
   const [goal, setGoal] = useState("");
@@ -134,7 +134,7 @@ const Dashboard = () => {
       });
       console.log('Fetched datarem:', userId);
         const data = await response.json();
-        const email = await response.json();
+        // const email = await response.json();
         localStorage.setItem("name", data);
         localStorage.setItem("id", userId);
         localStorage.setItem("email", email)
