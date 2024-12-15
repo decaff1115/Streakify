@@ -8,7 +8,7 @@ import React, { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import fileIcon from '../../assets/Vector.svg'
 import TaskSpecific from "./TaskSpecific"
-import Task from "./Task"
+import Habit from "./Habit"
 
 const token = localStorage.getItem('token');
 import { useNavigate } from "react-router-dom"
@@ -18,7 +18,7 @@ const Dashboard = () => {
   const [username, setUsername] = useState('Default user');
   const [habitName, setHabitName] = useState("");
   const [goal, setGoal] = useState("");
-  const [renderProgress, SetRenderProgress] = useState(true);
+  const [renderProgress, SetRenderProgress] = useState(false);
 
   // const handleRenderProgress = () => { 
   //   SetRenderProgress(!renderProgress)
@@ -83,7 +83,7 @@ const Dashboard = () => {
 
 
   //==========TASK ARRAY=============//
-  const [taskArray, setTaskArray] = useState([
+  const [habitArray, setHabitArray] = useState([
     //{ id: 1, task: "Task 1", time: "10:00 AM", isChecked: false },
     //{ id: 2, task: "Task 2", time: "11:00 AM", isChecked: false },
     //{ id: 3, task: "Task 3", time: "12:00 PM", isChecked: false },
@@ -108,7 +108,7 @@ const Dashboard = () => {
         const response = await fetch(`http://localhost:3000/api/habits/?user_id=${userId}`);
         const data = await response.json();
         if (response.ok) {
-          setTaskArray(data);  // Set the habits into the state
+          setHabitArray(data);  // Set the habits into the state
         } else {
           alert('Failed to fetch habits.');
         }
@@ -169,6 +169,7 @@ const Dashboard = () => {
       goal: goal,
       user_id: userid, // You would dynamically pass the user_id from your app's state or auth context
     };
+
     try {
       const response = await fetch("http://localhost:3000/api/habits", {
         method: "POST",
@@ -180,7 +181,7 @@ const Dashboard = () => {
       const newHabit = await response.json();
       if (response.ok) {
         // Update taskArray with the new habit details
-        setTaskArray((prevTasks) => [
+        setHabitArray((prevTasks) => [
             ...prevTasks,
             {
                 id: newHabit.id,
@@ -439,7 +440,7 @@ const Dashboard = () => {
           
           {isActive && !renderProgress && (
             <div className="w-full h-[calc(100vh-120px)] flex flex-col border-red-600 overflow-y-auto items-center p-[20px] scrollbar-hide">
-              {taskArray.length === 0 && (
+              {habitArray.length === 0 && (
                 <div className="flex flex-col items-center justify-center">
                   <div>
                     <img src={noTaskIcon} className="2xl:w-[900px]" alt="No tasks" />
@@ -449,8 +450,9 @@ const Dashboard = () => {
                   </button>
                 </div>
               )}
-              {taskArray.map((task, index) => (
-                <Task key={ index} task={task} index = {index} />
+
+              {habitArray.map((task, index) => (
+                <Habit key={task.id} task={task} index = {index} />
               ))}
 
                 {/*===============================DELETE USER BUTTON===============================*/ }

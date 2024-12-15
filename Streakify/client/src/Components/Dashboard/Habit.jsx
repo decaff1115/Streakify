@@ -2,16 +2,26 @@ import { Button, Modal, Box, Typography } from '@mui/material'
 import { IconEdit, IconTrash } from '@tabler/icons-react'
 import fire2 from "../../assets/fire.svg"
 import { useState } from 'react';
+import PropTypes from 'prop-types'
 
-function Task(task, index) {
+function Task( Habit, index ) {
     const [editingHabitId, setEditingHabitId] = useState(null);
     const [editingName, setEditingName] = useState('');
     const [editingGoal, setEditingGoal] = useState('');
     const [editTask, setEditTask] = useState(false);
     const [taskArray, setTaskArray] = useState([]);
     const editClose = () => setEditTask(false);
-   
     
+    Habit.propTypes = {
+    Habit: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired,
+        goal: PropTypes.number.isRequired,
+        user_id: PropTypes.number.isRequired
+    }).isRequired,
+    index: PropTypes.number.isRequired,
+};
+
 const style = {
     position: 'absolute',
     top: '50%',
@@ -189,23 +199,23 @@ const handleUpdate = async () => {
             </div>
             
                 <div
-                  key={task.id}
+                  key={Habit.id}
                   className="bg-white p-4 flex rounded-lg shadow-md w-[90%] mb-4 border-red-600"
                 >
-                <input type="checkbox" checked={task.isChecked} onChange={()=> handleCheckboxChange(index)}/>
+                <input type="checkbox" checked={Habit.isChecked} onChange={()=> handleCheckboxChange(index)}/>
                   <div className="flex flex-col w-[60%] justify-center ml-[20px]">
-                    <h2 className="text-lg font-bold text-gray-800">{task.name}</h2>
-                    <h2 className="text-lg font-bold text-gray-800">{task.goal}</h2>
+                    <h2 className="text-lg font-bold text-gray-800">{Habit.name}</h2>
+                    <h2 className="text-lg font-bold text-gray-800">{Habit.goal}</h2>
                   </div>
 
                   <div className="flex w-full h-full items-center justify-end border-red-600">
-                    <Button onClick={() => deleteOpen(task.id)}>
+                    <Button onClick={() => deleteOpen(Habit.id)}>
                       <IconTrash color="#7889DF"/>
                     </Button> 
-                    <Button onClick={() => editOpen(task.id, task.name, task.goal)}>
+                    <Button onClick={() => editOpen(Habit.id, Habit.name, Habit.goal)}>
                       <IconEdit color="#7889DF" />
                     </Button>
-                    <Button onClick={() => editOpen(task.id, task.name, task.goal)}>
+                    <Button onClick={() => editOpen(Habit.id, Habit.name, Habit.goal)}>
                       <img className="w-[20px]" src={fire2} />
                     </Button>                       
                   </div>
