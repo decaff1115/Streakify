@@ -1,10 +1,12 @@
-// const express = require('express');
-// const router = express.Router();
-// const habitLogController = require('../controllers/habitLogController'); // Make sure this import is correct
+const express = require('express');
+const router = express.Router();
+const habitLogController = require('../controllers/habitLogController'); // Make sure this import is correct
 
-// // Ensure these methods exist in the habitLogController
-// router.get('/', habitLogController.getAllHabitLogs); // Ensure habitLogController.getAllHabitLogs exists
-// router.post('/', habitLogController.createHabitLog); // Ensure habitLogController.createHabitLog exists
-// router.get('/habits-by-date', habitLogController.getHabitsByDate); // Ensure habitLogController.getHabitsByDate exists
+// Ensure these methods exist in the habitLogController
+// Route to update checked days
+router.patch('/update-checked-days', habitLogController.updateCheckedDays);
 
-// module.exports = router;
+// Route to get checked days
+router.get('/get-checked-days', habitLogController.getCheckedDays);
+
+module.exports = router;

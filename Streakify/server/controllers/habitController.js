@@ -1,4 +1,4 @@
-const { Habit, User } = require('../models')
+const { sequelize, Habit, User, HabitLog } = require('../models')
 
 // Get all habits for a user
 exports.getAllHabits = async (req, res) => {
@@ -30,40 +30,51 @@ exports.getHabitById = async (req, res) => {
 // Create a new habit
 exports.createHabit = async (req, res) => {
     const { name, goal, user_id } = req.body;
+    const transaction = await sequelize.transaction();
+    
     try {
         // Verify the user exists
-        //THIS WORKS NA
         const user = await User.findByPk(user_id);
         if (!user) {
             return res.status(400).json({ message: 'User not found' });
         }
 
         // Create the new habit
-        const habit = await Habit.create({
-            name,
-            goal,
-            user_id,
-        });
+        const habit = await Habit.create(
+            {
+                name,
+                goal,
+                user_id,
+            },
+            { transaction } // Pass the transaction object to ensure atomicity
+        );
+
+        // Create HabitLog after Habit creation
+        await HabitLog.create(
+            {
+                user_id: habit.user_id,
+                habit_id: habit.id,
+                habit_goal: habit.goal,
+                checked_days: [],
+            },
+            { transaction } // Ensure HabitLog creation is also part of the same transaction
+        );
+
+        // Commit the transaction if all operations succeed
+        await transaction.commit();
 
         res.status(201).json({
-            message: 'Habit created successfully',
-            habitName: habit.name, // Return the name of the newly created habit
-            goal: habit.goal,       // Optionally return the goal or other details
-            userId: habit.user_id, // Return the user ID associated with this habit
-            id: habit.id
+            message: 'Habit and HabitLog created successfully',
+            habitName: habit.name,
+            goal: habit.goal,
+            userId: habit.user_id,
+            id: habit.id,
         });
         
-        
     } catch (error) {
-        if (error.name === 'SequelizeValidationError') {
-            return res.status(400).json({
-                message: 'Validation error',
-                errors: error.errors.map(err => err.message), // Send validation messages
-            });
-        }
-        console.error('Error creating habit:', error.stack);
-        res.status(500).json({ message: 'Error creating habit', error: error.message,  // More detailed error message
-        stack: error.stack, });
+        await transaction.rollback(); // Rollback transaction in case of error
+        console.error('Error creating habit or HabitLog:', error);
+        res.status(500).json({ message: 'Error creating habit or HabitLog', error });
     }
 };
 
