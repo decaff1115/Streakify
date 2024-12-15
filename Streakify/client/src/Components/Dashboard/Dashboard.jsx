@@ -19,7 +19,8 @@ const Dashboard = () => {
   const [goal, setGoal] = useState("");
   const [renderProgress, SetRenderProgress] = useState(false);
 
-  const handleRenderProgress = () => { 
+  const handleRenderProgress = () => {
+    setIsActive(!isActive)
     SetRenderProgress(!renderProgress)
   }
 
@@ -46,11 +47,7 @@ const Dashboard = () => {
   const [editingHabitId, setEditingHabitId] = useState(null);
   const [editingName, setEditingName] = useState('');
   const [editingGoal, setEditingGoal] = useState('');
-  const [isActive, setIsActive] = useState(false);
-
-  const handleClick = () => {
-    setIsActive(!isActive); // Toggle the active state
-  };
+  const [isActive, setIsActive] = useState(true);
 
 
   const editOpen = (id, name, goal) => {
@@ -73,7 +70,14 @@ const Dashboard = () => {
 
 
   //==========HABIT ARRAY=============//
-  const [habitArray, setHabitArray] = useState([]);
+  const [habitArray, setHabitArray] = useState([
+    {
+      id: 1,
+      name: "Drink Water",
+      goal: 69,
+      user_id: 5
+    }
+  ]);
 
 
   //============================================================FUNCTIONS===========================================================//
@@ -342,7 +346,7 @@ const Dashboard = () => {
             
                 {/*Left SideBar Tabs*/}
                   <div>
-                    <Button onClick={handleClick} style={{width: "240px", height: "50px", justifyContent: "start", background: isActive ? "#B4BAFF" : "", borderRadius: "10px", padding: "none" }} className={`flex hover:bg-[#B4BAFF] h-[53px] items-center w-[278px] rounded-[8px]`}> 
+                    <Button style={{width: "240px", height: "50px", justifyContent: "start", background:"#B4BAFF", borderRadius: "10px", padding: "none" }} className={`flex hover:bg-[#B4BAFF] h-[53px] items-center w-[278px] rounded-[8px]`}> 
                       <div className="flex w-full items-center hover:text-[#2C2268] text-white font-extrabold transition-colors duration-[1]">
                         <img src={fileIcon} className="ml-[5px]"></img>
                         <h1 className="text-[20px] ml-[25px]"> HABITS </h1>
@@ -356,7 +360,8 @@ const Dashboard = () => {
           
           <div className="w-full h-full flex flex-col">
             <div className="h-[10%] border-b flex w-full items-center justify-end pr-[20px] pl-[20px]"> 
-              <div className="flex items-center justify-end border-red-600  w-[180px] h-full">
+            <div className="flex items-center justify-end border-red-600  w-[180px] h-full">
+              
                   {/*===============================ADD HABIT BUTTON===============================*/ }
                   <button onClick={handleOpen}><IconCirclePlus size={32}/></button>
                     <Modal
@@ -515,7 +520,6 @@ const Dashboard = () => {
                     
                       <Button 
                         onClick={() => {
-                          editOpen(index.id, index.name, index.goal);
                           handleRenderProgress();
                       }}
 >
