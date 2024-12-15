@@ -7,9 +7,11 @@ import React, { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import fileIcon from '../../assets/Vector.svg'
 import fire2 from "../../assets/fire2.svg"
+import Streak from "./Streak"
 
 const token = localStorage.getItem('token');
 import { useNavigate } from "react-router-dom"
+import TaskSpecific from "./TaskSpecific"
 
 const Dashboard = () => {
   const [userId, setUserId] = useState(null);
@@ -17,10 +19,17 @@ const Dashboard = () => {
   const [habitName, setHabitName] = useState("");
   const [goal, setGoal] = useState("");
   const [renderProgress, SetRenderProgress] = useState(false);
+  const [habitInfo, setHabitInfo] = useState({ id: 0, name: "", goal: 0, user_id: 0, streak_count: 0, progress_count: 0 })
 
-  const handleRenderProgress = () => {
-    setIsActive(!isActive)
-    SetRenderProgress(!renderProgress)
+  const handleRenderProgress = (habit) => {
+    setHabitInfo(habit)
+    SetRenderProgress(true)
+    setIsActive(false)
+  }
+
+  const handleHabitClick = () => { 
+    setIsActive(true);
+    SetRenderProgress(false)
   }
 
   //==========ADD HABIT============//
@@ -69,14 +78,7 @@ const Dashboard = () => {
 
 
   //==========HABIT ARRAY=============//
-  const [habitArray, setHabitArray] = useState([
-    {
-      id: 1,
-      name: "Drink Water",
-      goal: 69,
-      user_id: 5
-    }
-  ]);
+  const [habitArray, setHabitArray] = useState([]);
 
 
   //============================================================FUNCTIONS===========================================================//
@@ -345,7 +347,7 @@ const Dashboard = () => {
             
                 {/*Left SideBar Tabs*/}
                   <div>
-                    <Button onClick={handleRenderProgress} style={{width: "240px", height: "50px", justifyContent: "start", background:"#B4BAFF", borderRadius: "10px", padding: "none" }} className={`flex hover:bg-[#B4BAFF] h-[53px] items-center w-[278px] rounded-[8px]`}> 
+              <Button onClick={ handleHabitClick }  style={{width: "240px", height: "50px", justifyContent: "start", background:"#B4BAFF", borderRadius: "10px", padding: "none" }} className={`flex hover:bg-[#B4BAFF] h-[53px] items-center w-[278px] rounded-[8px]`}> 
                       <div className="flex w-full items-center hover:text-[#2C2268] text-white font-extrabold transition-colors duration-[1]">
                         <img src={fileIcon} className="ml-[5px]"></img>
                         <h1 className="text-[20px] ml-[25px]"> HABITS </h1>
@@ -517,11 +519,7 @@ const Dashboard = () => {
                         <IconEdit color="#7889DF" />
                     </Button>
                     
-                      <Button 
-                        onClick={() => {
-                          handleRenderProgress();
-                      }}
->
+                      <Button onClick={() => handleRenderProgress(index)}>
                         <img className="w-[20px]" src={fire2} />
                       </Button>
                     </div>
@@ -561,38 +559,45 @@ const Dashboard = () => {
                 </Modal>
               </div>
           )}
+          
             {renderProgress && !isActive && (
-              <div className="w-full h-[calc(100vh-120px)] flex flex-col border-red-600 overflow-y-auto items-center p-[20px] scrollbar-hide">
-                
-              </div>
+              <TaskSpecific habit={habitInfo} />
             )}
+          
             </div>
               
-              {/*==============================================================LEFT MOST COLUMN==============================================================*/ }
-              
-              <div className="2xl:w-[40%] lg:w-[60%] p-[30px] flex items-center border-l flex-col">
-                <div className="font-semibold rounded-[10px] items-center flex w-[100%] text-[15px] justify-center h-[71px] p-[20px] text-center bg-[#FFFFFF] text-[#4D57C8]"> Complete habit to build your longest streak of 
-                  perfect day.  
-                </div>
-
-                <div className="w-full flex items-center justify-between mt-[24px] rounded-[10px] bg-[#FFFFFF] border-red-600 h-[182px] relative">
-                  <div className="flex-col flex text-[#373737] w-full h-full items-start justify-center z-20">
-                    <div className="flex-col flex border-red-600 w-max h-max ml-[20px] mb-[15px]">
-                      <h1 className="text-[24px] font-extrabold">{/*currentStreak*/0} Day </h1>
-                      <h1 className="text-[11px]"> Your Current Streak </h1>
-                    </div>
-                    <div className="flex-col flex w-max h-max ml-[20px]">
-                      <h1 className="text-[24px] font-extrabold">{/*longestStreak*/0} Day </h1>
-                      <h1 className="text-[11px]"> Your Longest Streak</h1>
-                    </div>
+              {/*==============================================================RIGHT MOST COLUMN==============================================================*/ }
+              {isActive && !renderProgress && (
+                <div className="2xl:w-[40%] lg:w-[60%] p-[30px] flex items-center border-l flex-col">
+                  <div className="font-semibold rounded-[10px] items-center flex w-[100%] text-[15px] justify-center h-[71px] p-[20px] text-center bg-[#FFFFFF] text-[#4D57C8]"> Complete habit to build your longest streak of 
+                    perfect day.  
                   </div>
-                    <img
-                      src={noStreaks}
-                      alt="No Streaks"
-                      className="absolute top-0 left-0 w-full h-[112.5%] object-cover rounded-[10px]"
-                    />
+
+                  <div className="w-full flex items-center justify-between mt-[24px] rounded-[10px] bg-[#FFFFFF] border-red-600 h-[182px] relative">
+                    <div className="flex-col flex text-[#373737] w-full h-full items-start justify-center z-20">
+                      <div className="flex-col flex border-red-600 w-max h-max ml-[20px] mb-[15px]">
+                        <h1 className="text-[24px] font-extrabold">{/*currentStreak*/0} Day </h1>
+                        <h1 className="text-[11px]"> Your Current Streak </h1>
+                      </div>
+                      <div className="flex-col flex w-max h-max ml-[20px]">
+                        <h1 className="text-[24px] font-extrabold">{/*longestStreak*/0} Day </h1>
+                        <h1 className="text-[11px]"> Your Longest Streak</h1>
+                      </div>
+                    </div>
+                      <img
+                        src={noStreaks}
+                        alt="No Streaks"
+                        className="absolute top-0 left-0 w-full h-[112.5%] object-cover rounded-[10px]"
+                      />
+                  </div>
                 </div>
-              </div>
+             )}
+        
+              {renderProgress && !isActive && (
+                <div className="2xl:w-[40%] lg:w-[60%] p-[30px] flex items-center border-l flex-col">
+                  <Streak habit={habitInfo}/>
+                </div>
+              )}
 
           </div> {/*DIVE CONTAINING ALL*/}
      
