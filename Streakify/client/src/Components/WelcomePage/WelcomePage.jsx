@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './WelcomePage.css';
 import meditationImage from '../../assets/meditation.svg';
@@ -13,7 +13,7 @@ function WelcomePage() {
 
   const [burger, setBurger] = useState(false);
   const handleBurgerClick = () => {
-    setBurger(!burger);
+    setBurger(prevState => !prevState);
   };
 
   return (
@@ -25,19 +25,34 @@ function WelcomePage() {
         {/* Hamburger Icon for mobile */}
 
         <button className="hamburger-icon" onClick={handleBurgerClick} aria-label="Toggle menu">
-          <span className={`hamburger-bar ${burger ? 'open' : ''}`}> something there </span> {/* sampleeee*/}
-          <span className={`hamburger-bar ${burger ? 'open' : ''}`}>something there</span>
-          <span className={`hamburger-bar ${burger ? 'open' : ''}`}>something there</span>
+          <span className={`hamburger-bar ${burger ? 'open' : ''}`}></span>
+          <span className={`hamburger-bar ${burger ? 'open' : ''}`}></span>
+          <span className={`hamburger-bar ${burger ? 'open' : ''}`}></span>
+          <span className={`hamburger-bar ${burger ? 'open' : ''}`}></span>
         </button>
+
+        {burger && (
+        <div className="menu-content">
+          
+            <a href="#section1">Home</a>
+          
+            <a href="#section2"> Services</a>
+          
+            <Link to="/LogInPage"> Login</Link>
+          
+            <Link to="/SignUpPage"> SignUp</Link>
+         
+        </div>
+      )}
 
 
         {/* Navbar Links */}
         <ul className={`nav-links`}>
           <li>Home</li>
-          <li>Services</li>
-          <li><Link to="/login">Log in</Link></li>
+          <li><a href="#section2"> Services</a></li>
+          <li><Link to="/LogInPage">Log in</Link></li>
           <li>
-            <Link to="/signup">
+            <Link to="/SignUpPage">
               <button className="signup-button">Sign up</button>
             </Link>
           </li>
@@ -46,14 +61,17 @@ function WelcomePage() {
       </nav>
 
       {/* Welcome Section */}
-      <div className="welcome-background">
+      <div id="section1" className="welcome-background">
         <div className="welcome-section">
           <h1 className="welcome-text">Welcome</h1>
           <h2 className="streakify-text">to Streakify</h2>
           <p className="explore-text">Explore the app, find some peace of mind</p>
           <p className="explore-text">to achieve good habits.</p>
           <img src={meditationImage} alt="Meditation" className="meditation-image" />
-          <button className="get-started-button">GET STARTED</button>
+          <a href="/SignUpPage">
+            <button className="get-started-button">GET STARTED</button>
+            </a>
+
         </div>
       </div>
 
@@ -75,7 +93,7 @@ function WelcomePage() {
           <p className="quote-author">- Anonymous</p>
         </div>
       </div><section className="image-section">
-          <div className="image-container">
+          <div id="section2" className="image-container">
             <div className="image-item">
               <img src={image1} alt="Image 1" />
               <h3>Track Your Goal</h3>

@@ -88,9 +88,11 @@ body, html {
 }
 
 .hamburger-bar {
-  width: 25px;
+  display: block;
+  width: 30px;
   height: 3px;
-  background-color: #333;
+  background-color: #3F414E;
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 .welcome-background {
@@ -157,19 +159,28 @@ body, html {
     padding-bottom: 20px
   }
 
+  .get-started-link {
+    display: inline-block;   /* Ensure that the link is treated as an inline-block */
+    text-decoration: none;   /* Remove underline from the link */
+    width: auto;             /* Ensure the width is auto so it doesn't stretch */
+  }
+  
   
   .get-started-button {
     padding: 20px 40px; /* Top and bottom padding 20px, left and right padding 40px for longer width */
-    font-size: 0.7em;
-    letter-spacing: 0.1em;
-    background-color: #f9f9f9;
-    color: #3F414E; /* Adjust text color */
-    border: none;
-    cursor: pointer;
-    border-radius: 30px; /* Rounded edges */ /* Add 30px space above the button */
-    width: 50%; /* Make the button width auto-expand with padding */
-    display: inline-block; /* Ensure button is treated as an inline element */
-    text-align: center; /* Center the text */
+  font-size: 0.7em;
+  letter-spacing: 0.1em;
+  background-color: #f9f9f9;
+  color: #3F414E; /* Adjust text color */
+  border: none;
+  cursor: pointer;
+  border-radius: 30px; /* Rounded edges */
+  width: 80%; /* Make the button width auto-expand with padding */
+  display: inline-flex; /* Use flexbox to align the text */
+  align-items: center; /* Vertically center the text */
+  justify-content: center; /* Horizontally center the text */
+  text-align: center; /* Center text horizontally (useful for multi-line text) */
+  box-sizing: border-box;
   }
   
   /* Quote Section */
@@ -366,10 +377,6 @@ body, html {
   padding-right: 20px;
 }
 
-
-
-
-
 App.css
   #root {
   max-width: 1280px;
@@ -415,14 +422,81 @@ App.css
   .navbar-logo {
   width: 150px;
   }
+  .menu-content {
+    position: absolute;
+    height: 50px;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.9);
+    text-align: center;
+    display: none;
+    transition: opacity 0.3s ease;
+  }
+  
+  /* Display menu when burger is true */
+  .menu-content a {
+    display: block;
+    padding-top:10px;
+    text-decoration: none;
+    color: #333;
+  }
+  
+  .menu-content a:hover {
+    background-color: pink;
+    color: white;
+  }
+  
+  /* CSS to show menu when burger state is true */
+  .menu-content {
+    display: block; /* Show menu when burger is true */
+  }
 
+  .menu-content {
+    display: none; /* Keep menu hidden by default */
+  }
 
   /* Show hamburger on small screens */
 @media (max-width: 768px) {
   .hamburger-icon {
     display: flex;
   }
+  
+  .hamburger-icon.open .hamburger-bar:nth-child(1) {
+    transform: rotate(45deg);
+    position: relative;
+    top: 6px;
+  }
+  .hamburger-icon.open .hamburger-bar:nth-child(2) {
+    opacity: 0;
+  }
+  .hamburger-icon.open .hamburger-bar:nth-child(3) {
+    transform: rotate(-45deg);
+    position: relative;
+    bottom: 6px;
+  }
 
+  .menu-content {
+    display: flex; /* Show menu links for larger screens */
+    position: static;
+    flex-direction: column;
+    background: transparent;
+    text-align: center;
+    height: 30px;
+    padding: 0;
+  }
+  .menu-content a {
+    display: inline-block;
+    color: white;
+    font-size:8px;
+    background-color: #4D57C8;
+    width: 100px;
+    text-align: center;
+    padding-bottom:5px;
+  }
+  .menu-content a:hover {
+    background-color: #B4BAFF;
+    color: #4D57C8;
+  }
   .nav-links {
     position: absolute;
     top: 60px;
@@ -458,27 +532,31 @@ App.css
   }
   .image-item {
     width: 100%; /* Stacked layout */
-    height: (100vh-50px); /* Full viewport height */
-    margin-bottom: 0;
+    /*height: (100vh-50px); /* Full viewport height */ 
+    height: auto;
+    margin-bottom: 20px;
 
   }
 
   .image-item img {
     width: 100%;
-    height: 500px;
+    height: 400px;
     object-fit: cover;
   }
   /* Title and Subtitle */
   .image-item h3 {
-    margin: 40px 0 25px; /* Small margin above and below the title */
-    font-size: 1em;
-    padding-left: 70px;
+      margin: 40px 0 25px; /* Small margin above and below the title */
+      font-size: 1em;
+      text-align: center; /* Center text horizontally */
+      padding-left: 0; /* Remove any left padding */
+      padding-right: 0; /* Remove any right padding */
   }
 
   .image-item p {
     margin: 0;
     font-size: 0.8em;
-    padding-left: 70px;
-    padding-right: 20px;
+    padding-left: 0;
+    padding-right: 0;
+    text-align: center;
   }
 }

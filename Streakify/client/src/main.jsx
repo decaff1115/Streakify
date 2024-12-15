@@ -1,14 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
-import App from './App';
-import './index.css';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { MantineProvider } from '@mantine/core';
+import WelcomePage from './Components/WelcomePage/WelcomePage';
+import SignUpPage from './Components/SignUpPage/SignUpPage';
+import LogInPage from './Components/LogInPage/LogInPage';
+import Dashboard from './Components/Dashboard/Dashboard';
+import Progress from './Components/Progress/Progress';
+import './index.css';  // Ensure this file exists and doesn't interfere with Mantine styles
 
-const root = ReactDOM.createRoot(document.getElementById('root')); 
-//This ensures that React Router can handle the routes correctly across your app.
-
-root.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <MantineProvider withGlobalStyles withNormalizeCSS>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/Dashboard" element={<Dashboard />} />
+          <Route path="/" element={<WelcomePage/>} />
+          <Route path="/SignUpPage" element={<SignUpPage />} />
+          <Route path="/LogInPage" element={<LogInPage />} />
+          <Route path="/Progress" element={<Progress />} />
+        </Routes>
+      </BrowserRouter>
+    </MantineProvider>
+  </React.StrictMode>
 );
