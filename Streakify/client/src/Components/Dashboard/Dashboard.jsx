@@ -514,20 +514,23 @@ const Dashboard = () => {
               )}
 
               {habitArray.map((index) => (
-                <div key={index}>
-                <Habit key={index} index={index} />
-                 <div className="flex w-full h-full items-center justify-end border-red-600">
-                  <Button onClick={() => deleteOpen(index.id)}>
-                    <IconTrash color="#7889DF" />
-                  </Button>
-                  <Button onClick={() => editOpen(index.id, index.name, index.goal)}>
-                    <IconEdit color="#7889DF" />
-                  </Button>
-                  <Button onClick={() => editOpen(index.id, index.name, index.goal)}>
-                    <img className="w-[20px]" src={fire2} />
-                  </Button>
-                </div>
-                
+                  <div key={index.id} className="bg-white p-4 flex rounded-lg shadow-md w-[90%] mb-4 border-red-600">
+                      <div className="flex flex-col w-[60%] justify-center ml-[20px]">
+                        <h2 className="text-lg font-bold text-gray-800">{index.name}</h2>
+                        <h2 className="text-lg font-bold text-gray-800">{index.goal}</h2>
+                    </div>
+                    
+                  <div className="flex w-full h-full items-center justify-end border-red-600">
+                    <Button onClick={() => deleteOpen(index.id)}>
+                      <IconTrash color="#7889DF" />
+                    </Button>
+                    <Button onClick={() => editOpen(index.id, index.name, index.goal)}>
+                      <IconEdit color="#7889DF" />
+                    </Button>
+                    <Button onClick={() => editOpen(index.id, index.name, index.goal)}>
+                      <img className="w-[20px]" src={fire2} />
+                    </Button>
+                  </div>
               </div>
               ))}
 

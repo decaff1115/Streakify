@@ -89,8 +89,6 @@ function Habit ({ index }) {
 
   return (
     <>
-      {/* Edit Habit Modal */}
-
       <div key={Habit.id} className="bg-white p-4 flex rounded-lg shadow-md w-[90%] mb-4 border-red-600">
         <input type="checkbox" checked={index.isChecked} onChange={() => handleCheckboxChange(index)} />
         <div className="flex flex-col w-[60%] justify-center ml-[20px]">
