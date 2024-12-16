@@ -22,6 +22,7 @@ const Dashboard = () => {
   const [renderProgress, SetRenderProgress] = useState(false);
   const [habitInfo, setHabitInfo] = useState({ id: 0, name: "", goal: 0, user_id: 0, streak_count: 0, progress_count: 0 })
 
+  //Shows the progress per habit 
   const handleRenderProgress = (habit) => {
     setHabitInfo(habit)
     SetRenderProgress(true)
@@ -36,6 +37,7 @@ const Dashboard = () => {
     navigate("/LogInPage");
   };
 
+  //Goes back to list of habits
   const handleHabitClick = () => {
     setIsActive(true);
     SetRenderProgress(false)
@@ -591,7 +593,7 @@ const Dashboard = () => {
                 <div key={index.id} className="bg-white p-4 flex rounded-lg shadow-md w-[90%] mb-4 border-red-600">
                   <div className="flex flex-col w-[60%] justify-center ml-[20px]">
                     <h2 className="text-lg font-bold text-gray-800">{index.name}</h2>
-                    <h2 className="text-lg font-bold text-gray-800">{index.goal}</h2>
+                    <h2 className="text-lg font-bold text-gray-800">{index.goal} Times A Day</h2>
                   </div>
 
                   <div className="flex w-full h-full items-center justify-end border-red-600">
