@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-const WeekDaysSelector = () => {
+const WeekDaysSelector = ({ initialSelectedDays, onDayToggle }) => {
   const [selectedDays, setSelectedDays] = useState({
     sun: false,
     mon: false,
@@ -11,11 +11,23 @@ const WeekDaysSelector = () => {
     sat: false,
   });
 
+  useEffect(() => {
+    setSelectedDays(initialSelectedDays);
+}, [initialSelectedDays]);
+
   const handleDayToggle = (day) => {
-    setSelectedDays((prevSelectedDays) => ({
-      ...prevSelectedDays,
-      [day]: !prevSelectedDays[day], // Toggle the day state
-    }));
+    setSelectedDays((prevSelectedDays) => {
+      // ...prevSelectedDays,
+      // [day]: !prevSelectedDays[day], // Toggle the day state
+      const updatedDays = {
+        ...prevSelectedDays,
+        [day]: !prevSelectedDays[day], // Toggle the day state
+      };
+      const dayValue = updatedDays[day] ? 1 : 0;  // 1 if true, 0 if false
+      onDayToggle(day, dayValue); // Call the callback passed from parent
+
+      return updatedDays;
+    });
   };
 
   return (

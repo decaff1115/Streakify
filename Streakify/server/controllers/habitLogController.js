@@ -3,14 +3,20 @@ const { updateStreak } = require('./streakController');
 
 
 const updateCheckedDays = async (req, res) => {
-    const { habit_id, user_id, day, is_checked } = req.body;
+    //const { habit_id, user_id, day, is_checked } = req.body;
+    const { habit_id, user_id, sun, mon, tue, wed, thu, fri, sat } = req.body;
 
     // Validate input
-    if (!habit_id || !user_id || !day || typeof is_checked === 'undefined') {
+    // if (!habit_id || !user_id || !day || typeof is_checked === 'undefined') {
+    //     return res.status(400).json({ message: 'Missing required parameters' });
+    // }
+    if (!habit_id || !user_id || typeof sun === 'undefined' || typeof mon === 'undefined' || typeof tue === 'undefined' || typeof wed === 'undefined' || typeof thu === 'undefined' || typeof fri === 'undefined' || typeof sat === 'undefined') {
         return res.status(400).json({ message: 'Missing required parameters' });
     }
 
     try {
+        console.log('Updating HabitLog for habit_id:', habit_id, 'user_id:', user_id);
+        console.log('Received days:', { sun, mon, tue, wed, thu, fri, sat });
         console.log('Habit ID:', habit_id);
         console.log('User ID:', user_id);
 
@@ -24,6 +30,7 @@ const updateCheckedDays = async (req, res) => {
         }
 
         // Update the specified day
+        /*
         switch (day.toLowerCase()) {
             case 'monday':
                 habitLog.monday = is_checked;
@@ -49,6 +56,15 @@ const updateCheckedDays = async (req, res) => {
             default:
                 return res.status(400).json({ message: 'Invalid day provided' });
         }
+        */
+        habitLog.sunday = sun;
+        habitLog.monday = mon;
+        habitLog.tuesday = tue;
+        habitLog.wednesday = wed;
+        habitLog.thursday = thu;
+        habitLog.friday = fri;
+        habitLog.saturday = sat;
+
 
         // Save and update streak
         await habitLog.save();
