@@ -1,5 +1,5 @@
 import logo from "../../assets/logo.svg"
-import { IconExclamationCircle, IconUserCircle, IconCirclePlus, IconTrash, IconEdit } from "@tabler/icons-react"
+import { IconExclamationCircle, IconUserCircle, IconCirclePlus, IconTrash, IconEdit, IconArrowLeft } from "@tabler/icons-react"
 import noTaskIcon from "../../assets/HabitSampleIcons.svg"
 import noStreaks from "../../assets/NoStreaks.svg"
 import { Modal, Box, Typography, Button } from "@mui/material"
@@ -15,7 +15,8 @@ import TaskSpecific from "./TaskSpecific"
 
 const Dashboard = () => {
   const [userId, setUserId] = useState(null);
-  const [username, setUsername] = useState('Default user');
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState("sky@gmail.com")
   const [habitName, setHabitName] = useState("");
   const [goal, setGoal] = useState("");
   const [renderProgress, SetRenderProgress] = useState(false);
@@ -26,6 +27,14 @@ const Dashboard = () => {
     SetRenderProgress(true)
     setIsActive(false)
   }
+
+    const handleLogout = () => {
+    // 1. Clear the local storage or authentication data
+    localStorage.removeItem("authToken");
+
+    // 2. Redirect to login page
+    navigate("/LogInPage");
+  };
 
   const handleHabitClick = () => {
     setIsActive(true);
@@ -124,12 +133,15 @@ const Dashboard = () => {
         }
       });
       console.log('Fetched datarem:', userId);
-      const data = await response.json();
-      localStorage.setItem("name", data);
-      localStorage.setItem("id", userId);
+        const data = await response.json();
+        // const email = await response.json();
+        localStorage.setItem("name", data);
+        localStorage.setItem("id", userId);
+        localStorage.setItem("email", email)
 
       setUsername(data.username);
-      console.log('Fetched datauow:', username);
+      setEmail(data.email)
+      console.log('Fetched data:', username);
     } catch (err) {
       console.error(err);
     }
@@ -317,6 +329,18 @@ const Dashboard = () => {
     p: 5,
   };
 
+  const style3 = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    height: 500,
+    bgcolor: '#4D57C8',
+    boxShadow: 24,
+    p: 5,
+  };
+
   const navigate = useNavigate();
 
   return (
@@ -346,27 +370,61 @@ const Dashboard = () => {
                     left: 0,
                   }}
                 >
-                  <button className="w-full text-left p-[10px] text-[#2C2268]">Profile</button>
-                  <button className="w-full text-left p-[10px] text-[#2C2268]">Sign Out</button>
-                </div>
+                  <button
+                     onClick={handleOpenProfile}
+                    className="w-full text-left p-[10px] text-[#2C2268] hover:bg-[#A89DE1] transition-all duration-200"
+                  >
+                    Profile
+                  </button>
+                  <button
+                    onClick={handleLogout}
+                    className=" w-full text-left p-[10px] text-[#2C2268] hover:bg-[#A89DE1] transition-all duration-200"
+                  >
+                    Log Out
+                  </button> 
+                  </div>
               )}
             </div>
             {/* Profile Modal */}
-            <Modal open={openProfile} onClose={handleCloseProfile} aria-labelledby="modal-profile-title">
-              <Box sx={style}>
-                <Typography id="modal-profile-title" variant="h6" component="h2" className="text-white font-bold">
-                  My Profile
-                </Typography>
-                <div className="font-semibold rounded-[10px] items-center flex w-full text-[15px] justify-center h-[71px] p-[20px] text-center bg-[#FFFFFF] text-[#4D57C8]">
-                  {username}
-                </div>
-                <button onClick={handleOpenDelWarning} className="flex border ml-[60%] mt-[200px] bg-[#B4BAFF] h-[53px] mb-6 items-center w-full md:w-[278px] justify-start rounded-[8px] p-[15px]">
-                  <div className="flex justify-between items-center w-full">
-                    <h1 className="text-[20px] font-bold flex items-center justify-center w-full">Delete account</h1>
-                  </div>
-                </button>
-              </Box>
-            </Modal>
+      <Modal open={openProfile} onClose={handleCloseProfile} aria-labelledby="modal-profile-title">
+      <Box sx={style3} className="bg-[#2C2268] p-[20px] rounded-[10px]">
+        <Typography id="modal-profile-title" variant="h6" component="h2" className="text-white font-bold text-center text-[24px]">
+          PROFILE
+        </Typography>
+
+        <div className="mt-[20px] mb-[20px] flex flex-col items-center">
+          <IconUserCircle size={60} color="#FFFFFF" />
+          <div className="font-semibold text-center mb-[15px] text-[18px] text-white mt-[10px]">{username}</div>
+          <div className="flex flex-col border-t border-b w-full justify-center items-center pt-[15px] pb-[15px]">
+            <h1 className="text-white font-extrabold">EMAIL</h1>
+            <div className="font-normal text-center flex text-[20px] text-white mt-[5px]">{email}</div>
+          </div>    
+        </div>
+
+        <div className="mt-[20px] text-center">
+          <Typography variant="h6" component="h3" className="text-red-600 mb-[10px]">
+            <h1 className="font-extrabold">CAUTION ZONE</h1>
+          </Typography>
+          <Typography variant="body1" className="text-[#D9D9D9] mb-[20px]">
+            All of your habit data will be deleted.
+          </Typography>
+        </div>
+
+        <button
+          onClick={handleOpenDelWarning}
+          className="mt-[30px] flex bg-[#B4BAFF] hover:bg-[#A89DE1] w-full h-[53px] justify-center items-center rounded-[8px] p-[15px] mb-[20px]"
+        >
+          <h1 className="text-[#2C2268] text-[20px] font-bold">Delete Account</h1>
+        </button>
+
+        <button
+          onClick={handleCloseProfile}
+          className="absolute top-[10px] right-[10px] text-[#2C2268] rounded-full p-[8px]"
+        >
+          <IconArrowLeft size={25} color="white" background="#A89DE1"/>
+        </button>
+      </Box>
+    </Modal>
 
             {/*Left SideBar Tabs*/}
             <div>
