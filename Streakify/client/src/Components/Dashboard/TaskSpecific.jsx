@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { IconTrophy } from '@tabler/icons-react';
 import ProgressBar from "@ramonak/react-progress-bar";
 
+const token = localStorage.getItem('token');
+
 
 //Check progress
 const TaskSpecific = ({ habit }) => {
@@ -31,7 +33,11 @@ const TaskSpecific = ({ habit }) => {
         const fetchCheckedDays = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:3000/api/habitLogs/get-checked-days?habit_id=${habit.id}&user_id=${habit.user_id}`
+                    `http://localhost:3000/api/habitLogs/get-checked-days?habit_id=${habit.id}&user_id=${habit.user_id}`, {
+                        headers: {
+                          "Authorization": `Bearer ${token}`, // Include token in header
+                        },
+                      }
                 );
                 const data = await response.json();
                 
@@ -73,7 +79,7 @@ const TaskSpecific = ({ habit }) => {
             const response = await fetch('http://localhost:3000/api/habitLogs/update-checked-days', {
                 method: 'PATCH',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json', "Authorization": `Bearer ${token}`,
                 },
                 body: JSON.stringify({
                     habit_id: habitId,
