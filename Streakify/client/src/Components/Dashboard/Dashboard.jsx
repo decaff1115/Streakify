@@ -104,21 +104,22 @@ const Dashboard = () => {
     }
   }, []);
 
-  useEffect(() => {
-    const fetchHabits = async () => {
-      try {
-        const response = await fetch(`http://localhost:3000/api/habits/?user_id=${userId}`);
-        const data = await response.json();
-        if (response.ok) {
-          setHabitArray(data);  // Set the habits into the state
-        } else {
-          alert('Failed to fetch habits.');
-        }
-      } catch (error) {
-        console.error('Error fetching habits:', error);
-        alert('Error fetching habits.');
+  const fetchHabits = async () => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/habits/?user_id=${userId}`);
+      const data = await response.json();
+      if (response.ok) {
+        setHabitArray(data);  // Set the habits into the state
+      } else {
+        alert('Failed to fetch habits.');
       }
-    };
+    } catch (error) {
+      console.error('Error fetching habits:', error);
+      alert('Error fetching habits.');
+    }
+  };
+
+  useEffect(() => {
 
     if (userId) {
       fetchHabits();
@@ -196,6 +197,7 @@ const Dashboard = () => {
           },
         ]);
         alert("Habit created successfully!");
+        fetchHabits();
       }
     }
     catch (error) {
