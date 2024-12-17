@@ -6,6 +6,6 @@ const streakController = require('../controllers/streakController'); // Adjust t
 router.patch('/update', streakController.updateStreak); // Make sure the handler function is defined and imported
 
 // Define any other routes, if necessary
-router.get('/checked', streakController.getCheckedDaysFromLog);
+//router.get('/checked', streakController.getCheckedDaysFromLog);
 
 module.exports = router;

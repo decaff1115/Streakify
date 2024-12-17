@@ -25,6 +25,8 @@ const TaskSpecific = ({ habit }) => {
         sat: false,
     });
 
+    const [streakCount, setStreakCount] = useState(0);
+
     useEffect(() => {
         const fetchCheckedDays = async () => {
             try {
@@ -45,6 +47,11 @@ const TaskSpecific = ({ habit }) => {
                         sat: data.checked_days.saturday,
                     };
                     setSelectedDays(mappedCheckedDays);
+                    //calculateStreak(mappedCheckedDays);
+                }
+
+                if (data.updatedStreak !== undefined) {
+                    setStreakCount(data.updatedStreak);  // Set the streak count from the response
                 }
             } catch (error) {
                 console.error('Error fetching checked days:', error);
@@ -75,13 +82,37 @@ const TaskSpecific = ({ habit }) => {
                 }),
             });
             const responseData = await response.json();
-            if (!response.ok) {
+            if (response.ok) {
+                console.log('Successfully updated streak');
+                // Update streak on the frontend with the returned value
+                setStreakCount(responseData.updatedStreak);  // Set the streak count from the response
+            } else {
                 console.error('Failed to update checked days');
             }
+            //calculateStreak(updatedDays);
         } catch (error) {
             console.error('Error updating checked days:', error);
         }
     };
+
+    const calculateStreak = (updatedDays) => {
+        const daysOrder = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+        let currentStreak = 0;
+        let isStreakBroken = false;
+
+        for (const day of daysOrder) {
+            if (updatedDays[day]) {
+                if (!isStreakBroken) {
+                    currentStreak++;
+                }
+            } else {
+                isStreakBroken = true; // Break the streak if a day is skipped
+            }
+        }
+
+        setStreakCount(currentStreak);
+    };
+
     const handleDayToggle = (day, dayValue) => {
         // Update the selected days state
         setSelectedDays((prevSelectedDays) => {
@@ -108,6 +139,17 @@ const TaskSpecific = ({ habit }) => {
         </div>
 
         <div className='flex flex-col h-full w-full items-center justify-center  border-red-600'>
+            <div className='flex w-[90%] pl-[20px] pr-[20px] h-[150px] rounded-lg border items-center font-extrabold text-[#303030] justify-between border-white'>
+                  
+                <div className='border-red-600'>
+                    <div className='text-[25px]'>
+                       CURRENT STREAK
+                    </div>
+                    <div className='text-[40px]'>
+                    {streakCount} Days 
+                    </div>
+                  </div>
+              </div>
             <div className='flex flex-col border rounded-lg items-center w-[90%] h-[230px]'>
                 <div className='text-[#303030] text-[24px] font-extrabold pt-[10px] pb-[10px] w-full h-max flex justify-center border-b '>
                     YOUR PROGRESS

@@ -29,51 +29,53 @@ const updateCheckedDays = async (req, res) => {
             return res.status(404).json({ message: 'HabitLog not found' });
         }
 
-        // Update the specified day
-        /*
-        switch (day.toLowerCase()) {
-            case 'monday':
-                habitLog.monday = is_checked;
-                break;
-            case 'tuesday':
-                habitLog.tuesday = is_checked;
-                break;
-            case 'wednesday':
-                habitLog.wednesday = is_checked;
-                break;
-            case 'thursday':
-                habitLog.thursday = is_checked;
-                break;
-            case 'friday':
-                habitLog.friday = is_checked;
-                break;
-            case 'saturday':
-                habitLog.saturday = is_checked;
-                break;
-            case 'sunday':
-                habitLog.sunday = is_checked;
-                break;
-            default:
-                return res.status(400).json({ message: 'Invalid day provided' });
-        }
-        */
-        habitLog.sunday = sun;
-        habitLog.monday = mon;
-        habitLog.tuesday = tue;
-        habitLog.wednesday = wed;
-        habitLog.thursday = thu;
-        habitLog.friday = fri;
-        habitLog.saturday = sat;
+        const checkedDays = {
+            sun: typeof sun === 'boolean' ? sun : false,
+            mon: typeof mon === 'boolean' ? mon : false,
+            tue: typeof tue === 'boolean' ? tue : false,
+            wed: typeof wed === 'boolean' ? wed : false,
+            thu: typeof thu === 'boolean' ? thu : false,
+            fri: typeof fri === 'boolean' ? fri : false,
+            sat: typeof sat === 'boolean' ? sat : false,
+        };
 
+        habitLog.sunday = checkedDays.sun;
+        habitLog.monday = checkedDays.mon;
+        habitLog.tuesday = checkedDays.tue;
+        habitLog.wednesday = checkedDays.wed;
+        habitLog.thursday = checkedDays.thu;
+        habitLog.friday = checkedDays.fri;
+        habitLog.saturday = checkedDays.sat;
 
         // Save and update streak
+        console.log(`Saving streak: ${habitLog.streak_count}`); // Before save
         await habitLog.save();
-        await updateStreak(habitLog);
+        console.log(`Streak saved: ${habitLog.streak_count}`);  // After save
 
-        res.status(200).json({ message: 'Checked days updated successfully' });
+        
+
+        //const checkedDays = { sun, mon, tue, wed, thu, fri, sat };
+        //console.log("CheckedDays before updateStreak:", checkedDays);
+
+        //await updateStreak(habitLog, checkedDays);
+        const updatedStreak = await updateStreak(habitLog, checkedDays);
+
+        await habitLog.save();
+
+        res.status(200).json({
+            message: 'Checked days updated successfully',
+            updatedStreak: updatedStreak, // Add the updated streak value here
+          });
+
+        console.log('Please', updatedStreak);
+          
+
+
+        //res.status(200).json({ message: 'Checked days updated successfully' });
     } catch (error) {
         console.error('Error updating checked days:', error);
         res.status(500).json({ message: 'Failed to update checked days', error: error.message });
+
     }
 };
 
