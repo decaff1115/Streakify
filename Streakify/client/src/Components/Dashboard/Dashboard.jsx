@@ -525,74 +525,62 @@ const Dashboard = () => {
 
           {/*===============================EDIT HABIT BUTTON===============================*/}
           <Modal open={editHabit} onClose={editClose}>
-  <Box
-    sx={{
-      ...style,
-      width: '90%', // Responsive width for smaller screens
-      maxWidth: '400px', // Restrict max width for larger screens
-      padding: '20px', // Add consistent padding
-    }}
-  >
-    <Typography
-      id="modal-modal-title"
-      variant="h6"
-      component="h2"
-      className="text-white font-bold text-center mb-4"
-    >
-      Edit Habit
-    </Typography>
-    <div className="flex flex-col w-full">
-      <div className="w-full p-2">
-        <div className="flex flex-col">
-          <label className="text-white mb-2">Name</label>
-          <input
-            className="w-full h-[40px] rounded-md border px-2 text-sm"
-            value={editingName}
-            onChange={(e) => setEditingName(e.target.value)}
-            placeholder="Enter habit name"
-          />
-        </div>
-        <div className="flex flex-col mt-4">
-          <label className="text-white mb-2">Goal</label>
-          <input
-            className="w-full h-[40px] rounded-md border px-2 text-sm"
-            value={editingGoal}
-            onChange={(e) => setEditingGoal(e.target.value)}
-            placeholder="Enter goal in days"
-          />
-        </div>
-        <div className="flex flex-col mt-4">
-          <label className="text-white mb-2">Start Date</label>
-          <input
-            className="w-full h-[40px] rounded-md border px-2 text-sm"
-            placeholder={new Date().toLocaleDateString('en-US', {
-              weekday: 'long',
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-            })}
-          />
-        </div>
-      </div>
-      <div className="flex justify-end mt-4">
-        <Button
-          onClick={handleUpdate}
-          sx={{
-            height: '40px',
-            color: 'white',
-            backgroundColor: '#2C2268',
-            '&:hover': {
-              backgroundColor: '#1F1A4A',
-            },
-            borderRadius: '8px',
-            padding: '8px 16px',
-          }}
-        >
-          Save
-        </Button>
-      </div>
-    </div>
-  </Box>
+            <Box
+              sx={{
+                ...style,
+                width: '90%', // Responsive width for smaller screens
+                maxWidth: '400px', // Restrict max width for larger screens
+                padding: '20px', // Add consistent padding
+              }}
+            >
+              <Typography
+                id="modal-modal-title"
+                variant="h6"
+                component="h2"
+                className="text-white font-bold text-center mb-4"
+              >
+                Edit Habit
+              </Typography>
+              <div className="flex flex-col w-full">
+                <div className="w-full p-2">
+                  <div className="flex flex-col">
+                    <label className="text-white mb-2">Name</label>
+                    <input
+                      className="w-full h-[40px] rounded-md border px-2 text-sm"
+                      value={editingName}
+                      onChange={(e) => setEditingName(e.target.value)}
+                      placeholder="Enter habit name"
+                    />
+                  </div>
+                  <div className="flex flex-col mt-4">
+                    <label className="text-white mb-2">Goal</label>
+                    <input
+                      className="w-full h-[40px] rounded-md border px-2 text-sm"
+                      value={editingGoal}
+                      onChange={(e) => setEditingGoal(e.target.value)}
+                      placeholder="Enter goal in days"
+                    />
+                  </div>
+                </div>
+                <div className="flex justify-end mt-4">
+                  <Button
+                    onClick={handleUpdate}
+                    sx={{
+                      height: '40px',
+                      color: 'white',
+                      backgroundColor: '#2C2268',
+                      '&:hover': {
+                        backgroundColor: '#1F1A4A',
+                      },
+                      borderRadius: '8px',
+                      padding: '8px 16px',
+                    }}
+                  >
+                    Save
+                  </Button>
+                </div>
+              </div>
+            </Box>
 </Modal>
 
 
