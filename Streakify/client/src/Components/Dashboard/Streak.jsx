@@ -4,6 +4,8 @@ import { IconTrophy } from '@tabler/icons-react';
 import ProgressBar from "@ramonak/react-progress-bar";
 import { useState, useEffect } from 'react';
 
+const token = localStorage.getItem('token');
+
 const Streak = ({ habit }) => {
     Streak.propTypes = {
         habit: PropTypes.shape({
@@ -28,7 +30,11 @@ const Streak = ({ habit }) => {
       const fetchCheckedDays = async () => {
           try {
               const response = await fetch(
-                  `http://localhost:3000/api/habitLogs/get-checked-days?habit_id=${habit.id}&user_id=${habit.user_id}`
+                  `http://localhost:3000/api/habitLogs/get-checked-days?habit_id=${habit.id}&user_id=${habit.user_id}`, {
+                    headers: {
+                      "Authorization": `Bearer ${token}`, // Include token in header
+                    },
+                  }
               );
               const data = await response.json();
 

@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { IconTrophy } from '@tabler/icons-react';
 import ProgressBar from "@ramonak/react-progress-bar";
 
+const token = localStorage.getItem('token');
+
 
 //Check progress
 const TaskSpecific = ({ habit }) => {
@@ -31,7 +33,11 @@ const TaskSpecific = ({ habit }) => {
         const fetchCheckedDays = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:3000/api/habitLogs/get-checked-days?habit_id=${habit.id}&user_id=${habit.user_id}`
+                    `http://localhost:3000/api/habitLogs/get-checked-days?habit_id=${habit.id}&user_id=${habit.user_id}`, {
+                        headers: {
+                          "Authorization": `Bearer ${token}`, // Include token in header
+                        },
+                      }
                 );
                 const data = await response.json();
                 
@@ -73,7 +79,7 @@ const TaskSpecific = ({ habit }) => {
             const response = await fetch('http://localhost:3000/api/habitLogs/update-checked-days', {
                 method: 'PATCH',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json', "Authorization": `Bearer ${token}`,
                 },
                 body: JSON.stringify({
                     habit_id: habitId,
@@ -126,6 +132,22 @@ const TaskSpecific = ({ habit }) => {
             return updatedDays;
         });
     };
+
+    const handleUnselectAll = () => {
+        const resetDays = {
+            sun: false,
+            mon: false,
+            tue: false,
+            wed: false,
+            thu: false,
+            fri: false,
+            sat: false,
+        };
+        setSelectedDays(resetDays);
+        updateCheckedDaysOnServer(habit.id, habit.user_id, resetDays);
+    };
+
+
     const totalCheckedDays = Object.values(selectedDays).filter(Boolean).length;
     const progressPercentage = Math.round((totalCheckedDays / 7) * 100);
 
@@ -146,6 +168,13 @@ const TaskSpecific = ({ habit }) => {
                 onDayToggle={handleDayToggle}
             />
         </div>
+
+        <button
+                    onClick={handleUnselectAll}
+                    className="mt-4 bg-pink-400 text-white px-4 py-2 rounded-lg"
+                >
+                    Reset Progress
+                </button>
     </div>
 
     {/* Right Column (Streak and Your Progress) */}

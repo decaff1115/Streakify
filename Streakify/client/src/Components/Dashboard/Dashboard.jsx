@@ -106,7 +106,11 @@ const Dashboard = () => {
 
   const fetchHabits = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/habits/?user_id=${userId}`);
+      const response = await fetch(`http://localhost:3000/api/habits/?user_id=${userId}`, {
+        headers: {
+          "Authorization": `Bearer ${token}`, // Include token in header
+        },
+      });
       const data = await response.json();
       if (response.ok) {
         setHabitArray(data);  // Set the habits into the state
@@ -180,7 +184,7 @@ const Dashboard = () => {
       const response = await fetch("http://localhost:3000/api/habits", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json","Authorization": `Bearer ${token}`
         },
         body: JSON.stringify(habitData),
       });
@@ -213,7 +217,7 @@ const Dashboard = () => {
       const response = await fetch(`http://localhost:3000/api/habits/${habitId}`, {
         method: "DELETE",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json", "Authorization": `Bearer ${token}`
         },
       });
       if (response.ok) {
@@ -244,7 +248,7 @@ const Dashboard = () => {
       const response = await fetch(`http://localhost:3000/api/habits/${editingHabitId}`, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json', "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify(updatedHabit),
       });
@@ -432,18 +436,21 @@ const Dashboard = () => {
 
             {/*Left SideBar Tabs*/}
             <div>
-              <Button onClick={handleHabitClick} style={{ width: "240px", height: "50px", justifyContent: "start", background: "#B4BAFF", borderRadius: "10px", padding: "none" }} className={`flex hover:bg-[#B4BAFF] h-[53px] items-center w-[278px] rounded-[8px]`}>
-                <div className="flex w-full items-center text-white font-extrabold transition-colors duration-[1]">
-                  <img src={fileIcon} className="ml-[5px]"></img>
-                  <h1 className="text-[20px] ml-[25px] text-[#21005D]"> HABITS </h1>
-                </div>
-              </Button>
-              
-            </div>
+                <Button 
+                  onClick={handleHabitClick} 
+                  style={{ width: "240px", height: "50px", justifyContent: "start", background: "#B4BAFF", borderRadius: "10px", padding: "none" }} 
+                  className={`flex hover:bg-[#B4BAFF] h-[53px] items-center w-[278px] rounded-[8px]`}
+                >
+                  <div className="flex w-full items-center text-white font-extrabold transition-colors duration-[1]">
+                    <img src={fileIcon} className="ml-[5px]" />
+                    <h1 className="text-[20px] ml-[25px] text-[#21005D]"> HABITS </h1>
+                  </div>
+                </Button>
+              </div>
 
-            <div className="font-semibold rounded-[10px] items-center flex w-[100%] text-[15px] justify-center h-[71px] p-[20px] text-center bg-[#FFFFFF] text-[#4D57C8]"> Complete habit to build your longest streak of
-              perfect day.
-            </div>
+              <div className="font-semibold rounded-[10px] items-center flex w-[278px] text-[15px] justify-center h-[71px] p-[20px] text-center bg-[#FFFFFF] text-[#4D57C8] mt-[20px]">
+                Complete habit to build your longest streak of perfect day.
+              </div>
             <div>
             </div>
           </div>
