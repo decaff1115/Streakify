@@ -438,7 +438,7 @@ const Dashboard = () => {
               </div>
 
               <div className="font-semibold rounded-[10px] items-center flex w-[278px] text-[15px] justify-center h-[71px] p-[20px] text-center bg-[#FFFFFF] text-[#4D57C8] mt-[20px]">
-                Complete habit to build your longest streak of perfect day.
+              Develop a habit to achieve your longest streak of perfect days.
               </div>
             <div>
             </div>
