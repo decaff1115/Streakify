@@ -489,12 +489,12 @@ const Dashboard = () => {
               />
             </div>
             <div className="flex flex-col mt-4">
-              <label className="text-white mb-2">How many days do you want to keep doing this?</label>
+              <label className="text-white mb-2">How many times do you want to keep doing this in a day?</label>
               <input
                 className="w-full h-[40px] rounded-md border px-2 text-sm"
                 value={goal}
                 onChange={(e) => setGoal(e.target.value)}
-                placeholder="Enter goal in days"
+                placeholder="Enter goal"
               />
             </div>
           </div>
@@ -525,74 +525,76 @@ const Dashboard = () => {
 
           {/*===============================EDIT HABIT BUTTON===============================*/}
           <Modal open={editHabit} onClose={editClose}>
-            <Box sx={{ style }}>
-              <div className="flex h-full w-full">
-                <div className="w-full h-full border-red-600 p-[5px]">
-                  <div className="flex w-full border-red-600 h-max">
-                    <div className="flex w-full h-full border-yellow-500">
-                      <div className="flex flex-col border-blue-600 w-[60%]">
-                        <div className="flex mt-[20px] justify-between">
-                          <Box sx={style}>
-                            <Typography id="modal-modal-title" variant="h6" component="h2" className="text-white font-bold">
-                              Edit Habit
-                            </Typography>
-                            <div className="flex flex-col h-full w-full">
-                              <div className="w-full h-full border-red-600 p-[5px]">
-                                <div className="flex flex-col ml-[20px]">
-                                  <h1 className="text-white">Name</h1>
-                                  <input
-                                    className="flex h-[37px] rounded-md border"
-                                    value={editingName}
-                                    onChange={(e) => setEditingName(e.target.value)}
-                                  />
-                                  <h1 className="text-white mt-[20px]">Goal</h1>
-                                  <input
-                                    className="flex h-[37px] rounded-md border"
-                                    value={editingGoal}
-                                    onChange={(e) => setEditingGoal(e.target.value)}
-                                  />
-                                  <h1 className="text-white mt-[20px]">Start Date</h1>
-                                  <input
-                                    className="flex h-[37px] rounded-md border"
-                                    placeholder={new Date().toLocaleDateString('en-US', {
-                                      weekday: 'long',
-                                      year: 'numeric',
-                                      month: 'long',
-                                      day: 'numeric',
-                                    })}
-                                  />
-                                </div>
-                              </div>
-                              <div className="flex h-max mt-[0%] border-red-600 justify-end">
-                                <Button
-                                  onClick={handleUpdate}
-                                  sx={{
-                                    height: '32px',
-                                    color: 'white',
-                                    backgroundColor: '#2C2268',
-                                    '&:hover': {
-                                      backgroundColor: '#1F1A4A',
-                                    },
-                                    borderRadius: '8px',
-                                    padding: '8px 16px',
-                                    marginLeft: '25px',
-                                    marginRight: '40px',
-                                    marginBottom: '20px',
-                                  }}
-                                >
-                                  Save
-                                </Button>
-                              </div>
-                            </div>
-                          </Box>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Box>
-          </Modal>
+  <Box
+    sx={{
+      ...style,
+      width: '90%', // Responsive width for smaller screens
+      maxWidth: '400px', // Restrict max width for larger screens
+      padding: '20px', // Add consistent padding
+    }}
+  >
+    <Typography
+      id="modal-modal-title"
+      variant="h6"
+      component="h2"
+      className="text-white font-bold text-center mb-4"
+    >
+      Edit Habit
+    </Typography>
+    <div className="flex flex-col w-full">
+      <div className="w-full p-2">
+        <div className="flex flex-col">
+          <label className="text-white mb-2">Name</label>
+          <input
+            className="w-full h-[40px] rounded-md border px-2 text-sm"
+            value={editingName}
+            onChange={(e) => setEditingName(e.target.value)}
+            placeholder="Enter habit name"
+          />
+        </div>
+        <div className="flex flex-col mt-4">
+          <label className="text-white mb-2">Goal</label>
+          <input
+            className="w-full h-[40px] rounded-md border px-2 text-sm"
+            value={editingGoal}
+            onChange={(e) => setEditingGoal(e.target.value)}
+            placeholder="Enter goal in days"
+          />
+        </div>
+        <div className="flex flex-col mt-4">
+          <label className="text-white mb-2">Start Date</label>
+          <input
+            className="w-full h-[40px] rounded-md border px-2 text-sm"
+            placeholder={new Date().toLocaleDateString('en-US', {
+              weekday: 'long',
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })}
+          />
+        </div>
+      </div>
+      <div className="flex justify-end mt-4">
+        <Button
+          onClick={handleUpdate}
+          sx={{
+            height: '40px',
+            color: 'white',
+            backgroundColor: '#2C2268',
+            '&:hover': {
+              backgroundColor: '#1F1A4A',
+            },
+            borderRadius: '8px',
+            padding: '8px 16px',
+          }}
+        >
+          Save
+        </Button>
+      </div>
+    </div>
+  </Box>
+</Modal>
+
 
           {/*===============================MAIN CONTENT DIV===============================*/}
 
