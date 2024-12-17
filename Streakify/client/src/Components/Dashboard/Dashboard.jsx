@@ -22,6 +22,7 @@ const Dashboard = () => {
   const [renderProgress, SetRenderProgress] = useState(false);
   const [habitInfo, setHabitInfo] = useState({ id: 0, name: "", goal: 0, user_id: 0, streak_count: 0, progress_count: 0 })
 
+  //Shows the progress per habit 
   const handleRenderProgress = (habit) => {
     setHabitInfo(habit)
     SetRenderProgress(true)
@@ -36,6 +37,7 @@ const Dashboard = () => {
     navigate("/LogInPage");
   };
 
+  //Goes back to list of habits
   const handleHabitClick = () => {
     setIsActive(true);
     SetRenderProgress(false)
@@ -344,14 +346,14 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="w-full h-screen flex flex-col bg-[#B4BAFF] overflow-y-hidden overflow-x-hidden">
+    <div className="w-full h-screen flex flex-col bg-[#B4BAFF] overflow-y overflow-x-hidden">
       <div className="flex w-full h-[78px] justify-center items-center bg-white shadow-[0px_0px_9px_0px_rgba(0,0,0,1)]">
         <img src={logo} className="streakifyLogo" />
       </div>
 
-      <div className="flex border-red-600 h-full w-full justify-between">
+      <div className="flex flex-col md:flex-row h-screen w-full justify-between">
         {/* Sidebar div */}
-        <div className="flex w-[20%] justify-center bg-[#4D57C8] p-[20px] border-red-600">
+        <div className="flex flex-col md:flex-row w-full md:w-[30%] bg-[#4D57C8] p-4 md:p-6">
           <div className="border-blue-600 h-max flex flex-col items-center">
 
             {/*User Profile Div*/}
@@ -575,7 +577,7 @@ const Dashboard = () => {
           {/*===============================MAIN CONTENT DIV===============================*/}
 
           {isActive && !renderProgress && (
-            <div className="w-full h-[calc(100vh-120px)] flex flex-col border-red-600 overflow-y-auto items-center p-[20px] scrollbar-hide">
+            <div className="w-full h-full flex flex-col items-center p-[20px] scrollbar-hide">
               {habitArray.length === 0 && (
                 <div className="flex flex-col items-center justify-center">
                   <div>
@@ -591,7 +593,7 @@ const Dashboard = () => {
                 <div key={index.id} className="bg-white p-4 flex rounded-lg shadow-md w-[90%] mb-4 border-red-600">
                   <div className="flex flex-col w-[60%] justify-center ml-[20px]">
                     <h2 className="text-lg font-bold text-gray-800">{index.name}</h2>
-                    <h2 className="text-lg font-bold text-gray-800">{index.goal}</h2>
+                    <h2 className="text-lg font-bold text-gray-800">{index.goal} Times A Day</h2>
                   </div>
 
                   <div className="flex w-full h-full items-center justify-end border-red-600">
@@ -651,7 +653,7 @@ const Dashboard = () => {
 
         {/*==============================================================RIGHT MOST COLUMN==============================================================*/}
         {isActive && !renderProgress && (
-          <div className="2xl:w-[40%] lg:w-[60%] p-[30px] flex items-center border-l flex-col">
+          <div className="w-full md:w-[40%] lg:w-[60%] p-[30px] flex flex-col items-center border-t md:border-l min-h-[200px]">
             <div className="font-semibold rounded-[10px] items-center flex w-[100%] text-[15px] justify-center h-[71px] p-[20px] text-center bg-[#FFFFFF] text-[#4D57C8]"> Complete habit to build your longest streak of
               perfect day.
             </div>
@@ -676,11 +678,7 @@ const Dashboard = () => {
           </div>
         )}
 
-        {renderProgress && !isActive && (
-          <div className="2xl:w-[40%] lg:w-[60%] p-[30px] flex items-center border-l flex-col">
-            <Streak habit={habitInfo} />
-          </div>
-        )}
+        
 
       </div> {/*DIVE CONTAINING ALL*/}
 
