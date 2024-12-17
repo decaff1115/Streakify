@@ -1,121 +1,113 @@
-// const { Streak, HabitLog, Habit, User } = require('../models');
-// const { Op } = require('sequelize');
+const { HabitLog } = require('../models');
+const { updateStreak } = require('./streakController'); 
 
-// // Create a new habit log entry and manage streak
-// const createHabitLog = async (req, res) => {
-//     const { habit_id, completed_at, status, duration, user_id, value } = req.body;
 
-//     try {
-//         // Validate the status
-//         if (!['completed', 'skipped', 'failed'].includes(status)) {
-//             return res.status(400).json({ message: 'Invalid status. It must be one of "completed", "skipped", or "failed".' });
-//         }
+const updateCheckedDays = async (req, res) => {
+    //const { habit_id, user_id, day, is_checked } = req.body;
+    const { habit_id, user_id, sun, mon, tue, wed, thu, fri, sat } = req.body;
 
-//         // Check if user exists
-//         const user = await User.findByPk(user_id);
-//         if (!user) {
-//             return res.status(400).json({ message: 'User not found.' });
-//         }
+    // Validate input
+    // if (!habit_id || !user_id || !day || typeof is_checked === 'undefined') {
+    //     return res.status(400).json({ message: 'Missing required parameters' });
+    // }
+    if (!habit_id || !user_id || typeof sun === 'undefined' || typeof mon === 'undefined' || typeof tue === 'undefined' || typeof wed === 'undefined' || typeof thu === 'undefined' || typeof fri === 'undefined' || typeof sat === 'undefined') {
+        return res.status(400).json({ message: 'Missing required parameters' });
+    }
 
-//         // Check if habit exists
-//         const habit = await Habit.findByPk(habit_id);
-//         if (!habit) {
-//             return res.status(400).json({ message: 'Habit not found.' });
-//         }
+    try {
+        console.log('Updating HabitLog for habit_id:', habit_id, 'user_id:', user_id);
+        console.log('Received days:', { sun, mon, tue, wed, thu, fri, sat });
+        console.log('Habit ID:', habit_id);
+        console.log('User ID:', user_id);
 
-//         // Check if a habit log already exists for this habit and date
-//         const existingLog = await HabitLog.findOne({
-//             where: {
-//                 habit_id,
-//                 completed_at: completed_at  // Check for existing log with the same habit and date
-//             }
-//         });
+        // Find the HabitLog entry
+        const habitLog = await HabitLog.findOne({
+            where: { habit_id, user_id },
+        });
 
-//         if (existingLog) {
-//             return res.status(400).json({
-//                 message: `A habit log already exists for this habit on ${completed_at}.`
-//             });
-//         }
+        if (!habitLog) {
+            return res.status(404).json({ message: 'HabitLog not found' });
+        }
 
-//         // Default value for the log if not provided
-//         const habitValue = value !== undefined ? value : (status === 'completed' ? habit.target_value : 0);
+        // Update the specified day
+        /*
+        switch (day.toLowerCase()) {
+            case 'monday':
+                habitLog.monday = is_checked;
+                break;
+            case 'tuesday':
+                habitLog.tuesday = is_checked;
+                break;
+            case 'wednesday':
+                habitLog.wednesday = is_checked;
+                break;
+            case 'thursday':
+                habitLog.thursday = is_checked;
+                break;
+            case 'friday':
+                habitLog.friday = is_checked;
+                break;
+            case 'saturday':
+                habitLog.saturday = is_checked;
+                break;
+            case 'sunday':
+                habitLog.sunday = is_checked;
+                break;
+            default:
+                return res.status(400).json({ message: 'Invalid day provided' });
+        }
+        */
+        habitLog.sunday = sun;
+        habitLog.monday = mon;
+        habitLog.tuesday = tue;
+        habitLog.wednesday = wed;
+        habitLog.thursday = thu;
+        habitLog.friday = fri;
+        habitLog.saturday = sat;
 
-//         // Create the habit log
-//         const habitLog = await HabitLog.create({
-//             habit_id,
-//             user_id,
-//             completed_at,
-//             status,
-//             value: habitValue,
-//             duration: status === 'completed' ? duration : 0
-//         });
 
-//         res.status(201).json({ habitLog });
-//     } catch (error) {
-//         console.error('Error creating habit log or streak:', error);
-//         res.status(500).json({ message: 'Error creating habit log or streak', error: error.message });
-//     }
-// };
+        // Save and update streak
+        await habitLog.save();
+        await updateStreak(habitLog);
 
-// // Get habits by date (including habit logs if they exist for the selected date)
-// const getHabitsByDate = async (req, res) => {
-//     try {
-//         const { date } = req.query;  // Get the date from the query string
+        res.status(200).json({ message: 'Checked days updated successfully' });
+    } catch (error) {
+        console.error('Error updating checked days:', error);
+        res.status(500).json({ message: 'Failed to update checked days', error: error.message });
+    }
+};
 
-//         // Check if date is provided
-//         if (!date) {
-//             return res.status(400).json({ message: 'Date is required' });
-//         }
+const getCheckedDays = async (req, res) => {
+    const { habit_id, user_id } = req.query;
 
-//         // Normalize the date (set time to midnight to avoid timezone issues)
-//         const selectedDate = new Date(date);
-//         selectedDate.setHours(0, 0, 0, 0);  // Ensure it's normalized to midnight
+    try {
+        const habitLog = await HabitLog.findOne({
+            where: { habit_id, user_id },
+        });
 
-//         // Get the day of the week (0 - Sunday, 6 - Saturday)
-//         const selectedDayOfWeek = selectedDate.getDay(); 
+        if (!habitLog) {
+            return res.status(404).json({ message: 'HabitLog not found' });
+        }
 
-//         // Query Habits where the selected day is in the `daily_days` array
-//         const habits = await Habit.findAll({
-//             where: {
-//                 daily_days: {
-//                     [Op.contains]: [selectedDayOfWeek],  // Check if the selected day exists in the daily_days array
-//                 },
-//             },
-//             include: [
-//                 { model: User },  // Include User model to get user details
-//                 {
-//                     model: HabitLog, // Include HabitLogs to check if there is any log for this habit on the selected date
-//                     where: { completed_at: selectedDate },
-//                     required: false,  // LEFT JOIN: retrieve habits with or without logs
-//                 },
-//             ],
-//         });
+        const checkedDays = {
+            monday: habitLog.monday,
+            tuesday: habitLog.tuesday,
+            wednesday: habitLog.wednesday,
+            thursday: habitLog.thursday,
+            friday: habitLog.friday,
+            saturday: habitLog.saturday,
+            sunday: habitLog.sunday,
+        };
 
-//         // Return the habits with their logs (if any) and associated user details
-//         res.json(habits);
-//     } catch (error) {
-//         console.error('Error retrieving habits:', error);
-//         res.status(500).json({ message: 'Error retrieving habits', error });
-//     }
-// };
+        res.status(200).json({ checked_days: checkedDays });
+    } catch (error) {
+        console.error('Error retrieving checked days:', error);
+        res.status(500).json({ message: 'Failed to retrieve checked days', error: error.message });
+    }
+};
 
-// const getAllHabitLogs = async (req, res) => {
-//     try {
-//         const habitLogs = await HabitLog.findAll({
-//             include: [
-//                 { model: Habit }, // Include the associated Habit model
-//                 { model: User },  // Include the associated User model
-//             ]
-//         });
-//         res.json(habitLogs);  // Return the habit logs with included associations as JSON
-//     } catch (error) {
-//         console.error('Error retrieving habit logs:', error);
-//         res.status(500).json({ message: 'Error retrieving habit logs', error });
-//     }
-// };
 
-// module.exports = {
-//     getAllHabitLogs,
-//     createHabitLog,
-//     getHabitsByDate
-// };
+module.exports = {
+    getCheckedDays,
+    updateCheckedDays
+};
