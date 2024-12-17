@@ -126,6 +126,22 @@ const TaskSpecific = ({ habit }) => {
             return updatedDays;
         });
     };
+
+    const handleUnselectAll = () => {
+        const resetDays = {
+            sun: false,
+            mon: false,
+            tue: false,
+            wed: false,
+            thu: false,
+            fri: false,
+            sat: false,
+        };
+        setSelectedDays(resetDays);
+        updateCheckedDaysOnServer(habit.id, habit.user_id, resetDays);
+    };
+
+
     const totalCheckedDays = Object.values(selectedDays).filter(Boolean).length;
     const progressPercentage = Math.round((totalCheckedDays / 7) * 100);
 
@@ -146,6 +162,13 @@ const TaskSpecific = ({ habit }) => {
                 onDayToggle={handleDayToggle}
             />
         </div>
+
+        <button
+                    onClick={handleUnselectAll}
+                    className="mt-4 bg-pink-400 text-white px-4 py-2 rounded-lg"
+                >
+                    Reset Progress
+                </button>
     </div>
 
     {/* Right Column (Streak and Your Progress) */}
