@@ -54,7 +54,7 @@ const Streak = ({ habit }) => {
   }, [habit.id, habit.user_id]);
 
   const totalCheckedDays = Object.values(selectedDays).filter(Boolean).length;
-    const progressPercentage = (totalCheckedDays / 7) * 100;
+  const progressPercentage = (totalCheckedDays / 7) * 100;
     
   return (
       <div className='flex flex-col h-full w-full items-center justify-center'>
@@ -75,9 +75,7 @@ const Streak = ({ habit }) => {
                     <div className='text-[#303030] text-[24px] font-extrabold pt-[10px] pb-[10px] w-full h-max flex justify-center border-b '>
                         YOUR PROGRESS
                     </div>
-
-                  <div className='flex flex-col h-full w-full items-center justify-center  border-red-600'>
-                      <div className='pl-[20px] pr-[20px] flex flex-col border-white w-full h-full items-center justify-center'>
+                    <div className='pl-[20px] pr-[20px] flex flex-col border-white w-full h-full items-center justify-center'>
                         <div className='w-full h-max flex'>
                           <div>
                               <IconTrophy size="40px" color='#303030'/>
@@ -85,7 +83,7 @@ const Streak = ({ habit }) => {
                           <h1 className='mb-[20px] ml-[10px] text-[24px] text-[#303030]'> {totalCheckedDays} Completed / Days</h1>
                         </div>  
                           <ProgressBar D
-                            completed={70} 
+                            completed={progressPercentage} 
                             bgColor="#7FFF5B" 
                             baseBgColor="#312A7C" 
                             height="20px"
@@ -95,7 +93,8 @@ const Streak = ({ habit }) => {
                             labelColor="#000" 
                           />
                       </div>
-                    </div>
+
+                  
                 </div>
           </div>
     </div>
