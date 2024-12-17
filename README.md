@@ -59,6 +59,7 @@ The `.env` file will store sensitive environment variables for your project.
 2. Install dependecies
     ```in terminal
     npm install
+    npm install @vitejs/plugin-react
 3. To run the **client**
     ```terminal
     npm run dev
