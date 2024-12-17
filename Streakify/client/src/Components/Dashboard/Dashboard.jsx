@@ -678,11 +678,7 @@ const Dashboard = () => {
           </div>
         )}
 
-        {renderProgress && !isActive && (
-          <div className="2xl:w-[40%] lg:w-[60%] p-[30px] flex items-center border-l flex-col">
-            <Streak habit={habitInfo} />
-          </div>
-        )}
+        
 
       </div> {/*DIVE CONTAINING ALL*/}
 
