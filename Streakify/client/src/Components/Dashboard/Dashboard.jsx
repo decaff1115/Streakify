@@ -1,13 +1,11 @@
 import logo from "../../assets/logo.svg"
 import { IconExclamationCircle, IconUserCircle, IconCirclePlus, IconTrash, IconEdit, IconArrowLeft } from "@tabler/icons-react"
 import noTaskIcon from "../../assets/HabitSampleIcons.svg"
-import noStreaks from "../../assets/NoStreaks.svg"
 import { Modal, Box, Typography, Button } from "@mui/material"
 import React, { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import fileIcon from '../../assets/Vector.svg'
 import fire2 from "../../assets/fire2.svg"
-import Streak from "./Streak"
 
 const token = localStorage.getItem('token');
 import { useNavigate } from "react-router-dom"
@@ -16,7 +14,7 @@ import TaskSpecific from "./TaskSpecific"
 const Dashboard = () => {
   const [userId, setUserId] = useState(null);
   const [username, setUsername] = useState('');
-  const [email, setEmail] = useState("sky@gmail.com")
+  const [email, setEmail] = useState('')
   const [habitName, setHabitName] = useState("");
   const [goal, setGoal] = useState("");
   const [renderProgress, SetRenderProgress] = useState(false);
@@ -30,10 +28,7 @@ const Dashboard = () => {
   }
 
     const handleLogout = () => {
-    // 1. Clear the local storage or authentication data
     localStorage.removeItem("authToken");
-
-    // 2. Redirect to login page
     navigate("/LogInPage");
   };
 
@@ -139,16 +134,13 @@ const Dashboard = () => {
           'Authorization': `Bearer ${token}`,
         }
       });
-      console.log('Fetched datarem:', userId);
         const data = await response.json();
-        // const email = await response.json();
-        localStorage.setItem("name", data);
+        localStorage.setItem("name", data.username);
         localStorage.setItem("id", userId);
-        localStorage.setItem("email", email)
+        localStorage.setItem("email", data.email)
 
       setUsername(data.username);
       setEmail(data.email)
-      console.log('Fetched data:', username);
     } catch (err) {
       console.error(err);
     }
@@ -173,11 +165,10 @@ const Dashboard = () => {
 
     }
     const userid = localStorage.getItem('id');
-    // Prepare the data to be sent
     const habitData = {
       name: habitName,
       goal: goal,
-      user_id: userid, // You would dynamically pass the user_id from your app's state or auth context
+      user_id: userid, 
     };
 
     try {
@@ -195,7 +186,7 @@ const Dashboard = () => {
           ...prevHabits,
           {
             id: newHabit.id,
-            name: newHabit.habitName,  // Adjust the property name if necessary
+            name: newHabit.habitName, 
             goal: newHabit.goal,
             isChecked: false,
           },
@@ -221,13 +212,11 @@ const Dashboard = () => {
         },
       });
       if (response.ok) {
-        // If deletion is successful, update the taskArray to remove the deleted habit
         setHabitArray((prevHabits) =>
           prevHabits.filter((habit) => habit.id !== habitId)
         );
         alert("Habit deleted successfully!");
       } else {
-        // Handle any error returned from the server
         alert(`Failed to delete habit: ${habitId}`);
       }
     } catch (error) {

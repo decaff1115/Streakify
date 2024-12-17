@@ -74,9 +74,7 @@ const LogInPage = () => {
           <button type="submit" className="login-button">
             LOG IN
           </button>
-          <a href="#" className="forgot-password">
-            Forgot Password?
-          </a>
+          
         </form>
 
         <p className="signup-text">
