@@ -125,9 +125,9 @@ const TaskSpecific = ({ habit }) => {
     const progressPercentage = Math.round((totalCheckedDays / 7) * 100);
 
   return (
-    <div className="w-full h-[calc(100vh-120px)] flex border-red-600 overflow-y-auto items-start p-[20px] gap-8">
+    <div className="w-full h-[calc(100vh-120px)] flex flex-col md:flex-row border-red-600 overflow-y-auto items-start p-[20px] gap-8">
     {/* Left Column (Habit Name, Goal, WeekDaysSelector) */}
-    <div className="flex flex-col w-[60%] items-start justify-start mr-4">
+    <div className="flex flex-col w-full md:w-[60%] items-start justify-start md:mr-4">
         <div className="bg-[#7889DF] p-4 w-full flex rounded-lg shadow-md mb-4 border-red-600">
             <div className="flex flex-col w-full justify-start ml-[20px]">
                 <h2 className="text-lg font-bold text-white">{habit.name}</h2>
@@ -143,29 +143,31 @@ const TaskSpecific = ({ habit }) => {
         </div>
 
         <button
-                    onClick={handleUnselectAll}
-                    className="mt-4 bg-pink-400 text-white px-4 py-2 rounded-lg"
-                >
-                    Reset Progress
-                </button>
+            onClick={handleUnselectAll}
+            className="mt-4 bg-pink-400 text-white px-4 py-2 rounded-lg"
+        >
+            Reset Progress
+        </button>
     </div>
 
     {/* Right Column (Streak and Your Progress) */}
-    <div className="flex flex-col w-[35%] items-start justify-start">
-        <div className="text-[25px] font-bold mb-2">Current Streak</div>
-        <div className="text-[40px] font-extrabold mb-4">{streakCount} Days</div>
+    <div className="flex flex-col w-full md:w-[35%] items-start justify-start">
+        <div className="text-[20px] md:text-[25px] font-bold mb-2">Current Streak</div>
+        <div className="text-[30px] md:text-[40px] font-extrabold mb-4">{streakCount} Days</div>
 
-        <div className="text-[25px] font-bold mb-2">Your Progress</div>
+        <div className="text-[20px] md:text-[25px] font-bold mb-2">Your Progress</div>
         <div className="flex items-center mb-4">
-            <IconTrophy size="40px" color='#303030'/>
-            <h1 className='ml-[10px] text-[24px] text-[#303030]'> {totalCheckedDays} Completed / Days</h1>
+            <IconTrophy size="30px" md:size="40px" color="#303030" />
+            <h1 className="ml-[10px] text-[18px] md:text-[24px] text-[#303030]">
+                {totalCheckedDays} Completed / Days
+            </h1>
         </div>
 
         <ProgressBar 
             completed={progressPercentage} 
             bgColor="#7FFF5B" 
             baseBgColor="#312A7C" 
-            height="20px"
+            height="15px md:height-20px" 
             width='300px'
             borderRadius="50px" 
             labelAlignment="center" 
