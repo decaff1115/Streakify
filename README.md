@@ -73,4 +73,68 @@ The `.env` file will store sensitive environment variables for your project.
 6. To run the **server**
     ```terminal
     npm start
-7. Don't forget to click on your username for profile management
+---
+# Streakify Navigation Tutorial  
+
+This guide will walk you through the features of Streakify and how to navigate its interface effectively.  
+
+---
+
+## 1. User Management and Habits Tab  
+- Located on the **left sidebar**, this section contains your **Username** and the **Habits Tab**.  
+
+### 1.1. Username  
+- Click on your **Username** to access profile management.  
+
+### 1.2. Habits Tab  
+- The **Habits Tab** displays all the habits you have added.  
+
+---
+
+## 2. Add Habit Button  
+- Click the **+** button located at the **upper right corner** of the screen to add a new habit.  
+
+---
+
+## 3. Fill Out the Habit Form  
+- Complete the habit form with the required details.  
+
+---
+
+## 4. Save Your Habit  
+- Click **Save** to create your new habit successfully!  
+
+---
+
+## 5. Created Habit Tab  
+
+The Created Habit Tab allows you to manage your habits:  
+
+### 5.1. Delete Button  
+- Use the **Delete button** to remove a habit you no longer need.  
+
+### 5.2. Edit Button  
+- Click the **Edit button** to modify an existing habit.  
+
+### 5.3. Progress Button  
+- The **Progress button** redirects you to a detailed progress page for the selected habit.  
+
+---
+
+## 6. Progress Page  
+
+The Progress Page provides an overview of your selected habit's progress, goals, and tracking options.  
+
+### Features on the Progress Page:  
+1. **Reset Progress**  
+   - Resets the checked days of the week for the habit.  
+
+2. **Current Streak**  
+   - Displays your current streak for the habit.  
+
+3. **Progress Bar**  
+   - Shows your progress for the current week, helping you stay on track with your goal.  
+
+---
+
+By following this tutorial, you should be able to navigate Streakify confidently and make the most out of its features!  
