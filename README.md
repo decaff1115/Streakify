@@ -130,7 +130,8 @@ The Progress Page provides an overview of your selected habit's progress, goals,
    - Resets the checked days of the week for the habit.  
 
 2. **Current Streak**  
-   - Displays your current streak for the habit.  
+   - Displays your current streak for the habit. 
+   **Note:** If you don’t check the box consecutively, the streak will break.
 
 3. **Progress Bar**  
    - Shows your progress for the current week, helping you stay on track with your goal.  
