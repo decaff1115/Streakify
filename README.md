@@ -73,3 +73,4 @@ The `.env` file will store sensitive environment variables for your project.
 6. To run the **server**
     ```terminal
     npm start
+7. Don't forget to click on your username for profile management
