@@ -1,66 +1,43 @@
 const { Streak } = require('../models'); // Adjust the path as needed
 
 
-const updateStreak = async (habitLog) => {
-    const checkedDays = getCheckedDaysFromLog(habitLog);
-    const streak = calculateConsecutiveDaysStreak(checkedDays);  // Calculate streak
-    const progressCount = addProgressCount(checkedDays);         // Track progress even if streak is broken
+const updateStreak = async (habitLog, checkedDays) => {
+    try {
+        // Validate that checkedDays is defined and has all properties
+        if (!checkedDays || Object.values(checkedDays).some(day => typeof day === 'undefined')) {
+            throw new Error("Invalid checkedDays object passed to updateStreak");
+        }
 
-    // Find existing streak
-    const existingStreak = await Streak.findOne({
-        where: {
-            user_id: habitLog.user_id,
-            habit_id: habitLog.habit_id,
-        },
-    });
+        // Convert checkedDays object to an array of boolean values
+        const daysArray = [checkedDays.sun, checkedDays.mon, checkedDays.tue, checkedDays.wed, checkedDays.thu, checkedDays.fri, checkedDays.sat];
 
-    if (existingStreak) {
-        // Reset streak to 0 if the current streak is broken
-        const newStreakCount = streak === 0 ? 0 : streak;
+        // Calculate streak
+        let streak = 0;
+        let isNewStreak = true; // Track if we're starting a new streak
 
-        await existingStreak.update({
-            streak_count: newStreakCount,
-            progress_count: progressCount,
-        });
-    } else {
-        // Create a new streak if none exists
-        await Streak.create({
-            user_id: habitLog.user_id,
-            habit_id: habitLog.habit_id,
-            streak_count: streak,
-            progress_count: progressCount,
-        });
+        // Loop through the array from the last day backward
+        for (let i = daysArray.length - 1; i >= 0; i--) {
+            if (daysArray[i]) {
+                if (isNewStreak) {
+                    streak++; // Increment streak for consecutive checked days
+                }
+            } else {
+                if (streak > 0) {
+                    isNewStreak = false; // Stop counting the current streak once a break is encountered
+                    break;
+                }
+            }
+        }
+
+        // Update streak in HabitLog
+        habitLog.streak_count = streak;
+        await habitLog.save();
+        return habitLog.streak_count;
+    } catch (error) {
+        console.error('Error updating streak:', error);
+        throw error; // Let the caller handle the error
     }
 };
-
-const getCheckedDaysFromLog = (habitLog) => {
-    return [
-        habitLog.monday ? 'monday' : null,
-        habitLog.tuesday ? 'tuesday' : null,
-        habitLog.wednesday ? 'wednesday' : null,
-        habitLog.thursday ? 'thursday' : null,
-        habitLog.friday ? 'friday' : null,
-        habitLog.saturday ? 'saturday' : null,
-        habitLog.sunday ? 'sunday' : null,
-    ].filter(day => day !== null);
-};
-
-// const calculateConsecutiveDaysStreak = (checkedDays) => {
-//     const weekDays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-//     let streak = 0;
-//     let consecutive = true;
-
-//     // Loop through the week days, count consecutive days where habit was completed
-//     for (let i = 0; i < weekDays.length; i++) {
-//         if (checkedDays.includes(weekDays[i]) && consecutive) {
-//             streak++;
-//         } else {
-//             consecutive = false; // Break the streak when a day is not checked
-//         }
-//     }
-
-//     return streak;
-// };
 
 const calculateConsecutiveDaysStreak = (checkedDays) => {
     const weekDays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
@@ -89,23 +66,7 @@ const calculateConsecutiveDaysStreak = (checkedDays) => {
     return streak;
 };
 
-const addProgressCount = (checkedDays) => {
-    const weekDays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-    let progressCount = 0;
-
-    // Count the days that are checked, regardless of streak
-    for (let i = 0; i < weekDays.length; i++) {
-        if (checkedDays.includes(weekDays[i])) {
-            progressCount++;
-        }
-    }
-
-    return progressCount;
-};
-
 module.exports = {
     updateStreak,
-    getCheckedDaysFromLog,
     calculateConsecutiveDaysStreak,
-    addProgressCount
 };

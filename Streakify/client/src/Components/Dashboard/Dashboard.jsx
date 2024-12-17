@@ -1,13 +1,11 @@
 import logo from "../../assets/logo.svg"
 import { IconExclamationCircle, IconUserCircle, IconCirclePlus, IconTrash, IconEdit, IconArrowLeft } from "@tabler/icons-react"
 import noTaskIcon from "../../assets/HabitSampleIcons.svg"
-import noStreaks from "../../assets/NoStreaks.svg"
 import { Modal, Box, Typography, Button } from "@mui/material"
 import React, { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import fileIcon from '../../assets/Vector.svg'
 import fire2 from "../../assets/fire2.svg"
-import Streak from "./Streak"
 
 const token = localStorage.getItem('token');
 import { useNavigate } from "react-router-dom"
@@ -16,12 +14,13 @@ import TaskSpecific from "./TaskSpecific"
 const Dashboard = () => {
   const [userId, setUserId] = useState(null);
   const [username, setUsername] = useState('');
-  const [email, setEmail] = useState("sky@gmail.com")
+  const [email, setEmail] = useState('')
   const [habitName, setHabitName] = useState("");
   const [goal, setGoal] = useState("");
   const [renderProgress, SetRenderProgress] = useState(false);
   const [habitInfo, setHabitInfo] = useState({ id: 0, name: "", goal: 0, user_id: 0, streak_count: 0, progress_count: 0 })
 
+  //Shows the progress per habit 
   const handleRenderProgress = (habit) => {
     setHabitInfo(habit)
     SetRenderProgress(true)
@@ -29,13 +28,11 @@ const Dashboard = () => {
   }
 
     const handleLogout = () => {
-    // 1. Clear the local storage or authentication data
     localStorage.removeItem("authToken");
-
-    // 2. Redirect to login page
     navigate("/LogInPage");
   };
 
+  //Goes back to list of habits
   const handleHabitClick = () => {
     setIsActive(true);
     SetRenderProgress(false)
@@ -102,21 +99,26 @@ const Dashboard = () => {
     }
   }, []);
 
-  useEffect(() => {
-    const fetchHabits = async () => {
-      try {
-        const response = await fetch(`http://localhost:3000/api/habits/?user_id=${userId}`);
-        const data = await response.json();
-        if (response.ok) {
-          setHabitArray(data);  // Set the habits into the state
-        } else {
-          alert('Failed to fetch habits.');
-        }
-      } catch (error) {
-        console.error('Error fetching habits:', error);
-        alert('Error fetching habits.');
+  const fetchHabits = async () => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/habits/?user_id=${userId}`, {
+        headers: {
+          "Authorization": `Bearer ${token}`, // Include token in header
+        },
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setHabitArray(data);  // Set the habits into the state
+      } else {
+        alert('Failed to fetch habits.');
       }
-    };
+    } catch (error) {
+      console.error('Error fetching habits:', error);
+      alert('Error fetching habits.');
+    }
+  };
+
+  useEffect(() => {
 
     if (userId) {
       fetchHabits();
@@ -132,16 +134,13 @@ const Dashboard = () => {
           'Authorization': `Bearer ${token}`,
         }
       });
-      console.log('Fetched datarem:', userId);
         const data = await response.json();
-        // const email = await response.json();
-        localStorage.setItem("name", data);
+        localStorage.setItem("name", data.username);
         localStorage.setItem("id", userId);
-        localStorage.setItem("email", email)
+        localStorage.setItem("email", data.email)
 
       setUsername(data.username);
       setEmail(data.email)
-      console.log('Fetched data:', username);
     } catch (err) {
       console.error(err);
     }
@@ -166,18 +165,17 @@ const Dashboard = () => {
 
     }
     const userid = localStorage.getItem('id');
-    // Prepare the data to be sent
     const habitData = {
       name: habitName,
       goal: goal,
-      user_id: userid, // You would dynamically pass the user_id from your app's state or auth context
+      user_id: userid, 
     };
 
     try {
       const response = await fetch("http://localhost:3000/api/habits", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json","Authorization": `Bearer ${token}`
         },
         body: JSON.stringify(habitData),
       });
@@ -188,12 +186,13 @@ const Dashboard = () => {
           ...prevHabits,
           {
             id: newHabit.id,
-            name: newHabit.habitName,  // Adjust the property name if necessary
+            name: newHabit.habitName, 
             goal: newHabit.goal,
             isChecked: false,
           },
         ]);
         alert("Habit created successfully!");
+        fetchHabits();
       }
     }
     catch (error) {
@@ -209,17 +208,15 @@ const Dashboard = () => {
       const response = await fetch(`http://localhost:3000/api/habits/${habitId}`, {
         method: "DELETE",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json", "Authorization": `Bearer ${token}`
         },
       });
       if (response.ok) {
-        // If deletion is successful, update the taskArray to remove the deleted habit
         setHabitArray((prevHabits) =>
           prevHabits.filter((habit) => habit.id !== habitId)
         );
         alert("Habit deleted successfully!");
       } else {
-        // Handle any error returned from the server
         alert(`Failed to delete habit: ${habitId}`);
       }
     } catch (error) {
@@ -240,7 +237,7 @@ const Dashboard = () => {
       const response = await fetch(`http://localhost:3000/api/habits/${editingHabitId}`, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json', "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify(updatedHabit),
       });
@@ -344,14 +341,14 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="w-full h-screen flex flex-col bg-[#B4BAFF] overflow-y-hidden overflow-x-hidden">
+    <div className="w-full h-screen flex flex-col bg-[#B4BAFF] overflow-y overflow-x-hidden">
       <div className="flex w-full h-[78px] justify-center items-center bg-white shadow-[0px_0px_9px_0px_rgba(0,0,0,1)]">
         <img src={logo} className="streakifyLogo" />
       </div>
 
-      <div className="flex border-red-600 h-full w-full justify-between">
+      <div className="flex flex-col md:flex-row h-screen w-full justify-between">
         {/* Sidebar div */}
-        <div className="flex w-[20%] justify-center bg-[#4D57C8] p-[20px] border-red-600">
+        <div className="flex flex-col md:flex-row w-full md:w-[30%] bg-[#4D57C8] p-4 md:p-6">
           <div className="border-blue-600 h-max flex flex-col items-center">
 
             {/*User Profile Div*/}
@@ -428,17 +425,26 @@ const Dashboard = () => {
 
             {/*Left SideBar Tabs*/}
             <div>
-              <Button onClick={handleHabitClick} style={{ width: "240px", height: "50px", justifyContent: "start", background: "#B4BAFF", borderRadius: "10px", padding: "none" }} className={`flex hover:bg-[#B4BAFF] h-[53px] items-center w-[278px] rounded-[8px]`}>
-                <div className="flex w-full items-center text-white font-extrabold transition-colors duration-[1]">
-                  <img src={fileIcon} className="ml-[5px]"></img>
-                  <h1 className="text-[20px] ml-[25px] text-[#21005D]"> HABITS </h1>
-                </div>
-              </Button>
-            </div>
+                <Button 
+                  onClick={handleHabitClick} 
+                  style={{ width: "240px", height: "50px", justifyContent: "start", background: "#B4BAFF", borderRadius: "10px", padding: "none" }} 
+                  className={`flex hover:bg-[#B4BAFF] h-[53px] items-center w-[278px] rounded-[8px]`}
+                >
+                  <div className="flex w-full items-center text-white font-extrabold transition-colors duration-[1]">
+                    <img src={fileIcon} className="ml-[5px]" />
+                    <h1 className="text-[20px] ml-[25px] text-[#21005D]"> HABITS </h1>
+                  </div>
+                </Button>
+              </div>
+
+              <div className="font-semibold rounded-[10px] items-center flex w-[278px] text-[15px] justify-center h-[71px] p-[20px] text-center bg-[#FFFFFF] text-[#4D57C8] mt-[20px]">
+                Complete habit to build your longest streak of perfect day.
+              </div>
             <div>
             </div>
           </div>
         </div>
+        
 
         <div className="w-full h-full flex flex-col">
           <div className="h-[10%] border-b flex w-full items-center justify-end pr-[20px] pl-[20px]">
@@ -575,7 +581,7 @@ const Dashboard = () => {
           {/*===============================MAIN CONTENT DIV===============================*/}
 
           {isActive && !renderProgress && (
-            <div className="w-full h-[calc(100vh-120px)] flex flex-col border-red-600 overflow-y-auto items-center p-[20px] scrollbar-hide">
+            <div className="w-full h-full flex flex-col items-center p-[20px] scrollbar-hide">
               {habitArray.length === 0 && (
                 <div className="flex flex-col items-center justify-center">
                   <div>
@@ -591,7 +597,7 @@ const Dashboard = () => {
                 <div key={index.id} className="bg-white p-4 flex rounded-lg shadow-md w-[90%] mb-4 border-red-600">
                   <div className="flex flex-col w-[60%] justify-center ml-[20px]">
                     <h2 className="text-lg font-bold text-gray-800">{index.name}</h2>
-                    <h2 className="text-lg font-bold text-gray-800">{index.goal}</h2>
+                    <h2 className="text-lg font-bold text-gray-800">{index.goal} Times A Day</h2>
                   </div>
 
                   <div className="flex w-full h-full items-center justify-end border-red-600">
@@ -649,38 +655,9 @@ const Dashboard = () => {
 
         </div>
 
-        {/*==============================================================RIGHT MOST COLUMN==============================================================*/}
-        {isActive && !renderProgress && (
-          <div className="2xl:w-[40%] lg:w-[60%] p-[30px] flex items-center border-l flex-col">
-            <div className="font-semibold rounded-[10px] items-center flex w-[100%] text-[15px] justify-center h-[71px] p-[20px] text-center bg-[#FFFFFF] text-[#4D57C8]"> Complete habit to build your longest streak of
-              perfect day.
-            </div>
+        
 
-            <div className="w-full flex items-center justify-between mt-[24px] rounded-[10px] bg-[#FFFFFF] border-red-600 h-[182px] relative">
-              <div className="flex-col flex text-[#373737] w-full h-full items-start justify-center z-20">
-                <div className="flex-col flex border-red-600 w-max h-max ml-[20px] mb-[15px]">
-                  <h1 className="text-[24px] font-extrabold">{/*currentStreak*/0} Day </h1>
-                  <h1 className="text-[11px]"> Your Current Streak </h1>
-                </div>
-                <div className="flex-col flex w-max h-max ml-[20px]">
-                  <h1 className="text-[24px] font-extrabold">{/*longestStreak*/0} Day </h1>
-                  <h1 className="text-[11px]"> Your Longest Streak</h1>
-                </div>
-              </div>
-              <img
-                src={noStreaks}
-                alt="No Streaks"
-                className="absolute top-0 left-0 w-full h-[112.5%] object-cover rounded-[10px]"
-              />
-            </div>
-          </div>
-        )}
-
-        {renderProgress && !isActive && (
-          <div className="2xl:w-[40%] lg:w-[60%] p-[30px] flex items-center border-l flex-col">
-            <Streak habit={habitInfo} />
-          </div>
-        )}
+        
 
       </div> {/*DIVE CONTAINING ALL*/}
 
