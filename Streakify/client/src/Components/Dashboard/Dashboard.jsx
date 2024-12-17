@@ -436,11 +436,17 @@ const Dashboard = () => {
                   <h1 className="text-[20px] ml-[25px] text-[#21005D]"> HABITS </h1>
                 </div>
               </Button>
+              
+            </div>
+
+            <div className="font-semibold rounded-[10px] items-center flex w-[100%] text-[15px] justify-center h-[71px] p-[20px] text-center bg-[#FFFFFF] text-[#4D57C8]"> Complete habit to build your longest streak of
+              perfect day.
             </div>
             <div>
             </div>
           </div>
         </div>
+        
 
         <div className="w-full h-full flex flex-col">
           <div className="h-[10%] border-b flex w-full items-center justify-end pr-[20px] pl-[20px]">
@@ -651,32 +657,7 @@ const Dashboard = () => {
 
         </div>
 
-        {/*==============================================================RIGHT MOST COLUMN==============================================================*/}
-        {isActive && !renderProgress && (
-          <div className="w-full md:w-[40%] lg:w-[60%] p-[30px] flex flex-col items-center border-t md:border-l min-h-[200px]">
-            <div className="font-semibold rounded-[10px] items-center flex w-[100%] text-[15px] justify-center h-[71px] p-[20px] text-center bg-[#FFFFFF] text-[#4D57C8]"> Complete habit to build your longest streak of
-              perfect day.
-            </div>
-
-            <div className="w-full flex items-center justify-between mt-[24px] rounded-[10px] bg-[#FFFFFF] border-red-600 h-[182px] relative">
-              <div className="flex-col flex text-[#373737] w-full h-full items-start justify-center z-20">
-                <div className="flex-col flex border-red-600 w-max h-max ml-[20px] mb-[15px]">
-                  <h1 className="text-[24px] font-extrabold">{/*currentStreak*/0} Day </h1>
-                  <h1 className="text-[11px]"> Your Current Streak </h1>
-                </div>
-                <div className="flex-col flex w-max h-max ml-[20px]">
-                  <h1 className="text-[24px] font-extrabold">{/*longestStreak*/0} Day </h1>
-                  <h1 className="text-[11px]"> Your Longest Streak</h1>
-                </div>
-              </div>
-              <img
-                src={noStreaks}
-                alt="No Streaks"
-                className="absolute top-0 left-0 w-full h-[112.5%] object-cover rounded-[10px]"
-              />
-            </div>
-          </div>
-        )}
+        
 
         
 

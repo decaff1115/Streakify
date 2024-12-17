@@ -95,23 +95,23 @@ const TaskSpecific = ({ habit }) => {
         }
     };
 
-    const calculateStreak = (updatedDays) => {
-        const daysOrder = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
-        let currentStreak = 0;
-        let isStreakBroken = false;
+    // const calculateStreak = (updatedDays) => {
+    //     const daysOrder = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+    //     let currentStreak = 0;
+    //     let isStreakBroken = false;
 
-        for (const day of daysOrder) {
-            if (updatedDays[day]) {
-                if (!isStreakBroken) {
-                    currentStreak++;
-                }
-            } else {
-                isStreakBroken = true; // Break the streak if a day is skipped
-            }
-        }
+    //     for (const day of daysOrder) {
+    //         if (updatedDays[day]) {
+    //             if (!isStreakBroken) {
+    //                 currentStreak++;
+    //             }
+    //         } else {
+    //             isStreakBroken = true; // Break the streak if a day is skipped
+    //         }
+    //     }
 
-        setStreakCount(currentStreak);
-    };
+    //     setStreakCount(currentStreak);
+    // };
 
     const handleDayToggle = (day, dayValue) => {
         // Update the selected days state
@@ -130,55 +130,49 @@ const TaskSpecific = ({ habit }) => {
     const progressPercentage = Math.round((totalCheckedDays / 7) * 100);
 
   return (
-    <div className="w-full h-[calc(100vh-120px)]  flex flex-col border-red-600 overflow-y-auto items-center p-[20px]">
+    <div className="w-full h-[calc(100vh-120px)] flex border-red-600 overflow-y-auto items-start p-[20px] gap-8">
+    {/* Left Column (Habit Name, Goal, WeekDaysSelector) */}
+    <div className="flex flex-col w-[60%] items-start justify-start mr-4">
         <div className="bg-[#7889DF] p-4 w-full flex rounded-lg shadow-md mb-4 border-red-600">
-            <div className="flex flex-col w-[60%] justify-center ml-[20px]">
+            <div className="flex flex-col w-full justify-start ml-[20px]">
                 <h2 className="text-lg font-bold text-white">{habit.name}</h2>
                 <h2 className="text-lg font-bold text-white">{habit.goal}</h2>
             </div>
         </div>
 
-        <div className='flex flex-col h-full w-full items-center justify-center  border-red-600'>
-            <div className='flex w-[90%] pl-[20px] pr-[20px] h-[150px] rounded-lg border items-center font-extrabold text-[#303030] justify-between border-white'>
-                  
-                <div className='border-red-600'>
-                    <div className='text-[25px]'>
-                       CURRENT STREAK
-                    </div>
-                    <div className='text-[40px]'>
-                    {streakCount} Days 
-                    </div>
-                  </div>
-              </div>
-            <div className='flex flex-col border rounded-lg items-center w-[90%] h-[230px]'>
-                <div className='text-[#303030] text-[24px] font-extrabold pt-[10px] pb-[10px] w-full h-max flex justify-center border-b '>
-                    YOUR PROGRESS
-                </div> 
-                <div className='pl-[20px] pr-[20px] flex flex-col border-white w-full h-full items-center justify-center'>
-                        <div className='w-full h-max flex'>
-                          <div>
-                              <IconTrophy size="40px" color='#303030'/>
-                            </div>
-                          <h1 className='mb-[20px] ml-[10px] text-[24px] text-[#303030]'> {totalCheckedDays} Completed / Days</h1>
-                        </div>  
-                        <ProgressBar D
-                            completed={progressPercentage} 
-                            bgColor="#7FFF5B" 
-                            baseBgColor="#312A7C" 
-                            height="20px"
-                            width='300px'
-                            borderRadius="50px" 
-                            labelAlignment="center" 
-                            labelColor="#000" 
-                        />
-                </div> 
-            </div>
+        <div className="w-full mt-4">
+            <WeekDaysSelector 
+                initialSelectedDays={selectedDays}
+                onDayToggle={handleDayToggle}
+            />
+        </div>
+    </div>
+
+    {/* Right Column (Streak and Your Progress) */}
+    <div className="flex flex-col w-[35%] items-start justify-start">
+        <div className="text-[25px] font-bold mb-2">Current Streak</div>
+        <div className="text-[40px] font-extrabold mb-4">{streakCount} Days</div>
+
+        <div className="text-[25px] font-bold mb-2">Your Progress</div>
+        <div className="flex items-center mb-4">
+            <IconTrophy size="40px" color='#303030'/>
+            <h1 className='ml-[10px] text-[24px] text-[#303030]'> {totalCheckedDays} Completed / Days</h1>
         </div>
 
-        <WeekDaysSelector 
-        initialSelectedDays={selectedDays}
-        onDayToggle={handleDayToggle}/>
+        <ProgressBar 
+            completed={progressPercentage} 
+            bgColor="#7FFF5B" 
+            baseBgColor="#312A7C" 
+            height="20px"
+            width='300px'
+            borderRadius="50px" 
+            labelAlignment="center" 
+            labelColor="#000" 
+        />
     </div>
+</div>
+
+
     );
 };
 
