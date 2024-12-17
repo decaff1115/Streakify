@@ -3,13 +3,8 @@ const { updateStreak } = require('./streakController');
 
 
 const updateCheckedDays = async (req, res) => {
-    //const { habit_id, user_id, day, is_checked } = req.body;
     const { habit_id, user_id, sun, mon, tue, wed, thu, fri, sat } = req.body;
 
-    // Validate input
-    // if (!habit_id || !user_id || !day || typeof is_checked === 'undefined') {
-    //     return res.status(400).json({ message: 'Missing required parameters' });
-    // }
     if (!habit_id || !user_id || typeof sun === 'undefined' || typeof mon === 'undefined' || typeof tue === 'undefined' || typeof wed === 'undefined' || typeof thu === 'undefined' || typeof fri === 'undefined' || typeof sat === 'undefined') {
         return res.status(400).json({ message: 'Missing required parameters' });
     }
@@ -47,17 +42,8 @@ const updateCheckedDays = async (req, res) => {
         habitLog.friday = checkedDays.fri;
         habitLog.saturday = checkedDays.sat;
 
-        // Save and update streak
-        console.log(`Saving streak: ${habitLog.streak_count}`); // Before save
         await habitLog.save();
-        console.log(`Streak saved: ${habitLog.streak_count}`);  // After save
 
-        
-
-        //const checkedDays = { sun, mon, tue, wed, thu, fri, sat };
-        //console.log("CheckedDays before updateStreak:", checkedDays);
-
-        //await updateStreak(habitLog, checkedDays);
         const updatedStreak = await updateStreak(habitLog, checkedDays);
 
         await habitLog.save();
@@ -67,11 +53,6 @@ const updateCheckedDays = async (req, res) => {
             updatedStreak: updatedStreak, // Add the updated streak value here
           });
 
-        console.log('Please', updatedStreak);
-          
-
-
-        //res.status(200).json({ message: 'Checked days updated successfully' });
     } catch (error) {
         console.error('Error updating checked days:', error);
         res.status(500).json({ message: 'Failed to update checked days', error: error.message });

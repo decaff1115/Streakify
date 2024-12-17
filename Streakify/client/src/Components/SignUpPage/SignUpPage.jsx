@@ -86,12 +86,6 @@ function SignUpPage() {
           <button type="submit" className="getstarted-button">
             GET STARTED
           </button>
-          <p className= "privacy-policy">
-            I have read the{' '} 
-            <a href="#" className="privacy-policy">
-              Privacy Policy
-            </a>
-          </p>
         </form>
 
         <p className="login-text">

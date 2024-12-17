@@ -52,9 +52,7 @@ const TaskSpecific = ({ habit }) => {
                         fri: data.checked_days.friday,
                         sat: data.checked_days.saturday,
                     };
-                    setSelectedDays(mappedCheckedDays);
-                    //calculateStreak(mappedCheckedDays);
-                }
+                    setSelectedDays(mappedCheckedDays);                }
 
                 if (data.updatedStreak !== undefined) {
                     setStreakCount(data.updatedStreak);  // Set the streak count from the response
@@ -69,13 +67,6 @@ const TaskSpecific = ({ habit }) => {
     
     const updateCheckedDaysOnServer = async (habitId, userId, updatedDays) => {
         try {
-            // Send a PATCH request to update checked days
-            console.log('Sending data to update checked days:', {
-                habitId,
-                userId,
-                updatedDays
-              });
-
             const response = await fetch('http://localhost:3000/api/habitLogs/update-checked-days', {
                 method: 'PATCH',
                 headers: {
@@ -100,24 +91,6 @@ const TaskSpecific = ({ habit }) => {
             console.error('Error updating checked days:', error);
         }
     };
-
-    // const calculateStreak = (updatedDays) => {
-    //     const daysOrder = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
-    //     let currentStreak = 0;
-    //     let isStreakBroken = false;
-
-    //     for (const day of daysOrder) {
-    //         if (updatedDays[day]) {
-    //             if (!isStreakBroken) {
-    //                 currentStreak++;
-    //             }
-    //         } else {
-    //             isStreakBroken = true; // Break the streak if a day is skipped
-    //         }
-    //     }
-
-    //     setStreakCount(currentStreak);
-    // };
 
     const handleDayToggle = (day, dayValue) => {
         // Update the selected days state

@@ -32,14 +32,13 @@ const Streak = ({ habit }) => {
               const response = await fetch(
                   `http://localhost:3000/api/habitLogs/get-checked-days?habit_id=${habit.id}&user_id=${habit.user_id}`, {
                     headers: {
-                      "Authorization": `Bearer ${token}`, // Include token in header
+                      "Authorization": `Bearer ${token}`,
                     },
                   }
               );
               const data = await response.json();
 
               if (data.checked_days) {
-                  // Map the response keys to match the state keys (sun, mon, tue, ...)
                   const mappedCheckedDays = {
                       sun: data.checked_days.sunday,
                       mon: data.checked_days.monday,
